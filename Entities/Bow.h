@@ -33,7 +33,6 @@ class Bow : public Actor
       float chargeLevel = 0;
       const static constexpr float MAX_CHARGE = 40;
       const static constexpr float MAX_ANGLE = 60;
-      const static constexpr float DEG_TO_RADIAN = 0.0174532925f;
 };
 
 #endif //GAME1_BOW_H

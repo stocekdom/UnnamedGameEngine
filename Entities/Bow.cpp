@@ -2,6 +2,7 @@
 // Created by dominik on 09.10.25.
 //
 #include <cmath>
+#include "../Base/Utility/Math.h"
 #include "Bow.h"
 
 Bow::Bow( const std::string& texturePath, sf::Vector2f position, float rotation, sf::Vector2f scale ) : Actor( texturePath, position, rotation, scale )
@@ -25,7 +26,7 @@ void Bow::fire()
       // vx = cos(theta) * chargeLevel
       // vy = sin(theta) * chargeLevel
       // https://en.wikipedia.org/wiki/Projectile_motion
-      a->fire( sf::Vector2f( std::cos( ( rotation * DEG_TO_RADIAN ) ) * chargeLevel, std::sin( ( rotation * DEG_TO_RADIAN ) ) * chargeLevel ) );
+      a->fire( sf::Vector2f( std::cos( ( rotation * Math::DEG_TO_RADIAN ) ) * chargeLevel, std::sin( ( rotation * Math::DEG_TO_RADIAN ) ) * chargeLevel ) );
       chargeLevel = 0;
    }
 }

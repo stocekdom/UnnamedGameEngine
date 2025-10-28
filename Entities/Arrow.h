@@ -38,10 +38,6 @@ class Arrow : public Actor
       void createCollider( CollisionSystem& system );
 
       std::shared_ptr<ColliderPoint> collider;
-      // TODO store gravity and conversions in a central place
-      const static constexpr float GRAVITY = 9.81f;
-      const static constexpr float RADIAN_TO_DEG = 57.2957795;
-      const static constexpr float PIXELS_PER_METER = 40.0f;
       sf::Vector2f velocity;
       bool isFired = false;
       bool hasHitTarget = false;

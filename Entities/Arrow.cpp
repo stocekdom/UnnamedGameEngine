@@ -3,6 +3,7 @@
 //
 #include <valarray>
 #include "Arrow.h"
+#include "../Base/Utility/Math.h"
 #include "../Base/ColliderPoint.h"
 
 Arrow::Arrow( const std::string& texturePath, CollisionSystem& system, sf::Vector2f position, float rotation, sf::Vector2f scale ) : Actor(
@@ -40,10 +41,10 @@ void Arrow::tickFixed( float fixedDt )
    // Instead of calculating this as a function of time,
    // each tick we update the velocity with -g * t and the position by the amount of distance the projectile traveled in gt.
    // https://en.wikipedia.org/wiki/Projectile_motion
-   velocity.y += GRAVITY * fixedDt;
-   sf::Vector2f delta = velocity * fixedDt * PIXELS_PER_METER;
+   velocity.y += Math::GRAVITY * fixedDt;
+   sf::Vector2f delta = velocity * fixedDt * Math::PIXELS_PER_METER;
    setPosition( sprite.getPosition() + delta );
-   setRotation( std::atan2( velocity.y, velocity.x ) * RADIAN_TO_DEG );
+   setRotation( std::atan2( velocity.y, velocity.x ) * Math::PIXELS_PER_METER );
 }
 
 void Arrow::onCollision( const Actor* other, CollisionInfo& info )
