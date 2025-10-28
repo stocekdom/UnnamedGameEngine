@@ -1,0 +1,39 @@
+//
+// Created by dominik on 09.10.25.
+//
+
+#ifndef GAME1_BOW_H
+#define GAME1_BOW_H
+
+#include <memory>
+#include "../Base/Entity/Actor.h"
+#include "Arrow.h"
+
+class Bow : public Actor
+{
+   public:
+      Bow( const std::string& texturePath, sf::Vector2f position = { 0, 0 }, float rotation = 0, sf::Vector2f scale = { 1, 1 } );
+
+      void charge( float speed );
+
+      void fire();
+
+      void setArrow( const std::shared_ptr<Arrow>& newArrow );
+
+      void rotate( float speed );
+
+      void tickFixed( float fixedDt ) override;
+
+      void tick( float deltaTime ) override;
+
+   private:
+      std::weak_ptr<Arrow> arrow;
+      float rotationSpeed = 0;
+      float chargeSpeed = 0;
+      float chargeLevel = 0;
+      const static constexpr float MAX_CHARGE = 40;
+      const static constexpr float MAX_ANGLE = 60;
+      const static constexpr float DEG_TO_RADIAN = 0.0174532925f;
+};
+
+#endif //GAME1_BOW_H
