@@ -7,6 +7,7 @@
 
 void Renderer::render( GameScene& scene, sf::RenderTarget& target )
 {
+   // TODO this is trash. We need a tree structure based on depth and render from it
    for( const auto& actor: scene.getActors() )
    {
       if( actor->isVisible() )

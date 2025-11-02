@@ -6,6 +6,7 @@
 #define GAME1_COLLISIONINFO_H
 
 #include <SFML/System/Vector2.hpp>
+
 struct CollisionInfo
 {
    sf::Vector2f localPoint;

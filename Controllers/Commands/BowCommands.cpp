@@ -12,13 +12,13 @@ RotateUp::RotateUp( const std::shared_ptr<Bow>& bow ) : pawn( bow )
 void RotateUp::execute()
 {
    if( auto p = pawn.lock() )
-      p->rotate( -ROTATION_SPEED );
+      p->setRotationSpeed( -ROTATION_SPEED );
 }
 
 void RotateUp::stop()
 {
    if( auto p = pawn.lock() )
-      p->rotate( 0 );
+      p->setRotationSpeed( 0 );
 }
 
 RotateDown::RotateDown( const std::shared_ptr<Bow>& bow ) : pawn( bow )
@@ -28,13 +28,13 @@ RotateDown::RotateDown( const std::shared_ptr<Bow>& bow ) : pawn( bow )
 void RotateDown::execute()
 {
    if( auto p = pawn.lock() )
-      p->rotate( ROTATION_SPEED );
+      p->setRotationSpeed( ROTATION_SPEED );
 }
 
 void RotateDown::stop()
 {
    if( auto p = pawn.lock() )
-      p->rotate( 0 );
+      p->setRotationSpeed( 0 );
 }
 
 Charging::Charging( const std::shared_ptr<Bow>& bow ) : pawn( bow )

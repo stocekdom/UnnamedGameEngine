@@ -6,15 +6,18 @@
 #define GAME1_ARROW_H
 
 #include "../Base/Entity/Actor.h"
-#include "../Base/CollisionSystem.h"
+#include "../Base/Collision/Collidable.h"
+#include "../Base/Collision/ColliderPoint.h"
 
 // TODO make a projectile interface
-class Arrow : public Actor
+class Arrow : public Actor, public Collidable
 {
    public:
-      // TODO review how to get Collision system in a better way
-      Arrow( const std::string& texturePath, CollisionSystem& system, sf::Vector2f position = { 0, 0 }, float rotation = 0,
-             sf::Vector2f scale = { 1, 1 } );
+      // TODO This is bad passing this in constructor. Also using pointers to this if we need to construct a nested entity and pass this as a parent
+      // Must implement ECS.
+      explicit Arrow( const std::string& texturePath, sf::Vector2f position = { 0, 0 }, float rotation = 0, sf::Vector2f scale = { 1, 1 } );
+
+      void init( GameScene& scene, CollisionSystem& collisionSystem ) override;
 
       void fire( sf::Vector2f initialVelocity );
 
@@ -24,18 +27,11 @@ class Arrow : public Actor
 
       void tickFixed( float fixedDt ) override;
 
-      void onCollision( const Actor* other, CollisionInfo& info ) override;
-
-      // TODO big pain also having to modify the collider in these functions. Store the collider in localspace. components, trees?
-      void setRotation( float inRotation ) override;
-
-      void setPosition( const sf::Vector2f& position ) override;
-
-      void setScale( const sf::Vector2f& scale ) override;
+      void onCollision( const Collidable* other, CollisionInfo& info ) override;
 
    private:
 
-      void createCollider( CollisionSystem& system );
+      void createCollider();
 
       std::shared_ptr<ColliderPoint> collider;
       sf::Vector2f velocity;

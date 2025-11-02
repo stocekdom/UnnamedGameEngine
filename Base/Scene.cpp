@@ -7,9 +7,9 @@ const std::vector<std::shared_ptr<Entity>>& GameScene::getActors() const
    return actors;
 }
 
-void GameScene::addEntityToScene( std::shared_ptr<Entity> actor )
+void GameScene::addEntityToScene( const std::shared_ptr<Entity>& actor )
 {
-   actors.push_back( std::move( actor ) );
+   actors.push_back( actor );
 }
 
 const std::vector<std::shared_ptr<Entity>>& GameScene::getTickableActors() const
@@ -17,9 +17,9 @@ const std::vector<std::shared_ptr<Entity>>& GameScene::getTickableActors() const
    return tickableActors;
 }
 
-void GameScene::addTickableEntityToScene( std::shared_ptr<Entity> tickable )
+void GameScene::addTickableEntityToScene( const std::shared_ptr<Entity>& tickable )
 {
-   tickableActors.push_back( std::move( tickable ) );
+   tickableActors.push_back( tickable );
 }
 
 void GameScene::updateFixed( float fixedDt )
@@ -32,6 +32,11 @@ void GameScene::updateFixed( float fixedDt )
 
 void GameScene::update( float deltaTime )
 {
+   for( auto& actor : actors )
+   {
+      actor->tick( deltaTime );
+   }
+
    for( auto& actor: tickableActors )
    {
       actor->tick( deltaTime );

@@ -5,35 +5,29 @@
 #ifndef GAME1_ICOLLIDER_H
 #define GAME1_ICOLLIDER_H
 
+#include "Collidable.h"
+#include "../Entity/SpacialEntity.h"
 #include <memory>
-#include "Entity/Actor.h"
-#include "CollisionInfo.h"
 
-// Forward declarations to avoid circular dependencies
 class ColliderRect;
-
 class ColliderPoint;
 
-// TODO inherit from placable or spacial entity
-class ICollider
+// Inherits from spacial since all colliders should be able to move around the world and be drawn
+class ICollider : public SpacialEntity
 {
    public:
 
-      ICollider( Actor* owningActor, sf::Vector2f position );
+      explicit ICollider( Collidable* owningActor, sf::Vector2f position = { 0, 0 }, float rotation = 0, sf::Vector2f scale = { 1, 1 }, bool isVisible = false );
 
-      [[nodiscard]] const sf::Vector2f& getPosition() const;
+      void init( GameScene& scene, CollisionSystem& collisionSystem ) override;
 
       [[nodiscard]] bool isColliderEnabled() const;
 
-      [[nodiscard]] const Actor* getOwner() const;
+      [[nodiscard]] const Collidable* getOwner() const;
 
       virtual void setIsEnabled( bool enabled );
 
-      virtual void setPosition( const sf::Vector2f& newPosition );
-
-      virtual void move( const sf::Vector2f& delta );
-
-      virtual void onCollision( const Actor* other, CollisionInfo& info );
+      virtual void onCollision( const Collidable* other, CollisionInfo& info );
 
       // Colliders passed into test methods as raw pointers to avoid circular dependencies and since they are not owned by the actor
       virtual bool testCollision( const ICollider* other, CollisionInfo& info ) const = 0;
@@ -44,8 +38,8 @@ class ICollider
 
    protected:
       bool isEnabled;
-      Actor* owner;
-      sf::Vector2f position;
+      // TODO try to rework with weak pointers
+      Collidable* owner;
 };
 
 #endif //GAME1_ICOLLIDER_H

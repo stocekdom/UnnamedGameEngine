@@ -3,11 +3,14 @@
 //
 #include <string>
 #include <stdexcept>
+#include <valarray>
 #include "Actor.h"
+#include "../Scene.h"
 
-// TODO DRY broken in constructor. Make a method for setting and loading sprite
-Actor::Actor( const std::string& texturePath, sf::Vector2f position, float rotation, sf::Vector2f scale ) : isVisibleActor( true ),
-                                                                                                            rotation( rotation )
+Actor::Actor( const std::string& texturePath, sf::Vector2f position, float rotation, sf::Vector2f scale, bool isVisible ) : SpacialEntity( position,
+                                                                                                                                           rotation,
+                                                                                                                                           scale,
+                                                                                                                                           isVisible )
 {
    if( !texture.loadFromFile( texturePath ) )
    {
@@ -15,9 +18,7 @@ Actor::Actor( const std::string& texturePath, sf::Vector2f position, float rotat
    }
 
    sprite.setTexture( texture );
-   sprite.setPosition( position );
-   sprite.setRotation( rotation );
-   sprite.setScale( scale );
+   isEntityDirty = true;
 }
 
 void Actor::centerPivot()
@@ -25,29 +26,14 @@ void Actor::centerPivot()
    sprite.setOrigin( sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2 );
 }
 
-sf::Vector2f Actor::getPosition() const
+sf::Vector2f Actor::getParentRelativePosition() const
 {
-   return sprite.getPosition();
+   return localPosition;
 }
 
-float Actor::getRotation() const
+const sf::Drawable& Actor::getDrawable()
 {
-   return rotation;
-}
-
-sf::Vector2f Actor::getScale() const
-{
-   return sprite.getScale();
-}
-
-bool Actor::isVisible() const
-{
-   return isVisibleActor;
-}
-
-void Actor::setScale( const sf::Vector2f& scale )
-{
-   sprite.setScale( scale );
+   return sprite;
 }
 
 void Actor::setTexture( const sf::Texture& inTexture )
@@ -60,40 +46,18 @@ void Actor::setSprite( const sf::Sprite& inSprite )
    sprite = inSprite;
 }
 
-void Actor::setPosition( const sf::Vector2f& inPosition )
-{
-   sprite.setPosition( inPosition );
-}
-
-void Actor::setRotation( float inRotation )
-{
-   rotation = inRotation;
-   sprite.setRotation( inRotation );
-}
-
-void Actor::setIsVisibleEntity( bool isVisibleEntity )
-{
-   isVisibleActor = isVisibleEntity;
-}
-
-void Actor::tickFixed( float fixedDt )
-{
-}
-
 void Actor::tick( float deltaTime )
 {
+   if( isEntityDirty )
+   {
+      sprite.setPosition( getPosition() );
+      sprite.setScale( getScale() );
+      sprite.setRotation( getRotation() );
+      isEntityDirty = false;
+   }
 }
 
-void Actor::onCollision( const Actor* other, CollisionInfo& info )
+void Actor::init( GameScene& scene, CollisionSystem& collisionSystem )
 {
+   scene.addEntityToScene( shared_from_this() );
 }
-
-const sf::Drawable& Actor::getDrawable()
-{
-   return sprite;
-}
-
-
-
-
-

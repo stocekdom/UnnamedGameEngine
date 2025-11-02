@@ -12,17 +12,15 @@
 class Bow : public Actor
 {
    public:
-      Bow( const std::string& texturePath, sf::Vector2f position = { 0, 0 }, float rotation = 0, sf::Vector2f scale = { 1, 1 } );
+      explicit Bow( const std::string& texturePath, sf::Vector2f position = { 0, 0 }, float rotation = 0, sf::Vector2f scale = { 1, 1 } );
+
+      void init( GameScene& scene, CollisionSystem& collisionSystem ) override;
 
       void charge( float speed );
 
+      void setRotationSpeed( float rotation );
+
       void fire();
-
-      void setArrow( const std::shared_ptr<Arrow>& newArrow );
-
-      void rotate( float speed );
-
-      void tickFixed( float fixedDt ) override;
 
       void tick( float deltaTime ) override;
 

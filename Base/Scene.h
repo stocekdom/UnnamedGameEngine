@@ -8,9 +8,9 @@
 #include <vector>
 #include <memory>
 #include <SFML/Window/Event.hpp>
-#include "Entity/Actor.h"
 #include "../Controllers/IController.h"
 #include "Observers/Observer.h"
+#include "Entity/Entity.h"
 
 class GameScene
 {
@@ -18,11 +18,11 @@ class GameScene
 
       [[nodiscard]] const std::vector<std::shared_ptr<Entity>>& getActors() const;
 
-      void addEntityToScene( std::shared_ptr<Entity> actor );
+      void addEntityToScene( const std::shared_ptr<Entity>& actor );
 
       [[nodiscard]] const std::vector<std::shared_ptr<Entity>>& getTickableActors() const;
 
-      void addTickableEntityToScene( std::shared_ptr<Entity> tickable );
+      void addTickableEntityToScene( const std::shared_ptr<Entity>& tickable );
 
       void addController( std::unique_ptr<IController> controller );
 

@@ -1,8 +1,9 @@
 //
 // Created by dominik on 03.10.25.
 //
-#include "Entity/Actor.h"
 #include "Game.h"
+#include "Entity/Actor.h"
+#include "Collision/ColliderRect.h"
 #include "../Entities/Bow.h"
 #include "../Controllers/BowController.h"
 #include "../Entities/Target.h"
@@ -19,38 +20,31 @@ void Game::start()
    const float FIXED_DT = 1.0f / 128.0f;
    float accumulator = 0.f;
 
-   // Add backround
-   scene.addEntityToScene( std::make_shared<Actor>( "Assets/origbig.png", sf::Vector2f( 0, -200 ) ) );
+   // TODO move these to factories
+   // Add background
+   {
+      auto background = std::make_shared<Actor>( "Assets/origbig.png", sf::Vector2f( 0, -200 ) );
+      background->init( scene, collisionSystem );
+   }
 
    // Add bow
    {
       auto bow = std::make_shared<Bow>( "Assets/bow.png", sf::Vector2f( 30, ( float )WINDOW_HEIGHT / 2 ), 0, sf::Vector2f( 0.12, 0.12 ) );
-      bow->centerPivot();
-
-      // Add arrow
-      auto arrow = std::make_shared<Arrow>( "Assets/arrow.png", collisionSystem );
-      arrow->setScale( sf::Vector2f( 0.12, 0.12 ) );
-      arrow->centerPivot();
-      bow->setArrow( arrow );
-
-      // Add all to scene + Controller
-      scene.addTickableEntityToScene( bow );
+      bow->init( scene, collisionSystem );
       scene.addController( std::make_unique<BowController>( bow ) );
-      scene.addTickableEntityToScene( arrow );
    }
 
    // Add target, Scoreboard and observer
    {
       auto scoreboard = std::make_shared<Scoreboard>( "Assets/TTT-Regular.otf", "", 40, sf::Color::Black, sf::Vector2f( 15, 15 ) );
-      scene.addEntityToScene( scoreboard );
+      scoreboard->init( scene, collisionSystem );
 
-      auto target = std::make_shared<Target>( "Assets/target.png", collisionSystem );
-      target->centerPivot();
+      auto target = std::make_shared<Target>( "Assets/target.png" );
+      target->init( scene, collisionSystem );
       target->randomize();
       auto observer = std::make_shared<UpdateScoreboardObserver>( scoreboard );
       scene.addObserver( observer );
       target->addObserver( observer );
-      scene.addEntityToScene( target );
    }
 
    // Main loop

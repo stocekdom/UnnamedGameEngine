@@ -7,7 +7,7 @@
 
 #include "Scene.h"
 #include "Renderer.h"
-#include "CollisionSystem.h"
+#include "Collision/CollisionSystem.h"
 
 class Game
 {

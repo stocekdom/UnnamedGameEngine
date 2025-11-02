@@ -25,15 +25,15 @@ add_executable(game1 main.cpp
         Entities/Target.cpp
         Entities/Arrow.h
         Entities/Arrow.cpp
-        Base/ICollider.h
-        Base/CollisionInfo.h
-        Base/CollisionSystem.h
-        Base/ICollider.cpp
-        Base/ColliderRect.h
-        Base/ColliderPoint.h
-        Base/ColliderRect.cpp
-        Base/ColliderPoint.cpp
-        Base/CollisionSystem.cpp
+        Base/Collision/ICollider.h
+        Base/Collision/CollisionInfo.h
+        Base/Collision/CollisionSystem.h
+        Base/Collision/ICollider.cpp
+        Base/Collision/ColliderRect.h
+        Base/Collision/ColliderPoint.h
+        Base/Collision/ColliderRect.cpp
+        Base/Collision/ColliderPoint.cpp
+        Base/Collision/CollisionSystem.cpp
         Base/Observers/Subject.h
         Base/Observers/Observer.h
         Base/Observers/Subject.cpp
@@ -44,10 +44,18 @@ add_executable(game1 main.cpp
         Base/Observers/EventData.h
         Base/Entity/Entity.h
         Base/Entity/UIElement.h
-        Base/Entity/PlacableEntity.h
         Base/Entity/SpacialEntity.h
         Base/Entity/UIElementText.h
-        Base/Entity/UIElementText.cpp)
+        Base/Entity/UIElementText.cpp
+        Base/Utility/Math.h
+        Base/Entity/SpacialEntity.cpp
+        Base/Entity/Entity.cpp
+        Base/Entity/UIElement.cpp
+        Base/Collision/Collidable.h
+        Base/Collision/ColliderType.h
+        Base/Utility/CollisionHelper.h
+        Base/GameContext.h
+)
 
 
 # Find SFML library package

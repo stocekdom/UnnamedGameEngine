@@ -5,12 +5,17 @@
 #ifndef GAME1_COLLIDERPOINT_H
 #define GAME1_COLLIDERPOINT_H
 
+#include <SFML/Graphics/CircleShape.hpp>
 #include "ICollider.h"
 
 class ColliderPoint : public ICollider
 {
    public:
-      ColliderPoint( sf::Vector2f position, Actor* owningActor );
+      ColliderPoint( const sf::Vector2f& position, Collidable* owningActor );
+
+      void tick( float deltaTime ) override;
+
+      const sf::Drawable& getDrawable() override;
 
       bool testCollision( const ICollider* other, CollisionInfo& info ) const override;
 
@@ -19,6 +24,8 @@ class ColliderPoint : public ICollider
       bool testCollisionWithRectangle( const ColliderRect* other, CollisionInfo& info ) const override;
 
    private:
+      sf::CircleShape collider;
+      sf::Vector2f localPosition;
 };
 
 #endif //GAME1_COLLIDERPOINT_H

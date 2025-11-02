@@ -5,6 +5,7 @@
 #ifndef GAME1_COLLISIONSYSTEM_H
 #define GAME1_COLLISIONSYSTEM_H
 
+
 #include <vector>
 #include <memory>
 #include "ICollider.h"
@@ -18,9 +19,10 @@ class CollisionSystem
 
       void update( float dt );
 
-      static bool pointRectangleCollisionHelper( const ColliderPoint* point, const ColliderRect* rect, CollisionInfo& info );
+      void debugSwitch();
 
    private:
+      bool isDebugged = false;
       std::vector<std::weak_ptr<ICollider>> colliders;
 };
 

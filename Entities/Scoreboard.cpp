@@ -1,7 +1,6 @@
 //
 // Created by dominik on 15.10.25.
 //
-#include <iostream>
 #include "Scoreboard.h"
 
 Scoreboard::Scoreboard( const std::string& fontPath, const std::string& inText, int size, sf::Color color, sf::Vector2f position, float rotation,
@@ -24,7 +23,6 @@ void Scoreboard::reduceScore( size_t amount )
 
 void Scoreboard::updateText()
 {
-   std::cout << "Score: " << score << " String: " << std::to_string( score ) << std::endl;
    text.setString( "Current score: " + std::to_string( score ) );
 }
 

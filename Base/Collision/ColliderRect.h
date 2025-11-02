@@ -6,23 +6,19 @@
 #define GAME1_COLLIDERRECT_H
 
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include "ICollider.h"
 
 class ColliderRect : public ICollider
 {
    public:
-      // TODO pass sf::Vector2f by value in constructor if we use a reference in setPosition?
-      ColliderRect( sf::Vector2f position, sf::Vector2f extents, float rotation, Actor* owningActor );
-
-      [[nodiscard]] float getRotation() const;
+      ColliderRect( const sf::Vector2f& position, const sf::Vector2f& extents, float rotation, Collidable* owningActor );
 
       [[nodiscard]] const sf::Vector2f& getHalfExtents() const;
 
-      [[nodiscard]] const sf::Vector2f& getScale() const;
+      const sf::Drawable& getDrawable() override;
 
-      void setScale( const sf::Vector2f& scale );
-
-      void setRotation( float rotation );
+      void tick( float deltaTime ) override;
 
       bool testCollision( const ICollider* other, CollisionInfo& info ) const override;
 
@@ -31,6 +27,7 @@ class ColliderRect : public ICollider
       bool testCollisionWithRectangle( const ColliderRect* other, CollisionInfo& info ) const override;
 
    private:
+      sf::RectangleShape collider;
       sf::Vector2f halfExtents;
       float rotation;
       sf::Vector2f scale;
