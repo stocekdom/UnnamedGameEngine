@@ -2,13 +2,8 @@
 // Created by dominik on 03.10.25.
 //
 #include "Game.h"
-#include "Entity/Actor.h"
 #include "Collision/ColliderRect.h"
-#include "../Entities/Bow.h"
-#include "../Controllers/BowController.h"
-#include "../Entities/Target.h"
-#include "../Entities/Scoreboard.h"
-#include "Observers/UpdateScoreboardObserver.h"
+#include "Entity/IsometricActor.h"
 #include <SFML/Graphics.hpp>
 
 void Game::start()
@@ -20,32 +15,14 @@ void Game::start()
    const float FIXED_DT = 1.0f / 128.0f;
    float accumulator = 0.f;
 
-   // TODO move these to factories
-   // Add background
-   {
-      auto background = std::make_shared<Actor>( "Assets/origbig.png", sf::Vector2f( 0, -200 ) );
-      background->init( scene, collisionSystem );
-   }
-
-   // Add bow
-   {
-      auto bow = std::make_shared<Bow>( "Assets/bow.png", sf::Vector2f( 30, ( float )WINDOW_HEIGHT / 2 ), 0, sf::Vector2f( 0.12, 0.12 ) );
-      bow->init( scene, collisionSystem );
-      scene.addController( std::make_unique<BowController>( bow ) );
-   }
-
-   // Add target, Scoreboard and observer
-   {
-      auto scoreboard = std::make_shared<Scoreboard>( "Assets/TTT-Regular.otf", "", 40, sf::Color::Black, sf::Vector2f( 15, 15 ) );
-      scoreboard->init( scene, collisionSystem );
-
-      auto target = std::make_shared<Target>( "Assets/target.png" );
-      target->init( scene, collisionSystem );
-      target->randomize();
-      auto observer = std::make_shared<UpdateScoreboardObserver>( scoreboard );
-      scene.addObserver( observer );
-      target->addObserver( observer );
-   }
+   auto tile1 = std::make_shared<IsometricActor>( textureManager, "Assets/grass1.png", sf::Vector2f{ 128, 128 } );
+   tile1->setHeight( 16 );
+   tile1->init( scene, collisionSystem );
+   // only temporary test. Position must be calculated more consistently
+   auto tile2 = std::make_shared<IsometricActor>( textureManager, "Assets/grass1.png", sf::Vector2f{ 256, 192 } );
+   tile2->init( scene, collisionSystem );
+   auto tile3 = std::make_shared<IsometricActor>( textureManager, "Assets/grass1.png", sf::Vector2f{ 0, 192 } );
+   tile3->init( scene, collisionSystem );
 
    // Main loop
    while( window.isOpen() )

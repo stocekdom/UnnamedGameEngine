@@ -7,6 +7,10 @@
 
 #include "SpacialEntity.h"
 
+/**
+ * Base class for all UI elements
+ * Doesnt provide any component that will get drawn. It's up to the derived classes to implement how they will get drawn
+ */
 class UIElement : public SpacialEntity
 {
    public:

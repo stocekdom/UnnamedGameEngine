@@ -8,7 +8,9 @@
 #include "Scene.h"
 #include "Renderer.h"
 #include "Collision/CollisionSystem.h"
+#include "TextureManager.h"
 
+// TODO use engine class to store scene, renderer and collision system and use DI
 class Game
 {
    public:
@@ -18,6 +20,7 @@ class Game
       GameScene scene;
       Renderer renderer;
       CollisionSystem collisionSystem;
+      TextureManager textureManager;
 };
 
 #endif //GAME1_GAME_H

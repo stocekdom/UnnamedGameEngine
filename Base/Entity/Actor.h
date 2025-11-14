@@ -11,11 +11,18 @@
 #include "SpacialEntity.h"
 #include "../Collision/CollisionInfo.h"
 
+/**
+ * Base class for all entities that can be drawn on the screen
+ * Uses basic SFML sprite for drawing.
+ * Provides all functionality for spacial information, ticking and sprite handling.
+ * Provides necessary functionality for handling the sprite, spacial information, entity hierarchy and ticking
+ * @warning Override the implemented methods at your own risk, or call them in the overridden methods.
+ */
 class Actor : public SpacialEntity
 {
    public:
-      explicit Actor( const std::string& texturePath, sf::Vector2f position = { 0, 0 }, float rotation = 0, sf::Vector2f scale = { 1, 1 },
-                      bool isVisible = true );
+      explicit Actor( TextureManager& textureManager, const std::string& texturePath, sf::Vector2f position = { 0, 0 }, float rotation = 0,
+                      sf::Vector2f scale = { 1, 1 }, bool isVisible = true );
 
       void init( GameScene& scene, CollisionSystem& collisionSystem ) override;
 

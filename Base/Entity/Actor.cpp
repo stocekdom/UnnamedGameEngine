@@ -7,18 +7,16 @@
 #include "Actor.h"
 #include "../Scene.h"
 
-Actor::Actor( const std::string& texturePath, sf::Vector2f position, float rotation, sf::Vector2f scale, bool isVisible ) : SpacialEntity( position,
-                                                                                                                                           rotation,
-                                                                                                                                           scale,
-                                                                                                                                           isVisible )
+Actor::Actor( TextureManager& textureManager, const std::string& texturePath, sf::Vector2f position, float rotation, sf::Vector2f scale,
+              bool isVisible ) : SpacialEntity( position, rotation, scale, isVisible )
 {
-   if( !texture.loadFromFile( texturePath ) )
-   {
-      throw std::runtime_error( "Could not load texture at " + texturePath );
-   }
-
-   sprite.setTexture( texture );
+   sprite.setTexture( textureManager.loadTexture( texturePath ) );
    isEntityDirty = true;
+}
+
+void Actor::init( GameScene& scene, CollisionSystem& collisionSystem )
+{
+   scene.addEntityToScene( shared_from_this() );
 }
 
 void Actor::centerPivot()
@@ -55,9 +53,4 @@ void Actor::tick( float deltaTime )
       sprite.setRotation( getRotation() );
       isEntityDirty = false;
    }
-}
-
-void Actor::init( GameScene& scene, CollisionSystem& collisionSystem )
-{
-   scene.addEntityToScene( shared_from_this() );
 }

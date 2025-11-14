@@ -8,6 +8,7 @@
 #include <SFML/Graphics/Drawable.hpp>
 #include <memory>
 #include <vector>
+#include "../TextureManager.h"
 
 class GameScene;
 class CollisionSystem;

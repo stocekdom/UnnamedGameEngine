@@ -14,17 +14,7 @@ add_executable(game1 main.cpp
         Base/Renderer.cpp
         Base/Game.cpp
         Controllers/IController.h
-        Controllers/BowController.h
-        Entities/Bow.h
-        Controllers/BowController.cpp
         Controllers/Commands/Command.h
-        Controllers/Commands/BowCommands.h
-        Controllers/Commands/BowCommands.cpp
-        Entities/Bow.cpp
-        Entities/Target.h
-        Entities/Target.cpp
-        Entities/Arrow.h
-        Entities/Arrow.cpp
         Base/Collision/ICollider.h
         Base/Collision/CollisionInfo.h
         Base/Collision/CollisionSystem.h
@@ -37,10 +27,6 @@ add_executable(game1 main.cpp
         Base/Observers/Subject.h
         Base/Observers/Observer.h
         Base/Observers/Subject.cpp
-        Entities/Scoreboard.h
-        Entities/Scoreboard.cpp
-        Base/Observers/UpdateScoreboardObserver.h
-        Base/Observers/UpdateScoreboardObserver.cpp
         Base/Observers/EventData.h
         Base/Entity/Entity.h
         Base/Entity/UIElement.h
@@ -55,6 +41,14 @@ add_executable(game1 main.cpp
         Base/Collision/ColliderType.h
         Base/Utility/CollisionHelper.h
         Base/GameContext.h
+        Base/Entity/IsometricActor.h
+        Base/Entity/IsometricActor.cpp
+        Base/TextureManager.h
+        Base/TextureManager.cpp
+        Entities/MapTile.h
+        Entities/MapTile.cpp
+        Entities/GameMap.h
+        Entities/GameMap.cpp
 )
 
 
