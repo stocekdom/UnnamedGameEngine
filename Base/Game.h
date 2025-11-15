@@ -9,11 +9,14 @@
 #include "Renderer.h"
 #include "Collision/CollisionSystem.h"
 #include "TextureManager.h"
+#include "Input/InputSystem.h"
 
 // TODO use engine class to store scene, renderer and collision system and use DI
 class Game
 {
    public:
+      ~Game() = default;
+
       void start();
 
    private:
@@ -21,6 +24,7 @@ class Game
       Renderer renderer;
       CollisionSystem collisionSystem;
       TextureManager textureManager;
+      InputSystem inputSystem;
 };
 
 #endif //GAME1_GAME_H

@@ -5,8 +5,26 @@
 #ifndef GAME1_INPUTSYSTEM_H
 #define GAME1_INPUTSYSTEM_H
 
+#include <vector>
+#include <memory>
+#include "Controller.h"
+
 class InputSystem
 {
+   public:
+      explicit InputSystem() = default;
 
+      virtual ~InputSystem() = default;
+
+      void registerController( std::unique_ptr<Controller> controller );
+
+      [[nodiscard]] const std::vector<std::unique_ptr<Controller>>& getControllers() const;
+
+      void handleInput( sf::Event event );
+
+   private:
+      // TODO chain of responsibility pattern in the future
+      std::vector<std::unique_ptr<Controller>> controllers;
 };
+
 #endif //GAME1_INPUTSYSTEM_H

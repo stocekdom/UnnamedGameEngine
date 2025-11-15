@@ -11,6 +11,7 @@
 #include "Input/Controller.h"
 #include "Observers/Observer.h"
 #include "Entity/Entity.h"
+#include "../Entities/GameMap.h"
 
 class GameScene
 {
@@ -24,24 +25,23 @@ class GameScene
 
       void addTickableEntityToScene( const std::shared_ptr<Entity>& tickable );
 
-      void addController( std::unique_ptr<Controller> controller );
-
-      [[nodiscard]] const std::vector<std::unique_ptr<Controller>>& getControllers() const;
-
       [[nodiscard]] const std::vector<std::shared_ptr<Observer>>& getObservers() const;
 
-      void addObserver( std::shared_ptr<Observer> observer );
+      void addObserver( const std::shared_ptr<Observer>& observer );
 
-      void handleInput( sf::Event event );
+      void addGameMap( const std::shared_ptr<GameMap>& gameMap );
+
+      // Since the scene stores UI elements and map for now, we need to handle click events.
+      void handleLeftClick( const sf::Vector2f& position );
 
       void updateFixed( float fixedDt );
 
       void update( float deltaTime );
 
    private:
+      std::shared_ptr<GameMap> map;
       std::vector<std::shared_ptr<Entity>> actors;
       std::vector<std::shared_ptr<Entity>> tickableActors;
-      std::vector<std::unique_ptr<Controller>> controllers;
       std::vector<std::shared_ptr<Observer>> observers;
 };
 

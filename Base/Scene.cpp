@@ -43,31 +43,23 @@ void GameScene::update( float deltaTime )
    }
 }
 
-void GameScene::addController( std::unique_ptr<Controller> controller )
-{
-   controllers.push_back( std::move( controller ) );
-}
-
-const std::vector<std::unique_ptr<Controller>>& GameScene::getControllers() const
-{
-   return controllers;
-}
-
-void GameScene::handleInput( sf::Event event )
-{
-   for( auto& controller: controllers )
-   {
-      controller->handleInput( event );
-   }
-}
-
 const std::vector<std::shared_ptr<Observer>>& GameScene::getObservers() const
 {
    return observers;
 }
 
-void GameScene::addObserver( std::shared_ptr<Observer> observer )
+void GameScene::addObserver( const std::shared_ptr<Observer>& observer )
 {
-   observers.push_back( std::move( observer ) );
+   observers.push_back( observer );
+}
+
+void GameScene::addGameMap( const std::shared_ptr<GameMap>& gameMap )
+{
+   map = gameMap;
+}
+
+void GameScene::handleLeftClick( const sf::Vector2f& position )
+{
+   map->onClick( position );
 }
 
