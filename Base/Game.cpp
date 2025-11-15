@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Collision/ColliderRect.h"
 #include "Entity/IsometricActor.h"
+#include "../Entities/GameMap.h"
 #include <SFML/Graphics.hpp>
 
 void Game::start()
@@ -15,6 +16,7 @@ void Game::start()
    const float FIXED_DT = 1.0f / 128.0f;
    float accumulator = 0.f;
 
+   /*
    auto tile1 = std::make_shared<IsometricActor>( textureManager, "Assets/grass1.png", sf::Vector2f{ 128, 128 } );
    tile1->setHeight( 16 );
    tile1->init( scene, collisionSystem );
@@ -23,6 +25,11 @@ void Game::start()
    tile2->init( scene, collisionSystem );
    auto tile3 = std::make_shared<IsometricActor>( textureManager, "Assets/grass1.png", sf::Vector2f{ 0, 192 } );
    tile3->init( scene, collisionSystem );
+   auto tile4 = std::make_shared<IsometricActor>( textureManager, "Assets/grass1.png", sf::Vector2f{ 128, 256 } );
+   tile4->init( scene, collisionSystem );
+*/
+   GameMap map( textureManager, 8, 8, { ( WINDOW_WIDTH / 2 ) - 128, 0 } );
+   map.init( scene, collisionSystem );
 
    // Main loop
    while( window.isOpen() )
