@@ -7,10 +7,10 @@
 
 #include <SFML/Window/Event.hpp>
 
-class IController
+class Controller
 {
    public:
-      virtual ~IController() = default;
+      virtual ~Controller() = default;
 
       virtual void handleInput( const sf::Event& event ) = 0;
 };

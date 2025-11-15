@@ -4,13 +4,13 @@
 #include <cmath>
 #include "CollisionSystem.h"
 
-void CollisionSystem::registerCollider( const std::shared_ptr<ICollider>& collider )
+void CollisionSystem::registerCollider( const std::shared_ptr<Collider>& collider )
 {
    collider->setIsVisibleEntity( isDebugged );
    colliders.push_back( collider );
 }
 
-const std::vector<std::weak_ptr<ICollider>>& CollisionSystem::getColliders() const
+const std::vector<std::weak_ptr<Collider>>& CollisionSystem::getColliders() const
 {
    return colliders;
 }

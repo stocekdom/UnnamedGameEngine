@@ -7,9 +7,9 @@
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
-#include "ICollider.h"
+#include "Collider.h"
 
-class ColliderRect : public ICollider
+class ColliderRect : public Collider
 {
    public:
       ColliderRect( const sf::Vector2f& position, const sf::Vector2f& extents, float rotation, Collidable* owningActor );
@@ -20,7 +20,7 @@ class ColliderRect : public ICollider
 
       void tick( float deltaTime ) override;
 
-      bool testCollision( const ICollider* other, CollisionInfo& info ) const override;
+      bool testCollision( const Collider* other, CollisionInfo& info ) const override;
 
       bool testCollisionWithPoint( const ColliderPoint* other, CollisionInfo& info ) const override;
 

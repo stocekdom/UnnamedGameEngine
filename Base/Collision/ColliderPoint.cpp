@@ -4,7 +4,7 @@
 #include "ColliderPoint.h"
 #include "../Utility/CollisionHelper.h"
 
-ColliderPoint::ColliderPoint( const sf::Vector2f& position, Collidable* owningActor ) : ICollider( owningActor, position )
+ColliderPoint::ColliderPoint( const sf::Vector2f& position, Collidable* owningActor ) : Collider( owningActor, position )
 {
    collider.setFillColor( sf::Color::Yellow );
    collider.setRadius( 2.0f );
@@ -12,7 +12,7 @@ ColliderPoint::ColliderPoint( const sf::Vector2f& position, Collidable* owningAc
    isEntityDirty = true;
 }
 
-bool ColliderPoint::testCollision( const ICollider* other, CollisionInfo& info ) const
+bool ColliderPoint::testCollision( const Collider* other, CollisionInfo& info ) const
 {
    return other->testCollisionWithPoint( this, info );
 }

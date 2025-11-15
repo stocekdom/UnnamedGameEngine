@@ -7,7 +7,7 @@
 #include "../Utility/CollisionHelper.h"
 
 ColliderRect::ColliderRect( const sf::Vector2f& position, const sf::Vector2f& extents, float rotation, Collidable* owningActor )
-      : ICollider( owningActor, position, rotation ), halfExtents( extents / 2.0f ), rotation( rotation )
+      : Collider( owningActor, position, rotation ), halfExtents( extents / 2.0f ), rotation( rotation )
 {
    collider.setOutlineThickness( 1.5f );
    collider.setOutlineColor( sf::Color::Yellow );
@@ -17,7 +17,7 @@ ColliderRect::ColliderRect( const sf::Vector2f& position, const sf::Vector2f& ex
    isEntityDirty = true;
 }
 
-bool ColliderRect::testCollision( const ICollider* other, CollisionInfo& info ) const
+bool ColliderRect::testCollision( const Collider* other, CollisionInfo& info ) const
 {
    return other->testCollisionWithRectangle( this, info );
 }

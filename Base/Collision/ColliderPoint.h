@@ -6,9 +6,9 @@
 #define GAME1_COLLIDERPOINT_H
 
 #include <SFML/Graphics/CircleShape.hpp>
-#include "ICollider.h"
+#include "Collider.h"
 
-class ColliderPoint : public ICollider
+class ColliderPoint : public Collider
 {
    public:
       ColliderPoint( const sf::Vector2f& position, Collidable* owningActor );
@@ -17,7 +17,7 @@ class ColliderPoint : public ICollider
 
       const sf::Drawable& getDrawable() override;
 
-      bool testCollision( const ICollider* other, CollisionInfo& info ) const override;
+      bool testCollision( const Collider* other, CollisionInfo& info ) const override;
 
       bool testCollisionWithPoint( const ColliderPoint* other, CollisionInfo& info ) const override;
 

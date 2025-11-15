@@ -28,8 +28,9 @@ void Game::start()
    auto tile4 = std::make_shared<IsometricActor>( textureManager, "Assets/grass1.png", sf::Vector2f{ 128, 256 } );
    tile4->init( scene, collisionSystem );
 */
-   GameMap map( textureManager, 8, 8, { ( WINDOW_WIDTH / 2 ) - 128, 0 } );
+   GameMap map( textureManager, 8, 8, { -128, 0 } );
    map.init( scene, collisionSystem );
+   map.onClick( sf::Vector2f{ 0, 129 } );
 
    // Main loop
    while( window.isOpen() )

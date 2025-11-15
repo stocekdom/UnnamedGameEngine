@@ -2,8 +2,8 @@
 // Created by dominik on 13.10.25.
 //
 
-#ifndef GAME1_ICOLLIDER_H
-#define GAME1_ICOLLIDER_H
+#ifndef GAME1_COLLIDER_H
+#define GAME1_COLLIDER_H
 
 #include "Collidable.h"
 #include "../Entity/SpacialEntity.h"
@@ -13,11 +13,11 @@ class ColliderRect;
 class ColliderPoint;
 
 // Inherits from spacial since all colliders should be able to move around the world and be drawn
-class ICollider : public SpacialEntity
+class Collider : public SpacialEntity
 {
    public:
 
-      explicit ICollider( Collidable* owningActor, sf::Vector2f position = { 0, 0 }, float rotation = 0, sf::Vector2f scale = { 1, 1 }, bool isVisible = false );
+      explicit Collider( Collidable* owningActor, sf::Vector2f position = { 0, 0 }, float rotation = 0, sf::Vector2f scale = { 1, 1 }, bool isVisible = false );
 
       void init( GameScene& scene, CollisionSystem& collisionSystem ) override;
 
@@ -30,7 +30,7 @@ class ICollider : public SpacialEntity
       virtual void onCollision( const Collidable* other, CollisionInfo& info );
 
       // Colliders passed into test methods as raw pointers to avoid circular dependencies and since they are not owned by the actor
-      virtual bool testCollision( const ICollider* other, CollisionInfo& info ) const = 0;
+      virtual bool testCollision( const Collider* other, CollisionInfo& info ) const = 0;
 
       virtual bool testCollisionWithPoint( const ColliderPoint* other, CollisionInfo& info ) const = 0;
 
@@ -42,4 +42,4 @@ class ICollider : public SpacialEntity
       Collidable* owner;
 };
 
-#endif //GAME1_ICOLLIDER_H
+#endif //GAME1_COLLIDER_H

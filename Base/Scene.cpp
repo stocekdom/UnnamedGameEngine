@@ -43,12 +43,12 @@ void GameScene::update( float deltaTime )
    }
 }
 
-void GameScene::addController( std::unique_ptr<IController> controller )
+void GameScene::addController( std::unique_ptr<Controller> controller )
 {
    controllers.push_back( std::move( controller ) );
 }
 
-const std::vector<std::unique_ptr<IController>>& GameScene::getControllers() const
+const std::vector<std::unique_ptr<Controller>>& GameScene::getControllers() const
 {
    return controllers;
 }

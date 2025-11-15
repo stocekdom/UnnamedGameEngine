@@ -8,14 +8,14 @@
 
 #include <vector>
 #include <memory>
-#include "ICollider.h"
+#include "Collider.h"
 
 class CollisionSystem
 {
    public:
-      void registerCollider( const std::shared_ptr<ICollider>& collider );
+      void registerCollider( const std::shared_ptr<Collider>& collider );
 
-      [[nodiscard]] const std::vector<std::weak_ptr<ICollider>>& getColliders() const;
+      [[nodiscard]] const std::vector<std::weak_ptr<Collider>>& getColliders() const;
 
       void update( float dt );
 
@@ -23,7 +23,7 @@ class CollisionSystem
 
    private:
       bool isDebugged = false;
-      std::vector<std::weak_ptr<ICollider>> colliders;
+      std::vector<std::weak_ptr<Collider>> colliders;
 };
 
 #endif //GAME1_COLLISIONSYSTEM_H
