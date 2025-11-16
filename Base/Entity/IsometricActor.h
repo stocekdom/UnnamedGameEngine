@@ -15,8 +15,9 @@
 class IsometricActor : public Actor
 {
    public:
-      explicit IsometricActor( TextureManager& textureManager, const std::string& texturePath, sf::Vector2f position = { 0, 0 }, float rotation = 0,
-                               sf::Vector2f scale = { 1, 1 }, float height = 0, bool isVisible = true );
+      explicit IsometricActor( TextureManager& textureManager, const std::string& texturePath, Mobility mobilityStatus,
+                               sf::Vector2f position = { 0, 0 }, float rotation = 0, sf::Vector2f scale = { 1, 1 },
+                               float height = 0, bool isVisible = true );
 
       float getHeight() const;
 

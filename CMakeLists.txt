@@ -33,13 +33,13 @@ add_executable(game1 main.cpp
         Base/Entity/SpacialEntity.h
         Base/Entity/UIElementText.h
         Base/Entity/UIElementText.cpp
-        Base/Utility/Math.h
+        Base/Core/Math.h
         Base/Entity/SpacialEntity.cpp
         Base/Entity/Entity.cpp
         Base/Entity/UIElement.cpp
         Base/Collision/Collidable.h
         Base/Collision/ColliderType.h
-        Base/Utility/CollisionHelper.h
+        Base/Collision/CollisionHelper.h
         Base/GameContext.h
         Base/Entity/IsometricActor.h
         Base/Entity/IsometricActor.cpp
@@ -56,6 +56,7 @@ add_executable(game1 main.cpp
         Controllers/PlayerController.h
         Controllers/PlayerController.cpp
         Base/Input/Clickable.h
+        Base/Core/Mobility.h
 )
 
 

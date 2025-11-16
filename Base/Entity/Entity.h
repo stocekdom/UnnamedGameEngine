@@ -9,9 +9,14 @@
 #include <memory>
 #include <vector>
 #include "../TextureManager.h"
+#include "../Core/Mobility.h"
 
 class GameScene;
+
 class CollisionSystem;
+
+// TODO adding anything new to constructor of entities results in updating every constructor of a class inheriting from Entity. Find a better solution or use ECS.
+
 /**
  * Base class for all entities.
  * Provides basic methods for spacial information and ticking.
@@ -19,13 +24,13 @@ class CollisionSystem;
  * Provides default implementations for marking the entity dirty and working with parents.
  * @warning Override the implemented methods at your own risk, or call them in the overridden methods.
  */
-   class Entity : public std::enable_shared_from_this<Entity>
+class Entity : public std::enable_shared_from_this<Entity>
 {
    public:
 
       virtual ~Entity() = default;
 
-      virtual void init( GameScene& scene, CollisionSystem& collisionSystem ) = 0;
+      virtual void onStart( GameScene& scene, CollisionSystem& collisionSystem ) = 0;
 
       // Tick with fixed time passed between frames. Usage: Simulation, physics, etc.
       virtual void tickFixed( float fixedDt ) = 0;
@@ -34,6 +39,8 @@ class CollisionSystem;
       virtual void tick( float deltaTime ) = 0;
 
       virtual std::weak_ptr<Entity> getParent();
+
+      [[nodiscard]] virtual Mobility getMobility() const = 0;
 
       // Spacial information getters. Required for any entity even if it has no spacial data.
       // If an entity has no spacial data, it should return identity.

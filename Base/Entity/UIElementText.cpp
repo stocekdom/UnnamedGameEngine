@@ -6,9 +6,9 @@
 // Created by dominik on 15.10.25.
 //
 
-UIElementText::UIElementText( const std::string& fontPath, const std::string& inText, int size, sf::Color color, sf::Vector2f position,
-                              float rotation, sf::Vector2f scale, bool isVisible ) : UIElement( position, rotation, scale, isVisible ),
-                                                                                     isUIVisible( true )
+UIElementText::UIElementText( const std::string& fontPath, const std::string& inText, Mobility mobilityStatus, int size,
+                              sf::Color color, sf::Vector2f position, float rotation, sf::Vector2f scale, bool isVisible )
+      : UIElement( mobilityStatus, position, rotation, scale, isVisible ), isUIVisible( true )
 {
    if( !font.loadFromFile( fontPath ) )
    {
@@ -32,7 +32,7 @@ void UIElementText::setText( std::string& newText )
    text.setString( newText );
 }
 
-void UIElementText::init( GameScene& scene, CollisionSystem& collisionSystem )
+void UIElementText::onStart( GameScene& scene, CollisionSystem& collisionSystem )
 {
    scene.addEntityToScene( shared_from_this() );
 }

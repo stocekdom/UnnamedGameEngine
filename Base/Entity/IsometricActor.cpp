@@ -3,13 +3,11 @@
 //
 #include "IsometricActor.h"
 
-IsometricActor::IsometricActor( TextureManager& textureManager, const std::string& texturePath, sf::Vector2f position,
-                                float rotation, sf::Vector2f scale, float height, bool isVisible ) : Actor( textureManager,
-                                                                                                            texturePath, position,
-                                                                                                            rotation, scale,
-                                                                                                            isVisible ),
-                                                                                                     localHeight( height )
+IsometricActor::IsometricActor( TextureManager& textureManager, const std::string& texturePath, Mobility mobilityStatus,
+                                sf::Vector2f position, float rotation, sf::Vector2f scale, float height, bool isVisible )
+      : Actor( textureManager, texturePath, mobilityStatus, position, rotation, scale, isVisible ), localHeight( height )
 {
+   sprite.setOrigin( sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height );
 }
 
 float IsometricActor::getHeight() const

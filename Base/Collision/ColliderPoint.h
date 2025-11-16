@@ -11,7 +11,7 @@
 class ColliderPoint : public Collider
 {
    public:
-      ColliderPoint( const sf::Vector2f& position, Collidable* owningActor );
+      ColliderPoint( Mobility mobilityStatus, const sf::Vector2f& position, Collidable* owningActor );
 
       void tick( float deltaTime ) override;
 

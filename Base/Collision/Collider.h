@@ -10,6 +10,7 @@
 #include <memory>
 
 class ColliderRect;
+
 class ColliderPoint;
 
 // Inherits from spacial since all colliders should be able to move around the world and be drawn
@@ -17,9 +18,10 @@ class Collider : public SpacialEntity
 {
    public:
 
-      explicit Collider( Collidable* owningActor, sf::Vector2f position = { 0, 0 }, float rotation = 0, sf::Vector2f scale = { 1, 1 }, bool isVisible = false );
+      explicit Collider( Collidable* owningActor, Mobility mobilityStatus, sf::Vector2f position = { 0, 0 }, float rotation = 0,
+                         sf::Vector2f scale = { 1, 1 }, bool isVisible = false );
 
-      void init( GameScene& scene, CollisionSystem& collisionSystem ) override;
+      void onStart( GameScene& scene, CollisionSystem& collisionSystem ) override;
 
       [[nodiscard]] bool isColliderEnabled() const;
 

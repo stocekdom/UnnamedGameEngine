@@ -6,8 +6,8 @@
 #define GAME1_COLLISIONHELPER_H
 
 #include <valarray>
-#include "../Collision/ColliderPoint.h"
-#include "../Collision/ColliderRect.h"
+#include "ColliderPoint.h"
+#include "ColliderRect.h"
 
 class Collisions
 {

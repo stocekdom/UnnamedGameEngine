@@ -21,10 +21,11 @@
 class Actor : public SpacialEntity
 {
    public:
-      explicit Actor( TextureManager& textureManager, const std::string& texturePath, sf::Vector2f position = { 0, 0 }, float rotation = 0,
-                      sf::Vector2f scale = { 1, 1 }, bool isVisible = true );
+      explicit Actor( TextureManager& textureManager, const std::string& texturePath, Mobility mobilityStatus = Mobility::STATIC,
+                      sf::Vector2f position = { 0, 0 }, float rotation = 0, sf::Vector2f scale = { 1, 1 },
+                      bool isVisible = true );
 
-      void init( GameScene& scene, CollisionSystem& collisionSystem ) override;
+      void onStart( GameScene& scene, CollisionSystem& collisionSystem ) override;
 
       void tick( float deltaTime ) override;
 

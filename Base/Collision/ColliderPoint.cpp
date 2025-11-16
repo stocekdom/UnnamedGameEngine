@@ -2,9 +2,10 @@
 // Created by dominik on 13.10.25.
 //
 #include "ColliderPoint.h"
-#include "../Utility/CollisionHelper.h"
+#include "CollisionHelper.h"
 
-ColliderPoint::ColliderPoint( const sf::Vector2f& position, Collidable* owningActor ) : Collider( owningActor, position )
+ColliderPoint::ColliderPoint( Mobility mobilityStatus, const sf::Vector2f& position, Collidable* owningActor )
+      : Collider( owningActor, mobilityStatus, position )
 {
    collider.setFillColor( sf::Color::Yellow );
    collider.setRadius( 2.0f );

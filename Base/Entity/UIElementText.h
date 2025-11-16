@@ -11,10 +11,11 @@
 class UIElementText : public UIElement
 {
    public:
-      UIElementText( const std::string& fontPath, const std::string& inText, int size = 16, sf::Color color = sf::Color::Black,
-                     sf::Vector2f position = { 0, 0 }, float rotation = 0, sf::Vector2f scale = { 0, 0 }, bool isVisible = true );
+      UIElementText( const std::string& fontPath, const std::string& inText, Mobility mobilityStatus, int size = 16,
+                     sf::Color color = sf::Color::Black, sf::Vector2f position = { 0, 0 }, float rotation = 0,
+                     sf::Vector2f scale = { 0, 0 }, bool isVisible = true );
 
-      void init( GameScene& scene, CollisionSystem& collisionSystem ) override;
+      void onStart( GameScene& scene, CollisionSystem& collisionSystem ) override;
 
       const sf::Drawable& getDrawable() override;
 

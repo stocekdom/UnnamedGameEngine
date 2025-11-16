@@ -12,7 +12,8 @@
 class ColliderRect : public Collider
 {
    public:
-      ColliderRect( const sf::Vector2f& position, const sf::Vector2f& extents, float rotation, Collidable* owningActor );
+      ColliderRect( Mobility mobilityStatus, const sf::Vector2f& position, const sf::Vector2f& extents, float rotation,
+                    Collidable* owningActor );
 
       [[nodiscard]] const sf::Vector2f& getHalfExtents() const;
 

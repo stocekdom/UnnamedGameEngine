@@ -14,6 +14,6 @@
 class UIElement : public SpacialEntity
 {
    public:
-      UIElement( const sf::Vector2f& position, float rotation, const sf::Vector2f& scale, bool isVisible );
+      UIElement( Mobility mobilityStatus, const sf::Vector2f& position, float rotation, const sf::Vector2f& scale, bool isVisible );
 };
 #endif //GAME1_UIELEMENT_H

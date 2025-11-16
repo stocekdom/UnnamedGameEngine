@@ -4,10 +4,11 @@
 
 
 #include "ColliderRect.h"
-#include "../Utility/CollisionHelper.h"
+#include "CollisionHelper.h"
 
-ColliderRect::ColliderRect( const sf::Vector2f& position, const sf::Vector2f& extents, float rotation, Collidable* owningActor )
-      : Collider( owningActor, position, rotation ), halfExtents( extents / 2.0f ), rotation( rotation )
+ColliderRect::ColliderRect( Mobility mobilityStatus, const sf::Vector2f& position, const sf::Vector2f& extents,
+                            float rotation, Collidable* owningActor )
+      : Collider( owningActor, mobilityStatus, position, rotation ), halfExtents( extents / 2.0f ), rotation( rotation )
 {
    collider.setOutlineThickness( 1.5f );
    collider.setOutlineColor( sf::Color::Yellow );
@@ -32,7 +33,6 @@ bool ColliderRect::testCollisionWithRectangle( const ColliderRect* other, Collis
    // TODO not implemented yet
    return false;
 }
-
 
 const sf::Vector2f& ColliderRect::getHalfExtents() const
 {

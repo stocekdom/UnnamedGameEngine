@@ -5,12 +5,9 @@
 #include "CollisionSystem.h"
 #include "../Scene.h"
 
-Collider::Collider( Collidable* owningActor, sf::Vector2f position, float rotation, sf::Vector2f scale, bool isVisible ) : SpacialEntity( position,
-                                                                                                                                          rotation,
-                                                                                                                                          scale,
-                                                                                                                                          isVisible ),
-                                                                                                                           owner( owningActor ),
-                                                                                                                           isEnabled( true )
+Collider::Collider( Collidable* owningActor, Mobility mobilityStatus, sf::Vector2f position, float rotation,
+                    sf::Vector2f scale, bool isVisible )
+      : SpacialEntity( mobilityStatus, position, rotation, scale, isVisible ), owner( owningActor ), isEnabled( true )
 {
 }
 
@@ -37,7 +34,7 @@ void Collider::setIsEnabled( bool enabled )
    isEnabled = enabled;
 }
 
-void Collider::init( GameScene& scene, CollisionSystem& collisionSystem )
+void Collider::onStart( GameScene& scene, CollisionSystem& collisionSystem )
 {
    auto entity = shared_from_this();
    scene.addEntityToScene( entity );

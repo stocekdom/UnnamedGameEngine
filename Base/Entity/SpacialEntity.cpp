@@ -1,16 +1,17 @@
 #include <SFML/System/Vector2.hpp>
 #include <valarray>
 #include "SpacialEntity.h"
-#include "../Utility/Math.h"
+#include "../Core/Math.h"
 
 //
 // Created by dominik on 31.10.25.
 //
-SpacialEntity::SpacialEntity( const sf::Vector2f& position, float rotation, const sf::Vector2f& scale, bool isVisible )
-      : isVisibleEntity( isVisible ), localPosition( position ), localRotation( rotation ), localScale( scale )
+SpacialEntity::SpacialEntity( Mobility mobilityStatus, const sf::Vector2f& position, float rotation,
+                              const sf::Vector2f& scale, bool isVisible )
+      : mobility( mobilityStatus ), isVisibleEntity( isVisible ), localPosition( position ), localRotation( rotation ),
+        localScale( scale )
 {
 }
-
 
 sf::Vector2f SpacialEntity::getPosition() const
 {
@@ -111,4 +112,9 @@ void SpacialEntity::tickFixed( float fixedDt )
 
 void SpacialEntity::tick( float deltaTime )
 {
+}
+
+Mobility SpacialEntity::getMobility() const
+{
+   return mobility;
 }

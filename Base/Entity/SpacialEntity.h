@@ -18,9 +18,12 @@ class SpacialEntity : public Entity
 {
    public:
 
-      SpacialEntity( const sf::Vector2f& position, float rotation, const sf::Vector2f& scale, bool isVisible );
+      SpacialEntity( Mobility mobilityStatus, const sf::Vector2f& position, float rotation, const sf::Vector2f& scale,
+                     bool isVisible );
 
       // Default implementations of getters so we don't repeat code in different base classes (Actor, Collider, etc..)
+
+      [[nodiscard]] Mobility getMobility() const override;
 
       [[nodiscard]] sf::Vector2f getPosition() const override;
 
@@ -52,6 +55,7 @@ class SpacialEntity : public Entity
       void tick( float deltaTime ) override;
 
    protected:
+      Mobility mobility;
       bool isVisibleEntity;
       sf::Vector2f localPosition;
       float localRotation = 0;
