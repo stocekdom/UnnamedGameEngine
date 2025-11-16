@@ -10,11 +10,11 @@
 class MapTile : public IsometricActor
 {
    public:
-      MapTile( TextureManager& textureManager, const std::string& texturePath, float tileWidth,
+      MapTile( TextureManager& textureManager, const std::string& texturePath, Mobility mobilityStatus, float tileWidth,
                const sf::Vector2f& position = { 0.f, 0.f }, float rotation = 0, const sf::Vector2f& scale = { 1.0f, 1.0f },
                float height = 0, bool isVisible = true );
 
-      void init( GameScene& scene, CollisionSystem& collisionSystem ) override;
+      void onStart( GameScene& scene, CollisionSystem& collisionSystem ) override;
 };
 
 #endif //GAME1_MAPTILE_H

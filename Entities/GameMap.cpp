@@ -1,10 +1,9 @@
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
-#include <iostream>
 #include "../Base/Scene.h"
 #include "GameMap.h"
 #include "MapTile.h"
-#include "../Base/Utility/Math.h"
+#include "../Base/Core/Math.h"
 
 //
 // Created by dominik on 14.11.25.
@@ -30,9 +29,9 @@ void GameMap::init( GameScene& scene, CollisionSystem& collisionSystem )
       {
          float screenX = mapStart.x + ( float )x * ( SPRITE_WIDTH / 2 ) - ( float )y * ( SPRITE_WIDTH / 2 );
          float screenY = mapStart.y + ( float )y * ( SPRITE_HEIGHT / 2 ) + ( float )x * ( SPRITE_HEIGHT / 2 );
-         auto tileTmp = std::make_shared<MapTile>( textureManager_, "Assets/grass1.png",
-                                                   SPRITE_WIDTH, sf::Vector2f{ screenX, screenY } );
-         tileTmp->init( scene, collisionSystem );
+         auto tileTmp = std::make_shared<MapTile>( textureManager_, "Assets/grass1.png", Mobility::STATIC, SPRITE_WIDTH,
+                                                   sf::Vector2f{ screenX, screenY } );
+         tileTmp->onStart( scene, collisionSystem );
          gameMap.push_back( tileTmp );
       }
    }
