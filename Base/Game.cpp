@@ -4,7 +4,6 @@
 #include "Game.h"
 #include "Collision/ColliderRect.h"
 #include "Entity/IsometricActor.h"
-#include "../Entities/GameMap.h"
 #include "../Controllers/PlayerController.h"
 #include <SFML/Graphics.hpp>
 
@@ -28,12 +27,21 @@ void Game::start()
    auto tile3 = std::make_shared<IsometricActor>( textureManager, "Assets/grass1.png", sf::Vector2f{ 0, 192 } );
    tile3->init( scene, collisionSystem );
    auto tile4 = std::make_shared<IsometricActor>( textureManager, "Assets/grass1.png", sf::Vector2f{ 128, 256 } );
-   tile4->init( scene, collisionSystem );
+   tile4->onStart( scene, collisionSystem );
 */
+
+   {
+      auto building = std::make_shared<IsometricActor>( textureManager, "Assets/gov_center.png", Mobility::STATIC,
+                                                        sf::Vector2f{ 1024, 256 }, 0, sf::Vector2f{ 0.25f, 0.25f } );
+      building->onStart( scene, collisionSystem );
+   }
+
    {
       auto map = std::make_shared<GameMap>( textureManager, 6, 6, sf::Vector2f{ WINDOW_WIDTH / 2 - 128, 0 } );
       map->init( scene, collisionSystem );
    }
+
+   scene.init();
 
    // Main loop
    while( window.isOpen() )

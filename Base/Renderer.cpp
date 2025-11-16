@@ -8,15 +8,9 @@
 void Renderer::render( GameScene& scene, sf::RenderTarget& target )
 {
    // TODO this is trash. We need a tree structure based on depth and render from it
-   for( const auto& actor: scene.getActors() )
+   for( const auto& actor: scene.getStaticEntities() )
    {
       if( actor->isVisible() )
          target.draw( actor->getDrawable() );
-   }
-
-   for( const auto& tickableActor: scene.getTickableActors() )
-   {
-      if( tickableActor->isVisible() )
-         target.draw( tickableActor->getDrawable() );
    }
 }

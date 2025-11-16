@@ -1,25 +1,22 @@
 #include "Scene.h"
+
 //
 // Created by dominik on 03.10.25.
 //
-const std::vector<std::shared_ptr<Entity>>& GameScene::getActors() const
-{
-   return actors;
-}
-
 void GameScene::addEntityToScene( const std::shared_ptr<Entity>& actor )
 {
-   actors.push_back( actor );
-}
-
-const std::vector<std::shared_ptr<Entity>>& GameScene::getTickableActors() const
-{
-   return tickableActors;
-}
-
-void GameScene::addTickableEntityToScene( const std::shared_ptr<Entity>& tickable )
-{
-   tickableActors.push_back( tickable );
+   switch( actor->getMobility() )
+   {
+      case Mobility::STATIC:
+         staticActors.push_back( actor );
+         break;
+      case Mobility::MOVABLE:
+         movableActors.push_back( actor );
+         break;
+      default:
+         // TODO add logging
+         throw std::runtime_error( "Unknown mobility type" );
+   }
 }
 
 void GameScene::updateFixed( float fixedDt )
@@ -32,12 +29,12 @@ void GameScene::updateFixed( float fixedDt )
 
 void GameScene::update( float deltaTime )
 {
-   for( auto& actor : actors )
+   for( auto& actor: staticActors )
    {
       actor->tick( deltaTime );
    }
 
-   for( auto& actor: tickableActors )
+   for( auto& actor: movableActors )
    {
       actor->tick( deltaTime );
    }
@@ -61,5 +58,19 @@ void GameScene::addGameMap( const std::shared_ptr<GameMap>& gameMap )
 void GameScene::handleLeftClick( const sf::Vector2f& position )
 {
    map->onClick( position );
+}
+
+void GameScene::init()
+{
+   std::sort( staticActors.begin(), staticActors.end(),
+              []( const std::shared_ptr<Entity>& a, const std::shared_ptr<Entity>& b ) {
+                 return a->getPosition().y < b->getPosition().y;
+              }
+   );
+}
+
+const std::vector<std::shared_ptr<Entity>>& GameScene::getStaticEntities() const
+{
+   return staticActors;
 }
 
