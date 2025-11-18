@@ -29,14 +29,14 @@ add_executable(game1 main.cpp
         Base/Observers/Subject.cpp
         Base/Observers/EventData.h
         Base/Entity/Entity.h
-        Base/Entity/UIElement.h
+        Base/UI/UIElement.h
         Base/Entity/SpacialEntity.h
-        Base/Entity/UIElementText.h
-        Base/Entity/UIElementText.cpp
+        Base/UI/UIElementText.h
+        Base/UI/UIElementText.cpp
         Base/Core/Math.h
         Base/Entity/SpacialEntity.cpp
         Base/Entity/Entity.cpp
-        Base/Entity/UIElement.cpp
+        Base/UI/UIElement.cpp
         Base/Collision/Collidable.h
         Base/Collision/ColliderType.h
         Base/Collision/CollisionHelper.h
