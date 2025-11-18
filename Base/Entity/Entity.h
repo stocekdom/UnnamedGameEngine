@@ -38,7 +38,7 @@ class Entity : public std::enable_shared_from_this<Entity>
       // Tick with actual time passed between frames. Usage: Rendering, UI, Real time events, etc.
       virtual void tick( float deltaTime ) = 0;
 
-      virtual std::weak_ptr<Entity> getParent();
+      std::weak_ptr<Entity> getParent();
 
       [[nodiscard]] virtual Mobility getMobility() const = 0;
 
@@ -56,9 +56,9 @@ class Entity : public std::enable_shared_from_this<Entity>
 
       virtual void setDirty();
 
-      virtual void setParent( const std::shared_ptr<Entity>& entity );
+      void setParent( const std::shared_ptr<Entity>& entity );
 
-      virtual void addChild( const std::shared_ptr<Entity>& child );
+      void addChild( const std::shared_ptr<Entity>& child );
 
       virtual const sf::Drawable& getDrawable() = 0;
 
