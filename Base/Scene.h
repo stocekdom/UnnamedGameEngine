@@ -8,16 +8,22 @@
 #include <vector>
 #include <memory>
 #include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/View.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include "Input/Controller.h"
 #include "Observers/Observer.h"
 #include "Entity/Entity.h"
 #include "../Entities/GameMap.h"
+#include "UI/UIElement.h"
+#include "Renderer.h"
 
 class GameScene
 {
    public:
 
       void addEntityToScene( const std::shared_ptr<Entity>& actor );
+
+      void addUIRootComponent( const std::shared_ptr<UIElement>& root );
 
       [[nodiscard]] const std::vector<std::shared_ptr<Entity>>& getStaticEntities() const;
 
@@ -28,15 +34,20 @@ class GameScene
       void addGameMap( const std::shared_ptr<GameMap>& gameMap );
 
       // Since the scene stores UI elements and map for now, we need to handle click events.
-      void handleLeftClick( const sf::Vector2f& position );
+      void onLeftClick( const sf::Vector2f& position );
 
-      void init();
+      void init( sf::RenderWindow& window );
 
       void updateFixed( float fixedDt );
 
       void update( float deltaTime );
 
+      void renderScene( sf::RenderTarget& target, const Renderer& renderer );
+
    private:
+      std::shared_ptr<sf::View> mainView;
+      std::shared_ptr<sf::View> uiView;
+      std::shared_ptr<UIElement> uiRoot;
       std::shared_ptr<GameMap> map;
       std::vector<std::shared_ptr<Entity>> staticActors;
       std::vector<std::shared_ptr<Entity>> movableActors;

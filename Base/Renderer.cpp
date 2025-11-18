@@ -5,12 +5,7 @@
 #include "Scene.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 
-void Renderer::render( GameScene& scene, sf::RenderTarget& target )
+void Renderer::render( const sf::Drawable& drawable, sf::RenderTarget& target ) const
 {
-   // TODO this is trash. We need a tree structure based on depth and render from it
-   for( const auto& actor: scene.getStaticEntities() )
-   {
-      if( actor->isVisible() )
-         target.draw( actor->getDrawable() );
-   }
+   target.draw( drawable );
 }

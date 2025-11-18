@@ -19,7 +19,7 @@
 
       void init( GameScene& scene, CollisionSystem& collisionSystem );
 
-      void onClick( const sf::Vector2f& location ) override;
+      bool onClick( const sf::Vector2f& location ) override;
 
    private:
 

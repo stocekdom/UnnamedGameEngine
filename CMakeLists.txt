@@ -57,6 +57,8 @@ add_executable(game1 main.cpp
         Controllers/PlayerController.cpp
         Base/Input/Clickable.h
         Base/Core/Mobility.h
+        Base/UI/UIBlock.h
+        Base/UI/UIBlock.cpp
 )
 
 

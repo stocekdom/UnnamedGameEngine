@@ -37,7 +37,7 @@ void GameMap::init( GameScene& scene, CollisionSystem& collisionSystem )
    }
 }
 
-void GameMap::onClick( const sf::Vector2f& location )
+bool GameMap::onClick( const sf::Vector2f& location )
 {
    // Offset the click location to the center of the map in screen space. The center of the map is considered the top corner of the diamond
    auto mapStartOffsetLocation = location - mapStart;
@@ -48,8 +48,10 @@ void GameMap::onClick( const sf::Vector2f& location )
    int worldY = std::floor( worldLocation.y / WORLD_TILE_WIDTH );
 
    if( worldX < 0 || worldY < 0 || worldX >= mapWidth || worldY >= mapHeight )
-      return;
+      return false;
 
    if( auto t = gameMap[ worldX * mapWidth + worldY ].lock() )
       t->setHeight( 10 );
+
+   return true;
 }

@@ -10,6 +10,6 @@
 class Clickable
 {
    public:
-      virtual void onClick( const sf::Vector2f& position ) = 0;
+      virtual bool onClick( const sf::Vector2f& position ) = 0;
 };
 #endif //GAME1_CLICKABLE_H

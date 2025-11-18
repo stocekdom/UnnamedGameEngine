@@ -19,6 +19,11 @@ void GameScene::addEntityToScene( const std::shared_ptr<Entity>& actor )
    }
 }
 
+void GameScene::addUIRootComponent( const std::shared_ptr<UIElement>& root )
+{
+   uiRoot = root;
+}
+
 void GameScene::updateFixed( float fixedDt )
 {
    for( auto& actor: tickableActors )
@@ -55,13 +60,19 @@ void GameScene::addGameMap( const std::shared_ptr<GameMap>& gameMap )
    map = gameMap;
 }
 
-void GameScene::handleLeftClick( const sf::Vector2f& position )
+void GameScene::onLeftClick( const sf::Vector2f& position )
 {
+   if( uiRoot->onClick( position ) )
+      return;
+
    map->onClick( position );
 }
 
-void GameScene::init()
+void GameScene::init( sf::RenderWindow& window )
 {
+   mainView = std::make_shared<sf::View>( window.getDefaultView() );
+   uiView = std::make_shared<sf::View>( *mainView );
+
    std::sort( staticActors.begin(), staticActors.end(),
               []( const std::shared_ptr<Entity>& a, const std::shared_ptr<Entity>& b ) {
                  return a->getPosition().y < b->getPosition().y;
@@ -72,5 +83,18 @@ void GameScene::init()
 const std::vector<std::shared_ptr<Entity>>& GameScene::getStaticEntities() const
 {
    return staticActors;
+}
+
+void GameScene::renderScene( sf::RenderTarget& target, const Renderer& renderer )
+{
+   // Draw entities
+   // TODO currently only static entities are rendered. Add merging with the movable entities
+   target.setView( *mainView );
+   for( auto& actor: staticActors )
+      renderer.render( actor->getDrawable(), target );
+
+   // Draw UI tree
+   target.setView( *uiView );
+   uiRoot->draw( target, renderer );
 }
 
