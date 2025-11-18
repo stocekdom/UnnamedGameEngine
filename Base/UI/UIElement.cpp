@@ -2,6 +2,7 @@
 // Created by dominik on 01.11.25.
 //
 #include "UIElement.h"
+#include "../Core/Math.h"
 
 UIElement::UIElement( const sf::Vector2f& position, float rotation, bool isVisible ) : localPosition( position ),
                                                                                        localRotation( rotation ),
@@ -11,32 +12,61 @@ UIElement::UIElement( const sf::Vector2f& position, float rotation, bool isVisib
 
 bool UIElement::isVisible() const
 {
-   return false;
+   return isVisibleElement;
 }
 
 sf::Vector2f UIElement::getPosition() const
 {
-   return sf::Vector2f();
+   auto p = parent.lock();
+
+   if( !p )
+      return localPosition;
+
+   return Math::PositionTransform::parentRelativeToWorldPosition( p->getPosition(),
+                                                                  p->getRotation(),
+                                                                  { 1.f, 1.f },
+                                                                  localPosition );
 }
 
 float UIElement::getRotation() const
 {
-   return 0;
+   auto p = parent.lock();
+
+   if( !p )
+      return localRotation;
+
+   return localRotation + p->getRotation();
 }
 
 void UIElement::setIsVisibleElement( bool isVisible )
 {
+   isVisibleElement = isVisible;
 }
 
 void UIElement::addChild( const std::shared_ptr<UIElement>& child )
 {
+   children.push_back( child );
+   child->setParent( shared_from_this() );
+}
+
+void UIElement::setParent( const std::shared_ptr<UIElement>& newParent )
+{
+   parent = newParent;
 }
 
 void UIElement::move( const sf::Vector2f& offset )
 {
+   localPosition += offset;
 }
 
 void UIElement::rotate( float rotation )
 {
+   localRotation += rotation;
+}
+
+void UIElement::draw( sf::RenderTarget& target, const Renderer& renderer )
+{
+   for( auto& child : children )
+      child->draw( target, renderer );
 }
 

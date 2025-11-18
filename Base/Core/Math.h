@@ -15,9 +15,27 @@ namespace Math
    class IsoSpace
    {
       public:
-         static sf::Vector2f screenToWorldSpace( const sf::Vector2f& screenCoords )
+         inline static sf::Vector2f screenToWorldSpace( const sf::Vector2f& screenCoords )
          {
             return sf::Vector2f{ ( screenCoords.x + 2 * screenCoords.y ) / 4, ( 2 * screenCoords.y - screenCoords.x ) / 4 };
+         }
+   };
+
+   class PositionTransform
+   {
+      public:
+         inline static sf::Vector2f parentRelativeToWorldPosition( const sf::Vector2f& parentPosition,
+                                                                   float parentRotation,
+                                                                   const sf::Vector2f& parentScale,
+                                                                   const sf::Vector2f& relativePosition )
+         {
+            auto angleCos = std::cos( parentRotation * Math::DEG_TO_RADIAN );
+            auto angleSin = std::sin( parentRotation * Math::DEG_TO_RADIAN );
+
+            auto rotatedX = relativePosition.x * angleCos - relativePosition.y * angleSin;
+            auto rotatedY = relativePosition.x * angleSin + relativePosition.y * angleCos;
+
+            return { rotatedX * parentScale.x + parentPosition.x, rotatedY * parentScale.y + parentPosition.y };
          }
    };
 }

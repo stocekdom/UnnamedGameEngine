@@ -20,17 +20,10 @@ sf::Vector2f SpacialEntity::getPosition() const
    if( !p )
       return localPosition;
 
-   auto parentPosition = p->getPosition();
-   auto parentRotation = p->getRotation();
-   auto parentScale = p->getScale();
-
-   auto angleCos = std::cos( parentRotation * Math::DEG_TO_RADIAN );
-   auto angleSin = std::sin( parentRotation * Math::DEG_TO_RADIAN );
-
-   auto rotatedX = localPosition.x * angleCos - localPosition.y * angleSin;
-   auto rotatedY = localPosition.x * angleSin + localPosition.y * angleCos;
-
-   return { rotatedX * parentScale.x + parentPosition.x, rotatedY * parentScale.y + parentPosition.y };
+   return Math::PositionTransform::parentRelativeToWorldPosition( p->getPosition(),
+                                                                  p->getRotation(),
+                                                                  p->getScale(),
+                                                                  localPosition );
 }
 
 sf::Vector2f SpacialEntity::getParentRelativePosition() const
