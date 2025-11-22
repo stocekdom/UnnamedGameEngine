@@ -51,6 +51,7 @@ void UIElement::addChild( const std::shared_ptr<UIElement>& child )
 
 void UIElement::setParent( const std::shared_ptr<UIElement>& newParent )
 {
+   //newParent->addChild( shared_from_this() );
    parent = newParent;
 }
 
@@ -66,7 +67,14 @@ void UIElement::rotate( float rotation )
 
 void UIElement::draw( sf::RenderTarget& target, const Renderer& renderer )
 {
-   for( auto& child : children )
-      child->draw( target, renderer );
+   for( auto& child: children )
+      if( child->isVisible() )
+         child->draw( target, renderer );
+}
+
+bool UIElement::onClick( const sf::Vector2f& position )
+{
+   return std::any_of( children.begin(), children.end(),
+                       [&]( const std::shared_ptr<UIElement>& child ) { return child->onClick( position ); } );
 }
 

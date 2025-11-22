@@ -14,7 +14,7 @@ UIBlock::UIBlock( const sf::Vector2f& extents, sf::Color fillColor, const sf::Ve
 
 bool UIBlock::onClick( const sf::Vector2f& position )
 {
-   return false;
+   return UIElement::onClick( position );
 }
 
 void UIBlock::draw( sf::RenderTarget& target, const Renderer& renderer )

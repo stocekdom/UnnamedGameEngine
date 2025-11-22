@@ -12,9 +12,10 @@
 
 /**
  * Base class for all UI elements with lightweight spacial information.
- * Doesnt provide any component that will get drawn. It's up to the derived classes to implement how they will get drawn
+ * Doesnt provide any component that will get drawn. It's up to the derived classes to implement how they will get drawn.
+ * This class isn't abstract and can be used for empty UI elements.
  */
-   class UIElement : public Clickable, public std::enable_shared_from_this<UIElement>
+class UIElement : public Clickable, public std::enable_shared_from_this<UIElement>
 {
    public:
       UIElement( const sf::Vector2f& position, float rotation, bool isVisible );
@@ -41,6 +42,8 @@
 
       virtual void draw( sf::RenderTarget& target, const Renderer& renderer );
 
+      bool onClick( const sf::Vector2f& position ) override;
+
    protected:
       sf::Vector2f localPosition;
       float localRotation;
@@ -48,4 +51,5 @@
       std::weak_ptr<UIElement> parent;
       std::vector<std::shared_ptr<UIElement>> children;
 };
+
 #endif //GAME1_UIELEMENT_H

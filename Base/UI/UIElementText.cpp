@@ -30,7 +30,7 @@ void UIElementText::setText( std::string& newText )
 
 bool UIElementText::onClick( const sf::Vector2f& position )
 {
-   return false;
+   return UIElement::onClick( position );
 }
 
 void UIElementText::draw( sf::RenderTarget& target, const Renderer& renderer )
