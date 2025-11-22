@@ -1,8 +1,14 @@
-#include "Scene.h"
-
 //
 // Created by dominik on 03.10.25.
 //
+#include "Scene.h"
+
+GameScene::GameScene()
+{
+   // Make an empty default UI root to avoid nullptr checks
+   uiRoot = std::make_shared<UIElement>( sf::Vector2f{ 0.f, 0.f }, 0, false );
+}
+
 void GameScene::addEntityToScene( const std::shared_ptr<Entity>& actor )
 {
    switch( actor->getMobility() )
@@ -91,7 +97,8 @@ void GameScene::renderScene( sf::RenderTarget& target, const Renderer& renderer 
    // TODO currently only static entities are rendered. Add merging with the movable entities
    target.setView( *mainView );
    for( auto& actor: staticActors )
-      renderer.render( actor->getDrawable(), target );
+      if( actor->isVisible() )
+         renderer.render( actor->getDrawable(), target );
 
    // Draw UI tree
    target.setView( *uiView );

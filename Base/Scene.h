@@ -15,11 +15,14 @@
 #include "Entity/Entity.h"
 #include "../Entities/GameMap.h"
 #include "UI/UIElement.h"
-#include "Renderer.h"
 
 class GameScene
 {
    public:
+
+      GameScene();
+
+      ~GameScene() = default;
 
       void addEntityToScene( const std::shared_ptr<Entity>& actor );
 
