@@ -10,7 +10,7 @@
 class Renderer
 {
    public:
-      inline void render( const sf::Drawable& drawable, sf::RenderTarget& target ) const;
+      void render( const sf::Drawable& drawable, sf::RenderTarget& target ) const;
 
    private:
 };
