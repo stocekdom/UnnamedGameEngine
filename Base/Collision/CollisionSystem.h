@@ -8,7 +8,8 @@
 
 #include <vector>
 #include <memory>
-#include "Collider.h"
+
+class Collider;
 
 class CollisionSystem
 {

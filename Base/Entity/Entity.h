@@ -5,15 +5,11 @@
 #ifndef GAME1_ENTITY_H
 #define GAME1_ENTITY_H
 
+#include "../Core/Mobility.h"
+#include "../GameContext.h"
 #include <SFML/Graphics/Drawable.hpp>
 #include <memory>
 #include <vector>
-#include "../TextureManager.h"
-#include "../Core/Mobility.h"
-
-class GameScene;
-
-class CollisionSystem;
 
 // TODO adding anything new to constructor of entities results in updating every constructor of a class inheriting from Entity. Find a better solution or use ECS.
 
@@ -30,7 +26,7 @@ class Entity : public std::enable_shared_from_this<Entity>
 
       virtual ~Entity() = default;
 
-      virtual void onStart( GameScene& scene, CollisionSystem& collisionSystem ) = 0;
+      virtual void onStart( std::shared_ptr<GameContext>& context ) = 0;
 
       // Tick with fixed time passed between frames. Usage: Simulation, physics, etc.
       virtual void tickFixed( float fixedDt ) = 0;
@@ -50,11 +46,11 @@ class Entity : public std::enable_shared_from_this<Entity>
 
       [[nodiscard]] virtual float getRotation() const = 0;
 
-      [[nodiscard]] virtual bool isDirty() const;
+      [[nodiscard]] bool isDirty() const;
 
       [[nodiscard]] virtual bool isVisible() const = 0;
 
-      virtual void setDirty();
+      void setDirty();
 
       void setParent( const std::shared_ptr<Entity>& entity );
 

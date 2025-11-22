@@ -1,8 +1,9 @@
 //
 // Created by dominik on 13.10.25.
 //
-#include <cmath>
 #include "CollisionSystem.h"
+#include "Collider.h"
+#include <cmath>
 
 void CollisionSystem::registerCollider( const std::shared_ptr<Collider>& collider )
 {

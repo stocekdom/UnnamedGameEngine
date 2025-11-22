@@ -14,6 +14,14 @@ namespace Math
    const static constexpr float RADIAN_TO_DEG = 57.2957795;
    const static constexpr float PIXELS_PER_METER = 40.0f;
 
+   namespace IsometricConstants
+   {
+      // These values only work for dimetric projection. If you need any other projection (true isometric), you'll have to recalculate them.
+      const static constexpr float SPRITE_WIDTH = 256;
+      const static constexpr float SPRITE_HEIGHT = SPRITE_WIDTH / 2;
+      const static constexpr float WORLD_TILE_WIDTH = SPRITE_WIDTH / 4;
+   }
+
    class IsoSpace
    {
       public:
@@ -27,9 +35,9 @@ namespace Math
    {
       public:
          static sf::Vector2f parentRelativeToWorldPosition( const sf::Vector2f& parentPosition,
-                                                                   float parentRotation,
-                                                                   const sf::Vector2f& parentScale,
-                                                                   const sf::Vector2f& relativePosition )
+                                                            float parentRotation,
+                                                            const sf::Vector2f& parentScale,
+                                                            const sf::Vector2f& relativePosition )
          {
             auto angleCos = std::cos( parentRotation * Math::DEG_TO_RADIAN );
             auto angleSin = std::sin( parentRotation * Math::DEG_TO_RADIAN );

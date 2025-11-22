@@ -3,7 +3,7 @@
 //
 #include "PlayerController.h"
 
-PlayerController::PlayerController( GameScene& gameScene ) : scene( gameScene )
+PlayerController::PlayerController( const std::shared_ptr<GameScene>& gameScene ) : scene( gameScene )
 {
    mouseCommands[ sf::Mouse::Left ] = ( InputActions{ [this]( const sf::Event& event ) { onLeftClick( event ); },
                                                       []( const sf::Event& event ) { /* release */ } } );
@@ -11,6 +11,6 @@ PlayerController::PlayerController( GameScene& gameScene ) : scene( gameScene )
 
 void PlayerController::onLeftClick( const sf::Event& event )
 {
-   scene.onLeftClick( sf::Vector2f{ ( float )event.mouseButton.x, ( float )event.mouseButton.y } );
+   scene->onLeftClick( sf::Vector2f{ ( float )event.mouseButton.x, ( float )event.mouseButton.y } );
 }
 

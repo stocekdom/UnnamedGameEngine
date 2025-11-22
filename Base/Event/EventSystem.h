@@ -19,6 +19,10 @@
 class EventSystem
 {
    public:
+      explicit EventSystem() = default;
+
+      virtual ~EventSystem() = default;
+
       template<typename T>
       void subscribe( std::function<void( T& )> callback );
 

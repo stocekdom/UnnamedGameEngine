@@ -3,7 +3,6 @@
 //
 #include "Collider.h"
 #include "CollisionSystem.h"
-#include "../Scene.h"
 
 Collider::Collider( Collidable* owningActor, Mobility mobilityStatus, sf::Vector2f position, float rotation,
                     sf::Vector2f scale, bool isVisible )
@@ -34,14 +33,14 @@ void Collider::setIsEnabled( bool enabled )
    isEnabled = enabled;
 }
 
-void Collider::onStart( GameScene& scene, CollisionSystem& collisionSystem )
+void Collider::onStart( std::shared_ptr<GameContext>& context )
 {
    auto entity = shared_from_this();
-   scene.addEntityToScene( entity );
+   context->scene->addEntityToScene( entity );
 
    std::shared_ptr<Collider> collider = std::dynamic_pointer_cast<Collider>( entity );
    if( collider )
    {
-      collisionSystem.registerCollider( collider );
+      context->collisionSystem->registerCollider( collider );
    }
 }

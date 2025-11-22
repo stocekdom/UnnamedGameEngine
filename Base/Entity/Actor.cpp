@@ -1,22 +1,18 @@
 //
 // Created by dominik on 03.10.25.
 //
-#include <string>
-#include <valarray>
 #include "Actor.h"
-#include "../Scene.h"
+#include <valarray>
 
-Actor::Actor( TextureManager& textureManager, const std::string& texturePath, Mobility mobilityStatus, sf::Vector2f position,
-              float rotation, sf::Vector2f scale, bool isVisible )
+Actor::Actor( Mobility mobilityStatus, sf::Vector2f position, float rotation, sf::Vector2f scale, bool isVisible )
       : SpacialEntity( mobilityStatus, position, rotation, scale, isVisible )
 {
-   sprite.setTexture( textureManager.loadTexture( texturePath ) );
    isEntityDirty = true;
 }
 
-void Actor::onStart( GameScene& scene, CollisionSystem& collisionSystem )
+void Actor::onStart( std::shared_ptr<GameContext>& context )
 {
-   scene.addEntityToScene( shared_from_this() );
+   context->scene->addEntityToScene( shared_from_this() );
 }
 
 void Actor::centerPivot()

@@ -2,6 +2,8 @@
 // Created by dominik on 03.10.25.
 //
 #include "Scene.h"
+#include "Entity/Entity.h"
+#include "../Entities/GameMap.h"
 
 GameScene::GameScene()
 {

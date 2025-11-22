@@ -12,9 +12,10 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "Input/Controller.h"
 #include "Observers/Observer.h"
-#include "Entity/Entity.h"
-#include "../Entities/GameMap.h"
 #include "UI/UIElement.h"
+
+class Entity;
+class GameMap;
 
 class GameScene
 {

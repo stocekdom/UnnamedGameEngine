@@ -2,7 +2,6 @@
 // Created by dominik on 13.10.25.
 //
 
-
 #include "ColliderRect.h"
 #include "CollisionHelper.h"
 

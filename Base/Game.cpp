@@ -2,11 +2,22 @@
 // Created by dominik on 03.10.25.
 //
 #include "Game.h"
-#include "Collision/ColliderRect.h"
-#include "Entity/IsometricActor.h"
+#include "../Entities/GameMap.h"
 #include "../Controllers/PlayerController.h"
 #include "UI/UIBlock.h"
+#include "../Entities/ClickableText.h"
 #include <SFML/Graphics.hpp>
+
+Game::Game()
+{
+   context = std::make_shared<GameContext>();
+   renderer = std::make_shared<Renderer>();
+   context->textureManager = std::make_shared<TextureManager>();
+   context->inputSystem = std::make_shared<InputSystem>();
+   context->eventSystem = std::make_shared<EventSystem>();
+   context->collisionSystem = std::make_shared<CollisionSystem>();
+   context->scene = std::make_shared<GameScene>();
+}
 
 void Game::start()
 {
@@ -17,29 +28,16 @@ void Game::start()
    const float FIXED_DT = 1.0f / 128.0f;
    float accumulator = 0.f;
 
-   inputSystem.registerController( std::make_unique<PlayerController>( scene ) );
-   /*
-   auto tile1 = std::make_shared<IsometricActor>( textureManager, "Assets/grass1.png", sf::Vector2f{ 128, 128 } );
-   tile1->setHeight( 16 );
-   tile1->init( scene, collisionSystem );
-   // only temporary test. Position must be calculated more consistently
-   auto tile2 = std::make_shared<IsometricActor>( textureManager, "Assets/grass1.png", sf::Vector2f{ 256, 192 } );
-   tile2->init( scene, collisionSystem );
-   auto tile3 = std::make_shared<IsometricActor>( textureManager, "Assets/grass1.png", sf::Vector2f{ 0, 192 } );
-   tile3->init( scene, collisionSystem );
-   auto tile4 = std::make_shared<IsometricActor>( textureManager, "Assets/grass1.png", sf::Vector2f{ 128, 256 } );
-   tile4->onStart( scene, collisionSystem );
-*/
+   context->inputSystem->registerController( std::make_unique<PlayerController>( context->scene ) );
 
    {
-      auto building = std::make_shared<IsometricActor>( textureManager, "Assets/gov_center.png", Mobility::STATIC,
-                                                        sf::Vector2f{ 1024, 256 }, 0, sf::Vector2f{ 0.25f, 0.25f } );
-      building->onStart( scene, collisionSystem );
+      auto building = std::make_shared<IsometricActor>( Mobility::STATIC,sf::Vector2f{ 1024, 256 }, 0, sf::Vector2f{ 0.25f, 0.25f } );
+      building->onStart( context );
    }
 
    {
-      auto map = std::make_shared<GameMap>( textureManager, 6, 6, sf::Vector2f{ WINDOW_WIDTH / 2 - 128, 0 } );
-      map->init( scene, collisionSystem );
+      auto map = std::make_shared<GameMap>( 6, 6, sf::Vector2f{ WINDOW_WIDTH / 2 - 128, 0 } );
+      map->init( context );
    }
 
    {
@@ -49,10 +47,10 @@ void Game::start()
                                                    sf::Vector2f{ 10.f, ( float )window.getSize().y - 70.f } );
 
       uiRoot->addChild( text );
-      scene.addUIRootComponent( uiRoot );
+      context->scene->addUIRootComponent( uiRoot );
    }
 
-   scene.init( window );
+   context->scene->init( window );
 
    // Main loop
    while( window.isOpen() )
@@ -66,19 +64,19 @@ void Game::start()
          if( event.type == sf::Event::Closed )
             window.close();
 
-         inputSystem.handleInput( event );
+         context->inputSystem->handleInput( event );
       }
 
       while( accumulator >= FIXED_DT )
       {
-         scene.updateFixed( FIXED_DT );
-         collisionSystem.update( FIXED_DT );
+         context->scene->updateFixed( FIXED_DT );
+         context->collisionSystem->update( FIXED_DT );
          accumulator -= FIXED_DT;
       }
 
-      scene.update( frameTime );
+      context->scene->update( frameTime );
       window.clear();
-      scene.renderScene( window, renderer );
+      context->scene->renderScene( window, *renderer );
       window.display();
    }
 }

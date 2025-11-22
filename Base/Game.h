@@ -5,26 +5,22 @@
 #ifndef GAME1_GAME_H
 #define GAME1_GAME_H
 
-#include "Scene.h"
+#include "GameContext.h"
 #include "Renderer.h"
-#include "Collision/CollisionSystem.h"
-#include "TextureManager.h"
-#include "Input/InputSystem.h"
 
 // TODO use engine class to store scene, renderer and collision system and use DI
 class Game
 {
    public:
+      Game();
+
       ~Game() = default;
 
       void start();
 
    private:
-      GameScene scene;
-      Renderer renderer;
-      CollisionSystem collisionSystem;
-      TextureManager textureManager;
-      InputSystem inputSystem;
+      std::shared_ptr<Renderer> renderer;
+      std::shared_ptr<GameContext> context;
 };
 
 #endif //GAME1_GAME_H

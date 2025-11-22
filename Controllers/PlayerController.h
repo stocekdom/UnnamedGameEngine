@@ -5,20 +5,20 @@
 #ifndef GAME1_PLAYERCONTROLLER_H
 #define GAME1_PLAYERCONTROLLER_H
 
-#include <memory>
 #include "../Base/Input/Controller.h"
 #include "../Base/Scene.h"
+#include <memory>
 
 class PlayerController : public Controller
 {
    public:
-      explicit PlayerController( GameScene& gameScene );
+      explicit PlayerController( const std::shared_ptr<GameScene>& gameScene );
 
    protected:
       void onLeftClick( const sf::Event& event );
 
    private:
-      GameScene& scene;
+      std::shared_ptr<GameScene> scene;
 };
 
 #endif //GAME1_PLAYERCONTROLLER_H
