@@ -5,6 +5,7 @@
 #include "Collision/ColliderRect.h"
 #include "Entity/IsometricActor.h"
 #include "../Controllers/PlayerController.h"
+#include "UI/UIBlock.h"
 #include <SFML/Graphics.hpp>
 
 void Game::start()
@@ -41,7 +42,17 @@ void Game::start()
       map->init( scene, collisionSystem );
    }
 
-   scene.init();
+   {
+      auto uiRoot = std::make_shared<UIBlock>( sf::Vector2f{ WINDOW_WIDTH, 100 }, sf::Color( 100, 10, 10 ),
+                                               sf::Vector2f{ 0.f, ( float )window.getSize().y - 100.f } );
+      auto text = std::make_shared<ClickableText>( "Assets/TheGoldBachelor.ttf", "Clickable text is: ", 24, sf::Color::White,
+                                                   sf::Vector2f{ 10.f, ( float )window.getSize().y - 70.f } );
+
+      uiRoot->addChild( text );
+      scene.addUIRootComponent( uiRoot );
+   }
+
+   scene.init( window );
 
    // Main loop
    while( window.isOpen() )
@@ -67,7 +78,7 @@ void Game::start()
 
       scene.update( frameTime );
       window.clear();
-      renderer.render( scene, window );
+      scene.renderScene( window, renderer );
       window.display();
    }
 }
