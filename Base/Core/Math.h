@@ -5,6 +5,8 @@
 #ifndef GAME1_MATH_H
 #define GAME1_MATH_H
 
+#include <cmath>
+
 namespace Math
 {
    const static constexpr float DEG_TO_RADIAN = 0.0174532925f;
@@ -24,7 +26,7 @@ namespace Math
    class PositionTransform
    {
       public:
-         inline static sf::Vector2f parentRelativeToWorldPosition( const sf::Vector2f& parentPosition,
+         static sf::Vector2f parentRelativeToWorldPosition( const sf::Vector2f& parentPosition,
                                                                    float parentRotation,
                                                                    const sf::Vector2f& parentScale,
                                                                    const sf::Vector2f& relativePosition )
@@ -35,7 +37,7 @@ namespace Math
             auto rotatedX = relativePosition.x * angleCos - relativePosition.y * angleSin;
             auto rotatedY = relativePosition.x * angleSin + relativePosition.y * angleCos;
 
-            return { rotatedX * parentScale.x + parentPosition.x, rotatedY * parentScale.y + parentPosition.y };
+            return sf::Vector2f{ rotatedX * parentScale.x + parentPosition.x, rotatedY * parentScale.y + parentPosition.y };
          }
    };
 }
