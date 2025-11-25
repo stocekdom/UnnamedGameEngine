@@ -63,8 +63,10 @@ add_executable(game1 main.cpp
         Entities/ClickableText.cpp
         Base/Event/EventSystem.h
         Base/Event/CallbackContainer.h
-        Base/Event/EventSystem.cpp
         Base/Event/Events.h
+        Base/UI/UIRoot.h
+        Base/UI/UIRoot.cpp
+        Base/UI/UIButton.h
 )
 
 
