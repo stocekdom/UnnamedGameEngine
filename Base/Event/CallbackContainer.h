@@ -18,6 +18,6 @@ template<typename T>
 struct CallbackContainer : public ICallbackContainer
 {
    public:
-      std::vector<std::function<void( T& )>> callbackContainer;
+      std::vector<std::function<void( const T& )>> callbackContainer;
 };
 #endif //GAME1_CALLBACKCONTAINER_H
