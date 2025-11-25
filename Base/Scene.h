@@ -12,10 +12,12 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "Input/Controller.h"
 #include "Observers/Observer.h"
-#include "UI/UIElement.h"
+#include "Renderer.h"
 
+class UIElement;
 class Entity;
 class GameMap;
+class GameContext;
 
 class GameScene
 {
@@ -40,7 +42,7 @@ class GameScene
       // Since the scene stores UI elements and map for now, we need to handle click events.
       void onLeftClick( const sf::Vector2f& position );
 
-      void init( sf::RenderWindow& window );
+      void onStart( sf::RenderWindow& window, std::shared_ptr<GameContext>& context );
 
       void updateFixed( float fixedDt );
 

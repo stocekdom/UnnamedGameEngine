@@ -4,7 +4,7 @@
 #include "UIBlock.h"
 
 UIBlock::UIBlock( const sf::Vector2f& extents, sf::Color fillColor, const sf::Vector2f& position, float rotation, bool isVisible )
-      : UIElement( position, rotation, isVisible )
+      : UIElement( position, rotation, { 1.0f, 1.0f }, isVisible )
 {
    block.setSize( extents );
    block.setFillColor( fillColor );

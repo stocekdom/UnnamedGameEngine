@@ -4,10 +4,15 @@
 #include "UIElement.h"
 #include "../Core/Math.h"
 
-UIElement::UIElement( const sf::Vector2f& position, float rotation, bool isVisible ) : localPosition( position ),
-                                                                                       localRotation( rotation ),
-                                                                                       isVisibleElement( isVisible )
+UIElement::UIElement( const sf::Vector2f& position, float rotation, const sf::Vector2f& scale, bool isVisible )
+: localPosition( position ), localRotation( rotation ), localScale( scale ), isVisibleElement( isVisible )
 {
+}
+
+void UIElement::onStart( std::shared_ptr<GameContext>& context )
+{
+   for( auto& child: children )
+      child->onStart( context );
 }
 
 bool UIElement::isVisible() const
@@ -38,6 +43,17 @@ float UIElement::getRotation() const
    return localRotation + p->getRotation();
 }
 
+sf::Vector2f UIElement::getScale() const
+{
+   auto p = parent.lock();
+
+   if( !p )
+      return localScale;
+
+   auto pScale = p->getScale();
+   return { localScale.x * pScale.x, localScale.y * pScale.y };
+}
+
 void UIElement::setIsVisibleElement( bool isVisible )
 {
    isVisibleElement = isVisible;
@@ -65,6 +81,12 @@ void UIElement::rotate( float rotation )
    localRotation += rotation;
 }
 
+void UIElement::scale( const sf::Vector2f& scale )
+{
+   localScale.x *= scale.x;
+   localScale.y *= scale.y;
+}
+
 void UIElement::draw( sf::RenderTarget& target, const Renderer& renderer )
 {
    for( auto& child: children )
@@ -77,4 +99,3 @@ bool UIElement::onClick( const sf::Vector2f& position )
    return std::any_of( children.begin(), children.end(),
                        [&]( const std::shared_ptr<UIElement>& child ) { return child->onClick( position ); } );
 }
-

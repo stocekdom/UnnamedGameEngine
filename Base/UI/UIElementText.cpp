@@ -6,9 +6,10 @@
 // Created by dominik on 15.10.25.
 //
 
+// TODO rework to onStart instead of constructor
 UIElementText::UIElementText( const std::string& fontPath, const std::string& inText, int size, sf::Color color,
                               sf::Vector2f position, float rotation, bool isVisible )
-      : UIElement( position, rotation, isVisible )
+      : UIElement( position, rotation, { 1.0f, 1.0f }, isVisible )
 {
    if( !font.loadFromFile( fontPath ) )
    {

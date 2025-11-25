@@ -9,6 +9,7 @@
 #include <memory>
 #include "../Input/Clickable.h"
 #include "../Renderer.h"
+#include "../GameContext.h"
 
 /**
  * Base class for all UI elements with lightweight spacial information.
@@ -18,10 +19,11 @@
 class UIElement : public Clickable, public std::enable_shared_from_this<UIElement>
 {
    public:
-      UIElement( const sf::Vector2f& position, float rotation, bool isVisible );
+      UIElement( const sf::Vector2f& position, float rotation, const sf::Vector2f& scale, bool isVisible );
 
       virtual ~UIElement() = default;
 
+      virtual void onStart( std::shared_ptr<GameContext>& context );
       // TODO currently just simple UI. might add tick function in the future
 
       [[nodiscard]] virtual bool isVisible() const;
@@ -29,6 +31,8 @@ class UIElement : public Clickable, public std::enable_shared_from_this<UIElemen
       [[nodiscard]] virtual sf::Vector2f getPosition() const;
 
       [[nodiscard]] virtual float getRotation() const;
+
+      [[nodiscard]] virtual sf::Vector2f getScale() const;
 
       virtual void setIsVisibleElement( bool isVisible );
 
@@ -40,6 +44,8 @@ class UIElement : public Clickable, public std::enable_shared_from_this<UIElemen
 
       virtual void rotate( float rotation );
 
+      virtual void scale( const sf::Vector2f& scale );
+
       virtual void draw( sf::RenderTarget& target, const Renderer& renderer );
 
       bool onClick( const sf::Vector2f& position ) override;
@@ -47,6 +53,7 @@ class UIElement : public Clickable, public std::enable_shared_from_this<UIElemen
    protected:
       sf::Vector2f localPosition;
       float localRotation;
+      sf::Vector2f localScale;
       bool isVisibleElement;
       std::weak_ptr<UIElement> parent;
       std::vector<std::shared_ptr<UIElement>> children;

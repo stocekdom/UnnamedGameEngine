@@ -21,7 +21,6 @@ class UIElementText : public UIElement
       void draw( sf::RenderTarget& target, const Renderer& renderer ) override;
 
    protected:
-      bool isUIVisible;
       sf::Font font;
       sf::Text text;
 };

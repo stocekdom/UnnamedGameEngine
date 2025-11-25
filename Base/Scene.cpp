@@ -3,12 +3,13 @@
 //
 #include "Scene.h"
 #include "Entity/Entity.h"
+#include "UI/UIElement.h"
 #include "../Entities/GameMap.h"
 
 GameScene::GameScene()
 {
    // Make an empty default UI root to avoid nullptr checks
-   uiRoot = std::make_shared<UIElement>( sf::Vector2f{ 0.f, 0.f }, 0, false );
+   uiRoot = std::make_shared<UIElement>( sf::Vector2f{ 0.f, 0.f }, 0, sf::Vector2f{ 0.f, 0.f }, false );
 }
 
 void GameScene::addEntityToScene( const std::shared_ptr<Entity>& actor )
@@ -76,7 +77,7 @@ void GameScene::onLeftClick( const sf::Vector2f& position )
    map->onClick( position );
 }
 
-void GameScene::init( sf::RenderWindow& window )
+void GameScene::onStart( sf::RenderWindow& window, std::shared_ptr<GameContext>& context )
 {
    mainView = std::make_shared<sf::View>( window.getDefaultView() );
    uiView = std::make_shared<sf::View>( *mainView );
@@ -86,6 +87,8 @@ void GameScene::init( sf::RenderWindow& window )
                  return a->getPosition().y < b->getPosition().y;
               }
    );
+
+   uiRoot->onStart( context );
 }
 
 const std::vector<std::shared_ptr<Entity>>& GameScene::getStaticEntities() const
