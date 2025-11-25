@@ -23,5 +23,5 @@ bool ClickableText::onClick( const sf::Vector2f& position )
       return true;
    }
 
-   return UIElement::onClick( position );
+   return UIElementText::onClick( position );
 }
