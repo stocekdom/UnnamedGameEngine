@@ -5,7 +5,10 @@
 #include "../Entities/GameMap.h"
 #include "../Controllers/PlayerController.h"
 #include "UI/UIBlock.h"
+#include "UI/UIButton.h"
 #include "../Entities/ClickableText.h"
+#include "Event/Events.h"
+#include "UI/UIRoot.h"
 #include <SFML/Graphics.hpp>
 
 Game::Game()
@@ -31,7 +34,9 @@ void Game::start()
    context->inputSystem->registerController( std::make_unique<PlayerController>( context->scene ) );
 
    {
-      auto building = std::make_shared<IsometricActor>( Mobility::STATIC,sf::Vector2f{ 1024, 256 }, 0, sf::Vector2f{ 0.25f, 0.25f } );
+      auto building = std::make_shared<IsometricActor>( Mobility::STATIC, sf::Vector2f{ 1024, 256 }, 0,
+                                                        sf::Vector2f{ 0.25f, 0.25f } );
+      // TODO Call on start from scene
       building->onStart( context );
    }
 
@@ -41,16 +46,29 @@ void Game::start()
    }
 
    {
-      auto uiRoot = std::make_shared<UIBlock>( sf::Vector2f{ WINDOW_WIDTH, 100 }, sf::Color( 100, 10, 10 ),
-                                               sf::Vector2f{ 0.f, ( float )window.getSize().y - 100.f } );
+      auto uiUpperBlock = std::make_shared<UIBlock>( sf::Vector2f{ WINDOW_WIDTH, 80 }, sf::Color( 100, 10, 10 ),
+                                                     sf::Vector2f{ 0.f, 0.f } );
+      auto uiLowerBlock = std::make_shared<UIBlock>( sf::Vector2f{ WINDOW_WIDTH, 100 }, sf::Color( 100, 10, 10 ),
+                                                     sf::Vector2f{ 0.f, ( float )window.getSize().y - 100.f } );
       auto text = std::make_shared<ClickableText>( "Assets/TheGoldBachelor.ttf", "Clickable text is: ", 24, sf::Color::White,
                                                    sf::Vector2f{ 10.f, ( float )window.getSize().y - 70.f } );
+      auto menuButton = std::make_shared<UIButton<GamePaused>>( "Assets/menu.png", sf::Vector2f{ WINDOW_WIDTH - 60.f, 40.f } );
 
-      uiRoot->addChild( text );
+      auto uiText = std::make_shared<UIElementText>( "Assets/TheGoldBachelor.ttf", "Info bar", 24, sf::Color::White,
+                                                     sf::Vector2f{ 10.f, 10.f } );
+
+      auto placeholderMenu = std::make_shared<UIButton<GameResumed>>( "Assets/menu.png", sf::Vector2f{ WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 }, 0, sf::Vector2f{ 5.f, 5.f } );
+      auto uiRoot = std::make_shared<UIRoot>( placeholderMenu );
+      uiUpperBlock->addChild( uiText );
+      uiUpperBlock->addChild( menuButton );
+      uiLowerBlock->addChild( text );
+
+      uiRoot->addChild( uiLowerBlock );
+      uiRoot->addChild( uiUpperBlock );
       context->scene->addUIRootComponent( uiRoot );
    }
 
-   context->scene->init( window );
+   context->scene->onStart( window, context );
 
    // Main loop
    while( window.isOpen() )
