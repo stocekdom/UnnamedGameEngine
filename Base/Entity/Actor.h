@@ -38,8 +38,6 @@ class Actor : public SpacialEntity
       virtual void setSprite( const sf::Sprite& sprite );
 
    protected:
-      // TODO store textures in a central place
-      sf::Texture texture;
       sf::Sprite sprite;
 };
 

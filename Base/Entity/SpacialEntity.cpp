@@ -39,7 +39,8 @@ sf::Vector2f SpacialEntity::getScale() const
       return localScale;
 
    // sf::Vector2f
-   return { localScale.x * p->getScale().x, localScale.y * p->getScale().y };
+   auto pScale = p->getScale();
+   return { localScale.x * pScale.x, localScale.y * pScale.y };
 }
 
 float SpacialEntity::getRotation() const
