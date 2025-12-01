@@ -14,7 +14,6 @@ add_executable(game1 main.cpp
         Base/Renderer.cpp
         Base/Game.cpp
         Base/Input/Controller.h
-        Base/Input/Command.h
         Base/Collision/Collider.h
         Base/Collision/CollisionInfo.h
         Base/Collision/CollisionSystem.h
@@ -67,6 +66,7 @@ add_executable(game1 main.cpp
         Base/UI/UIRoot.h
         Base/UI/UIRoot.cpp
         Base/UI/UIButton.h
+        Base/Core/Math.cpp
 )
 
 

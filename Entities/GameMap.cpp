@@ -38,7 +38,7 @@ bool GameMap::onClick( const sf::Vector2f& location )
    auto mapStartOffsetLocation = location - mapStart;
    // Offset again by half the sprite width to get the center of the tile
    mapStartOffsetLocation.x -= Math::IsometricConstants::SPRITE_WIDTH / 2;
-   auto worldLocation = Math::IsoSpace::screenToWorldSpace( mapStartOffsetLocation );
+   auto worldLocation = Math::screenToWorldSpace( mapStartOffsetLocation );
    int worldX = std::floor( worldLocation.x / Math::IsometricConstants::WORLD_TILE_WIDTH );
    int worldY = std::floor( worldLocation.y / Math::IsometricConstants::WORLD_TILE_WIDTH );
 

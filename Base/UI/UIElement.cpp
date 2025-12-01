@@ -5,7 +5,7 @@
 #include "../Core/Math.h"
 
 UIElement::UIElement( const sf::Vector2f& position, float rotation, const sf::Vector2f& scale, bool isVisible )
-: localPosition( position ), localRotation( rotation ), localScale( scale ), isVisibleElement( isVisible )
+      : localPosition( position ), localRotation( rotation ), localScale( scale ), isVisibleElement( isVisible )
 {
 }
 
@@ -27,10 +27,10 @@ sf::Vector2f UIElement::getPosition() const
    if( !p )
       return localPosition;
 
-   return Math::PositionTransform::parentRelativeToWorldPosition( p->getPosition(),
-                                                                  p->getRotation(),
-                                                                  { 1.f, 1.f },
-                                                                  localPosition );
+   return Math::parentRelativeToWorldPosition( p->getPosition(),
+                                               p->getRotation(),
+                                               { 1.f, 1.f },
+                                               localPosition );
 }
 
 float UIElement::getRotation() const

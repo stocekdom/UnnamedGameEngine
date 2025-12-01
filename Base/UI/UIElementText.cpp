@@ -1,6 +1,5 @@
 #include <SFML/Graphics/Drawable.hpp>
 #include "UIElementText.h"
-#include "../Scene.h"
 
 //
 // Created by dominik on 15.10.25.

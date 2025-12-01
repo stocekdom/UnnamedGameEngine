@@ -20,10 +20,10 @@ sf::Vector2f SpacialEntity::getPosition() const
    if( !p )
       return localPosition;
 
-   return Math::PositionTransform::parentRelativeToWorldPosition( p->getPosition(),
-                                                                  p->getRotation(),
-                                                                  p->getScale(),
-                                                                  localPosition );
+   return Math::parentRelativeToWorldPosition( p->getPosition(),
+                                               p->getRotation(),
+                                               p->getScale(),
+                                               localPosition );
 }
 
 sf::Vector2f SpacialEntity::getParentRelativePosition() const
