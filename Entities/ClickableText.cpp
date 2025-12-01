@@ -14,9 +14,7 @@ ClickableText::ClickableText( const std::string& fontPath, const std::string& in
 
 bool ClickableText::onClick( const sf::Vector2f& position )
 {
-   auto bounds = text.getGlobalBounds();
-
-   if(  bounds.contains( position ) )
+   if( text.getGlobalBounds().contains( position ) )
    {
       clicked = !clicked;
       text.setString( origText + ( clicked ? " Clicked" : " Unclicked" ) );

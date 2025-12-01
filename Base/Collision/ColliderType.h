@@ -5,7 +5,7 @@
 #ifndef GAME1_COLLIDERTYPE_H
 #define GAME1_COLLIDERTYPE_H
 
-enum ColliderType
+enum class ColliderType
 {
    POINT,
    RECTANGLE,
