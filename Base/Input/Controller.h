@@ -6,12 +6,12 @@
 #define GAME1_CONTROLLER_H
 
 #include <SFML/Window/Event.hpp>
+#include "InputContext.h"
 #include <functional>
-#include "InputActions.h"
+#include <memory>
 
-// TODO add input mappings and contexts in the future
 /**
- * Basic controller providing a way to map keyboard and mouse events to functions.
+ * Basic controller providing a way to map keyboard and mouse events to functions with support for different contexts.
  * Implements default input handling for keyboard and mouse events.
  * Concrete controllers shouldn't need to override this class and they should only define their mappings.
  */
@@ -22,16 +22,19 @@ class Controller
 
       virtual ~Controller() = default;
 
-      virtual void handleInput( const sf::Event& event );
+      virtual void tick( float dt ) = 0;
+
+      void handleInput( const sf::Event& event );
 
    protected:
-      void executeKeyboard( const sf::Event& event );
-
-      void executeMouse( const sf::Event& event );
+      std::shared_ptr<InputContext> activeContext;
 
       // Uses std::function instead of a Command pattern for now since most of the time commands are just wrappers.
-      std::unordered_map<sf::Keyboard::Key, InputActions> keyboardCommands;
-      std::unordered_map<sf::Mouse::Button, InputActions> mouseCommands;
+      std::unordered_map<GameAction, std::function<void( const ActionData& data )>> actions;
+
+   private:
+      bool keyStates[sf::Keyboard::Key::KeyCount]{};
+      bool buttonStates[sf::Mouse::Button::ButtonCount]{};
 };
 
 #endif //GAME1_CONTROLLER_H

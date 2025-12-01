@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <memory>
+#include <SFML/Window/Event.hpp>
 #include "Controller.h"
 
 class InputSystem
@@ -16,11 +17,13 @@ class InputSystem
 
       virtual ~InputSystem() = default;
 
+      void update( float dt );
+
+      void handleInput( sf::Event event );
+
       void registerController( std::unique_ptr<Controller> controller );
 
       [[nodiscard]] const std::vector<std::unique_ptr<Controller>>& getControllers() const;
-
-      void handleInput( sf::Event event );
 
    private:
       // TODO chain of responsibility pattern in the future

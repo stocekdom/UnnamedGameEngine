@@ -1,6 +1,7 @@
 //
 // Created by dominik on 03.10.25.
 //
+#include <iostream>
 #include "Scene.h"
 #include "Entity/Entity.h"
 #include "UI/UIElement.h"
@@ -69,16 +70,20 @@ void GameScene::addGameMap( const std::shared_ptr<GameMap>& gameMap )
    map = gameMap;
 }
 
-void GameScene::onLeftClick( const sf::Vector2f& position )
+void GameScene::onLeftClick( const sf::Vector2i& position )
 {
-   if( uiRoot->onClick( position ) )
+   if( uiRoot->onClick( sf::Vector2f{ position } ) )
       return;
 
-   map->onClick( position );
+   // Adjust for camera position of the main view. UI view doesn't move, so we don't need to adjust it
+   auto realPosition = mainWindow->mapPixelToCoords( position, *mainView );
+   map->onClick( realPosition );
 }
 
 void GameScene::onStart( sf::RenderWindow& window, std::shared_ptr<GameContext>& context )
 {
+   // TODO make window smart pointer in the game class
+   mainWindow = &window;
    mainView = std::make_shared<sf::View>( window.getDefaultView() );
    uiView = std::make_shared<sf::View>( *mainView );
 
@@ -108,5 +113,15 @@ void GameScene::renderScene( sf::RenderTarget& target, const Renderer& renderer 
    // Draw UI tree
    target.setView( *uiView );
    uiRoot->draw( target, renderer );
+}
+
+void GameScene::moveCamera( const sf::Vector2f& delta )
+{
+   mainView->move( delta );
+}
+
+void GameScene::zoomCamera( float zoom )
+{
+   mainView->zoom( zoom );
 }
 

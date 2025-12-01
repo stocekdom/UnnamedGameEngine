@@ -66,6 +66,12 @@ add_executable(game1 main.cpp
         Base/UI/UIRoot.h
         Base/UI/UIRoot.cpp
         Base/UI/UIButton.h
+        Base/Input/InputContext.h
+        Base/Input/InputEventKey.h
+        Base/Input/GameAction.h
+        Base/Input/InputContext.cpp
+        Base/Input/ContextFactory.h
+        Base/Input/ContextFactory.cpp
         Base/Core/Math.cpp
 )
 

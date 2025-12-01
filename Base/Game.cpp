@@ -7,7 +7,6 @@
 #include "UI/UIBlock.h"
 #include "UI/UIButton.h"
 #include "../Entities/ClickableText.h"
-#include "Event/Events.h"
 #include "UI/UIRoot.h"
 #include <SFML/Graphics.hpp>
 
@@ -31,7 +30,7 @@ void Game::start()
    const float FIXED_DT = 1.0f / 128.0f;
    float accumulator = 0.f;
 
-   context->inputSystem->registerController( std::make_unique<PlayerController>( context->scene ) );
+   context->inputSystem->registerController( std::make_unique<PlayerController>( context ) );
 
    {
       auto building = std::make_shared<IsometricActor>( Mobility::STATIC, sf::Vector2f{ 1024, 256 }, 0,
@@ -46,7 +45,7 @@ void Game::start()
    }
 
    {
-      auto uiUpperBlock = std::make_shared<UIBlock>( sf::Vector2f{ WINDOW_WIDTH, 80 }, sf::Color( 100, 10, 10 ),
+      auto uiUpperBlock = std::make_shared<UIBlock>( sf::Vector2f{ WINDOW_WIDTH, 80 }, sf::Color( 100, 10, 10, 155 ),
                                                      sf::Vector2f{ 0.f, 0.f } );
       auto uiLowerBlock = std::make_shared<UIBlock>( sf::Vector2f{ WINDOW_WIDTH, 100 }, sf::Color( 100, 10, 10 ),
                                                      sf::Vector2f{ 0.f, ( float )window.getSize().y - 100.f } );
@@ -57,7 +56,9 @@ void Game::start()
       auto uiText = std::make_shared<UIElementText>( "Assets/TheGoldBachelor.ttf", "Info bar", 24, sf::Color::White,
                                                      sf::Vector2f{ 10.f, 10.f } );
 
-      auto placeholderMenu = std::make_shared<UIButton<GameResumed>>( "Assets/menu.png", sf::Vector2f{ WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 }, 0, sf::Vector2f{ 5.f, 5.f } );
+      auto placeholderMenu = std::make_shared<UIButton<GameResumed>>( "Assets/menu.png",
+                                                                      sf::Vector2f{ WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 }, 0,
+                                                                      sf::Vector2f{ 5.f, 5.f } );
       auto uiRoot = std::make_shared<UIRoot>( placeholderMenu );
       uiUpperBlock->addChild( uiText );
       uiUpperBlock->addChild( menuButton );
@@ -92,6 +93,7 @@ void Game::start()
          accumulator -= FIXED_DT;
       }
 
+      context->inputSystem->update( frameTime );
       context->scene->update( frameTime );
       window.clear();
       context->scene->renderScene( window, *renderer );

@@ -10,7 +10,6 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
-#include "Input/Controller.h"
 #include "Observers/Observer.h"
 #include "Renderer.h"
 
@@ -40,7 +39,7 @@ class GameScene
       void addGameMap( const std::shared_ptr<GameMap>& gameMap );
 
       // Since the scene stores UI elements and map for now, we need to handle click events.
-      void onLeftClick( const sf::Vector2f& position );
+      void onLeftClick( const sf::Vector2i& position );
 
       void onStart( sf::RenderWindow& window, std::shared_ptr<GameContext>& context );
 
@@ -50,7 +49,12 @@ class GameScene
 
       void renderScene( sf::RenderTarget& target, const Renderer& renderer );
 
+      void moveCamera( const sf::Vector2f& delta );
+
+      void zoomCamera( float zoom );
+
    private:
+      sf::RenderWindow* mainWindow = nullptr;
       std::shared_ptr<sf::View> mainView;
       std::shared_ptr<sf::View> uiView;
       std::shared_ptr<UIElement> uiRoot;
