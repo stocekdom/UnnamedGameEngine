@@ -18,15 +18,21 @@ void GameScene::addEntityToScene( const std::shared_ptr<Entity>& actor )
    switch( actor->getMobility() )
    {
       case Mobility::STATIC:
-      {
-         auto it = std::lower_bound( staticActors.begin(), staticActors.end(), actor,
-                                     []( const std::shared_ptr<Entity>& a, const std::shared_ptr<Entity>& b ) {
-                                        return a->getPosition().y < b->getPosition().y;
-                                     } );
+         if( onStartCalled )
+         {
+            auto it = std::lower_bound( staticActors.begin(), staticActors.end(), actor,
+                                        []( const std::shared_ptr<Entity>& a, const std::shared_ptr<Entity>& b ) {
+                                           return a->getPosition().y < b->getPosition().y;
+                                        } );
 
-         staticActors.insert( it, actor );
+            staticActors.insert( it, actor );
+         }
+         else
+         {
+            staticActors.push_back( actor );
+         }
+
          break;
-      }
       case Mobility::MOVABLE:
          movableActors.push_back( actor );
          break;
@@ -124,6 +130,7 @@ void GameScene::onLeftClick( const sf::Vector2i& position )
 
 void GameScene::onStart( sf::RenderWindow& window, std::shared_ptr<GameContext>& context )
 {
+   onStartCalled = true;
    // TODO make window smart pointer in the game class
    mainWindow = &window;
    mainView = std::make_shared<sf::View>( window.getDefaultView() );

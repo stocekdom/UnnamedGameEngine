@@ -85,6 +85,7 @@ class GameScene
       // TODO isn't easy to delete certain entities from the scene. Need ids for entities.
       // Helper container of non-owning pointers to actors that tick
       std::vector<Entity*> tickableActors;
+      bool onStartCalled = false;
 };
 
 #endif //GAME1_SCENE_H
