@@ -73,6 +73,9 @@ add_executable(game1 main.cpp
         Base/Input/ContextFactory.h
         Base/Input/ContextFactory.cpp
         Base/Core/Math.cpp
+        Base/Core/UUID.h
+        Base/Core/UUID.cpp
+        Entities/Buildings/BuildingType.h
 )
 
 

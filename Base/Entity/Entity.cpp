@@ -34,3 +34,8 @@ void Entity::addChild( const std::shared_ptr<Entity>& child )
    children.push_back( child );
    child->setParent( shared_from_this() );
 }
+
+UUID Entity::getId() const
+{
+   return id;
+}

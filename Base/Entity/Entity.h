@@ -7,6 +7,7 @@
 
 #include "../Core/Mobility.h"
 #include "../GameContext.h"
+#include "../Core/UUID.h"
 #include <SFML/Graphics/Drawable.hpp>
 #include <memory>
 #include <vector>
@@ -50,6 +51,8 @@ class Entity : public std::enable_shared_from_this<Entity>
 
       [[nodiscard]] virtual bool isVisible() const = 0;
 
+      [[nodiscard]] UUID getId() const;
+
       void setDirty();
 
       void setParent( const std::shared_ptr<Entity>& entity );
@@ -59,6 +62,7 @@ class Entity : public std::enable_shared_from_this<Entity>
       virtual const sf::Drawable& getDrawable() = 0;
 
    protected:
+      UUID id;
       bool isEntityDirty = false;
       std::weak_ptr<Entity> parent;
       // Container for generic children storage. Individual entities can also have the same entity stored with a specific type.
