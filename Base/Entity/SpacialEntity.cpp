@@ -65,36 +65,54 @@ void SpacialEntity::setIsVisibleEntity( bool isVisible )
 
 void SpacialEntity::setPosition( const sf::Vector2f& newPosition )
 {
+   if( mobility == Mobility::STATIC )
+      return;
+
    localPosition = newPosition;
    setDirty();
 }
 
 void SpacialEntity::setScale( const sf::Vector2f& newScale )
 {
+   if( mobility == Mobility::STATIC )
+      return;
+
    localScale = newScale;
    setDirty();
 }
 
 void SpacialEntity::setRotation( float newRotation )
 {
+   if( mobility == Mobility::STATIC )
+      return;
+
    localRotation = newRotation;
    setDirty();
 }
 
 void SpacialEntity::move( const sf::Vector2f& offset )
 {
+   if( mobility == Mobility::STATIC )
+      return;
+
    localPosition += offset;
    setDirty();
 }
 
 void SpacialEntity::rotate( float rotation )
 {
+   if( mobility == Mobility::STATIC )
+      return;
+
    localRotation += rotation;
    setDirty();
 }
 
 void SpacialEntity::scale( const sf::Vector2f& scale )
 {
+   if( mobility == Mobility::STATIC )
+      return;
+
    localScale.x *= scale.x;
    localScale.y *= scale.y;
    setDirty();
