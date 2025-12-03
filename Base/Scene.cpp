@@ -18,8 +18,15 @@ void GameScene::addEntityToScene( const std::shared_ptr<Entity>& actor )
    switch( actor->getMobility() )
    {
       case Mobility::STATIC:
-         staticActors.push_back( actor );
+      {
+         auto it = std::lower_bound( staticActors.begin(), staticActors.end(), actor,
+                                     []( const std::shared_ptr<Entity>& a, const std::shared_ptr<Entity>& b ) {
+                                        return a->getPosition().y < b->getPosition().y;
+                                     } );
+
+         staticActors.insert( it, actor );
          break;
+      }
       case Mobility::MOVABLE:
          movableActors.push_back( actor );
          break;
@@ -27,6 +34,41 @@ void GameScene::addEntityToScene( const std::shared_ptr<Entity>& actor )
          // TODO add logging
          throw std::runtime_error( "Unknown mobility type" );
    }
+}
+
+void GameScene::deleteEntityById( const UUID& id )
+{
+   // Currently, we use vectors for entities, so searching is O(n). This slightly improves performance because user is most likely to delete static entities (houses, trees, etc).
+   for( int i = 0; i < staticActors.size(); ++i )
+      if( staticActors[ i ]->getId() == id )
+      {
+         staticActors.erase( staticActors.begin() + i );
+         return;
+      }
+
+   for( int i = 0; i < movableActors.size(); ++i )
+      if( movableActors[ i ]->getId() == id )
+      {
+         movableActors.erase( movableActors.begin() + i );
+         return;
+      }
+}
+
+void GameScene::addOverlayEntityToScene( const std::shared_ptr<Entity>& actor )
+{
+   overlayActors.push_back( actor );
+}
+
+void GameScene::deleteOverlayEntityById( const UUID& id )
+{
+   // Swap and pop since we don't care about order
+   for( int i = 0; i < overlayActors.size(); ++i )
+      if( overlayActors[ i ]->getId() == id )
+      {
+         std::swap( overlayActors[ i ], overlayActors.back() );
+         overlayActors.pop_back();
+         return;
+      }
 }
 
 void GameScene::addUIRootComponent( const std::shared_ptr<UIElement>& root )
@@ -87,6 +129,7 @@ void GameScene::onStart( sf::RenderWindow& window, std::shared_ptr<GameContext>&
    mainView = std::make_shared<sf::View>( window.getDefaultView() );
    uiView = std::make_shared<sf::View>( *mainView );
 
+   // TODO simple Y sorting. Use AABB for better quality and precision
    std::sort( staticActors.begin(), staticActors.end(),
               []( const std::shared_ptr<Entity>& a, const std::shared_ptr<Entity>& b ) {
                  return a->getPosition().y < b->getPosition().y;
@@ -124,4 +167,5 @@ void GameScene::zoomCamera( float zoom )
 {
    mainView->zoom( zoom );
 }
+
 

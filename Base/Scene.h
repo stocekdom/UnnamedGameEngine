@@ -12,6 +12,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "Observers/Observer.h"
 #include "Renderer.h"
+#include "Core/UUID.h"
 
 class UIElement;
 class Entity;
@@ -27,6 +28,12 @@ class GameScene
       ~GameScene() = default;
 
       void addEntityToScene( const std::shared_ptr<Entity>& actor );
+
+      void deleteEntityById( const UUID& id );
+
+      void addOverlayEntityToScene( const std::shared_ptr<Entity>& actor );
+
+      void deleteOverlayEntityById( const UUID& id );
 
       void addUIRootComponent( const std::shared_ptr<UIElement>& root );
 
@@ -54,17 +61,30 @@ class GameScene
       void zoomCamera( float zoom );
 
    private:
+      // Window, view
       sf::RenderWindow* mainWindow = nullptr;
       std::shared_ptr<sf::View> mainView;
       std::shared_ptr<sf::View> uiView;
+      // ===================================
+      // UI
       std::shared_ptr<UIElement> uiRoot;
+      //========================================
+      // Map
       std::shared_ptr<GameMap> map;
+      // ========================================
+      // Entities
+      // Entities that can't be moved. Sorted in onStart method
       std::vector<std::shared_ptr<Entity>> staticActors;
       std::vector<std::shared_ptr<Entity>> movableActors;
+      // Special unordered container for entities which are drawn on top of everything else but are not part of the scene (overlays, temporary entities, editor only)
+      std::vector<std::shared_ptr<Entity>> overlayActors;
+      // =======================================
+      // Observers
+      std::vector<std::shared_ptr<Observer>> observers;
       // We need to be careful with the lifetime and when deleting entities.
       // TODO isn't easy to delete certain entities from the scene. Need ids for entities.
+      // Helper container of non-owning pointers to actors that tick
       std::vector<Entity*> tickableActors;
-      std::vector<std::shared_ptr<Observer>> observers;
 };
 
 #endif //GAME1_SCENE_H
