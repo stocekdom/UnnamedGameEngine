@@ -20,12 +20,16 @@
 class Actor : public SpacialEntity
 {
    public:
-      explicit Actor( Mobility mobilityStatus = Mobility::STATIC, sf::Vector2f position = { 0, 0 }, float rotation = 0,
+      explicit Actor( SpawnCategory spawnCategory, Mobility mobility, sf::Vector2f position = { 0, 0 }, float rotation = 0,
                       sf::Vector2f scale = { 1, 1 }, bool isVisible = true );
 
       void onStart( std::shared_ptr<GameContext>& context ) override;
 
       void tick( float deltaTime ) override;
+
+      [[nodiscard]] SpawnCategory getSpawnCategory() const override;
+
+      void setSpawnCategory( SpawnCategory newSpawnCategory ) override;
 
       void centerPivot();
 
@@ -38,6 +42,7 @@ class Actor : public SpacialEntity
       virtual void setSprite( const sf::Sprite& sprite );
 
    protected:
+      SpawnCategory spawnCategory;
       sf::Sprite sprite;
 };
 

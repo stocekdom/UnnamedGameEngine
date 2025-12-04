@@ -3,18 +3,10 @@
 //
 #include "IsometricActor.h"
 
-IsometricActor::IsometricActor( Mobility mobilityStatus, sf::Vector2f position, float rotation, sf::Vector2f scale, float height,
-                                bool isVisible )
-      : Actor( mobilityStatus, position, rotation, scale, isVisible ), localHeight( height )
+IsometricActor::IsometricActor( SpawnCategory spawnCategory, Mobility mobilityStatus, sf::Vector2f position, float rotation,
+                                sf::Vector2f scale, float height, bool isVisible )
+      : Actor( spawnCategory, mobilityStatus, position, rotation, scale, isVisible ), localHeight( height )
 {
-}
-
-void IsometricActor::onStart( std::shared_ptr<GameContext>& context )
-{
-   // TODO Temporary texture for testing. remove
-   sprite.setTexture( context->textureManager->loadTexture( "Assets/gov_center.png" ) );
-   sprite.setOrigin( sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height );
-   Actor::onStart( context );
 }
 
 float IsometricActor::getHeight() const

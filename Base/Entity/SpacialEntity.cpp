@@ -6,10 +6,9 @@
 //
 // Created by dominik on 31.10.25.
 //
-SpacialEntity::SpacialEntity( Mobility mobilityStatus, const sf::Vector2f& position, float rotation,
+SpacialEntity::SpacialEntity( Mobility mobility, const sf::Vector2f& position, float rotation,
                               const sf::Vector2f& scale, bool isVisible )
-      : mobility( mobilityStatus ), isVisibleEntity( isVisible ), localPosition( position ), localRotation( rotation ),
-        localScale( scale )
+      : mobility( mobility ), isVisibleEntity( isVisible ), localPosition( position ), localRotation( rotation ), localScale( scale )
 {
 }
 
@@ -129,4 +128,9 @@ void SpacialEntity::tick( float deltaTime )
 Mobility SpacialEntity::getMobility() const
 {
    return mobility;
+}
+
+void SpacialEntity::setMobility( Mobility newMobility )
+{
+   mobility = newMobility;
 }

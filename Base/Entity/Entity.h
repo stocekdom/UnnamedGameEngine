@@ -8,6 +8,7 @@
 #include "../Core/Mobility.h"
 #include "../GameContext.h"
 #include "../Core/UUID.h"
+#include "../Core/SpawnCategory.h"
 #include <SFML/Graphics/Drawable.hpp>
 #include <memory>
 #include <vector>
@@ -38,6 +39,13 @@ class Entity : public std::enable_shared_from_this<Entity>
       std::weak_ptr<Entity> getParent();
 
       [[nodiscard]] virtual Mobility getMobility() const = 0;
+
+      [[nodiscard]] virtual SpawnCategory getSpawnCategory() const = 0;
+
+      // TODO these setters aren't good and should only be called internally by scene. Should be fixed with ECS
+      virtual void setSpawnCategory( SpawnCategory newSpawnCategory ) = 0;
+
+      virtual void setMobility( Mobility newMobility ) = 0;
 
       // Spacial information getters. Required for any entity even if it has no spacial data.
       // If an entity has no spacial data, it should return identity.

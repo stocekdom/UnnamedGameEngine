@@ -15,10 +15,8 @@
 class IsometricActor : public Actor
 {
    public:
-      explicit IsometricActor( Mobility mobilityStatus, sf::Vector2f position = { 0, 0 }, float rotation = 0,
-                               sf::Vector2f scale = { 1, 1 }, float height = 0, bool isVisible = true );
-
-      void onStart( std::shared_ptr<GameContext>& context ) override;
+      explicit IsometricActor( SpawnCategory spawnCategory, Mobility mobilityStatus, sf::Vector2f position = { 0, 0 },
+                               float rotation = 0, sf::Vector2f scale = { 1, 1 }, float height = 0, bool isVisible = true );
 
       float getHeight() const;
 

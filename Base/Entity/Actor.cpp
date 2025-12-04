@@ -2,10 +2,10 @@
 // Created by dominik on 03.10.25.
 //
 #include "Actor.h"
-#include <valarray>
 
-Actor::Actor( Mobility mobilityStatus, sf::Vector2f position, float rotation, sf::Vector2f scale, bool isVisible )
-      : SpacialEntity( mobilityStatus, position, rotation, scale, isVisible )
+Actor::Actor( SpawnCategory spawnCategory, Mobility mobility, sf::Vector2f position, float rotation, sf::Vector2f scale,
+              bool isVisible )
+      : SpacialEntity( mobility, position, rotation, scale, isVisible ), spawnCategory( spawnCategory )
 {
    isEntityDirty = true;
 }
@@ -49,4 +49,14 @@ void Actor::tick( float deltaTime )
       sprite.setRotation( getRotation() );
       isEntityDirty = false;
    }
+}
+
+SpawnCategory Actor::getSpawnCategory() const
+{
+   return spawnCategory;
+}
+
+void Actor::setSpawnCategory( SpawnCategory newSpawnCategory )
+{
+   spawnCategory = newSpawnCategory;
 }

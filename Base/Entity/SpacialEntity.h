@@ -18,7 +18,7 @@ class SpacialEntity : public Entity
 {
    public:
 
-      SpacialEntity( Mobility mobilityStatus, const sf::Vector2f& position, float rotation, const sf::Vector2f& scale,
+      SpacialEntity( Mobility mobility, const sf::Vector2f& position, float rotation, const sf::Vector2f& scale,
                      bool isVisible );
 
       // Default implementations of getters so we don't repeat code in different base classes (Actor, Collider, etc..)
@@ -34,6 +34,8 @@ class SpacialEntity : public Entity
       [[nodiscard]] sf::Vector2f getScale() const override;
 
       [[nodiscard]] bool isVisible() const override;
+
+      void setMobility( Mobility newMobility ) override;
 
       virtual void setIsVisibleEntity( bool isVisible );
 
