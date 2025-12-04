@@ -17,6 +17,7 @@
 class UIElement;
 class Entity;
 class GameMap;
+class MapTile;
 class GameContext;
 
 class GameScene
@@ -31,8 +32,7 @@ class GameScene
 
       void deleteEntityById( const UUID& id );
 
-      void addOverlayEntityToScene( const std::shared_ptr<Entity>& actor );
-
+      // TODO this isn't clean switch to ECS
       void deleteOverlayEntityById( const UUID& id );
 
       void addUIRootComponent( const std::shared_ptr<UIElement>& root );
@@ -47,6 +47,10 @@ class GameScene
 
       // Since the scene stores UI elements and map for now, we need to handle click events.
       void onLeftClick( const sf::Vector2i& position );
+
+      sf::Vector2f snapToMapTile( const sf::Vector2i& mousePosition );
+
+      std::weak_ptr<MapTile> getMapTile( const sf::Vector2i& mousePosition );
 
       void onStart( sf::RenderWindow& window, std::shared_ptr<GameContext>& context );
 
@@ -86,6 +90,8 @@ class GameScene
       // Helper container of non-owning pointers to actors that tick
       std::vector<Entity*> tickableActors;
       bool onStartCalled = false;
+
+      void spawnWorldActor( const std::shared_ptr<Entity>& actor );
 };
 
 #endif //GAME1_SCENE_H

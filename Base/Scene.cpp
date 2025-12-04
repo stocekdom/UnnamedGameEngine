@@ -1,7 +1,6 @@
 //
 // Created by dominik on 03.10.25.
 //
-#include <iostream>
 #include "Scene.h"
 #include "Entity/Entity.h"
 #include "UI/UIElement.h"
@@ -15,35 +14,20 @@ GameScene::GameScene()
 
 void GameScene::addEntityToScene( const std::shared_ptr<Entity>& actor )
 {
-   switch( actor->getMobility() )
+   switch( actor->getSpawnCategory() )
    {
-      case Mobility::STATIC:
-         if( onStartCalled )
-         {
-            auto it = std::lower_bound( staticActors.begin(), staticActors.end(), actor,
-                                        []( const std::shared_ptr<Entity>& a, const std::shared_ptr<Entity>& b ) {
-                                           return a->getPosition().y < b->getPosition().y;
-                                        } );
-
-            staticActors.insert( it, actor );
-         }
-         else
-         {
-            staticActors.push_back( actor );
-         }
-
+      case SpawnCategory::OVERLAY:
+         overlayActors.push_back( actor );
          break;
-      case Mobility::MOVABLE:
-         movableActors.push_back( actor );
+      case SpawnCategory::WORLD:
+         spawnWorldActor( actor );
          break;
-      default:
-         // TODO add logging
-         throw std::runtime_error( "Unknown mobility type" );
    }
 }
 
 void GameScene::deleteEntityById( const UUID& id )
 {
+   // TODO switch to ECS
    // Currently, we use vectors for entities, so searching is O(n). This slightly improves performance because user is most likely to delete static entities (houses, trees, etc).
    for( int i = 0; i < staticActors.size(); ++i )
       if( staticActors[ i ]->getId() == id )
@@ -58,11 +42,6 @@ void GameScene::deleteEntityById( const UUID& id )
          movableActors.erase( movableActors.begin() + i );
          return;
       }
-}
-
-void GameScene::addOverlayEntityToScene( const std::shared_ptr<Entity>& actor )
-{
-   overlayActors.push_back( actor );
 }
 
 void GameScene::deleteOverlayEntityById( const UUID& id )
@@ -93,14 +72,13 @@ void GameScene::updateFixed( float fixedDt )
 void GameScene::update( float deltaTime )
 {
    for( auto& actor: staticActors )
-   {
       actor->tick( deltaTime );
-   }
 
    for( auto& actor: movableActors )
-   {
       actor->tick( deltaTime );
-   }
+
+   for( auto& actor: overlayActors )
+      actor->tick( deltaTime );
 }
 
 const std::vector<std::shared_ptr<Observer>>& GameScene::getObservers() const
@@ -160,6 +138,11 @@ void GameScene::renderScene( sf::RenderTarget& target, const Renderer& renderer 
       if( actor->isVisible() )
          renderer.render( actor->getDrawable(), target );
 
+   // Draw overlay entities
+   for( auto& actor: overlayActors )
+      if( actor->isVisible() )
+         renderer.render( actor->getDrawable(), target );
+
    // Draw UI tree
    target.setView( *uiView );
    uiRoot->draw( target, renderer );
@@ -175,4 +158,39 @@ void GameScene::zoomCamera( float zoom )
    mainView->zoom( zoom );
 }
 
+void GameScene::spawnWorldActor( const std::shared_ptr<Entity>& actor )
+{
+   switch( actor->getMobility() )
+   {
+      case Mobility::STATIC:
+         if( onStartCalled )
+         {
+            auto it = std::lower_bound( staticActors.begin(), staticActors.end(), actor,
+                                        []( const std::shared_ptr<Entity>& a, const std::shared_ptr<Entity>& b ) {
+                                           return a->getPosition().y < b->getPosition().y;
+                                        } );
+
+            staticActors.insert( it, actor );
+         }
+         else
+         {
+            staticActors.push_back( actor );
+         }
+
+         break;
+      case Mobility::MOVABLE:
+         movableActors.push_back( actor );
+         break;
+   }
+}
+
+sf::Vector2f GameScene::snapToMapTile( const sf::Vector2i& mousePosition )
+{
+   return map->snapToMapTile( mainWindow->mapPixelToCoords( mousePosition, *mainView ) );
+}
+
+std::weak_ptr<MapTile> GameScene::getMapTile( const sf::Vector2i& mousePosition )
+{
+   return map->getMapTile( mainWindow->mapPixelToCoords( mousePosition, *mainView ) );
+}
 
