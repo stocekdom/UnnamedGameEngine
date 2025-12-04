@@ -6,7 +6,7 @@
 #include "../Base/Input/ContextFactory.h"
 
 // We initialize everything in the constructor since systems are already created at this point, and we don't need onStart
-PlayerController::PlayerController( const std::shared_ptr<GameContext>& context ) : scene( context->scene ),
+PlayerController::PlayerController( const std::shared_ptr<GameContext>& context ) : context( context ),
                                                                                     cameraSpeed( 0.f, 0.f )
 {
    context->eventSystem->subscribe<GamePaused>( [this]( const GamePaused& event ) { onPauseGame( event ); } );
@@ -14,29 +14,24 @@ PlayerController::PlayerController( const std::shared_ptr<GameContext>& context 
    menuContext = ContextFactory::createMenuContext();
    mainContext = ContextFactory::createGameContext();
    activeContext = mainContext;
-   actions[ GameAction::LEFT_CLICK ] = [this]( const ActionData& event ) {
-      if( event.isPressed )
-         onLeftClick( event );
-   };
-   actions[ GameAction::CAMERA_MOVE_RIGHT ] = [this]( const ActionData& event ) {
-      event.isPressed ? updateCameraSpeedX( 1.0f ) : updateCameraSpeedX( 0.f );
-   };
-   actions[ GameAction::CAMERA_MOVE_LEFT ] = [this]( const ActionData& event ) {
-      event.isPressed ? updateCameraSpeedX( -1.0f ) : updateCameraSpeedX( 0.f );
-   };
-   actions[ GameAction::CAMERA_MOVE_UP ] = [this]( const ActionData& event ) {
-      event.isPressed ? updateCameraSpeedY( -1.0f ) : updateCameraSpeedY( 0.f );
-   };
-   actions[ GameAction::CAMERA_MOVE_DOWN ] = [this]( const ActionData& event ) {
-      event.isPressed ? updateCameraSpeedY( 1.0f ) : updateCameraSpeedY( 0.f );
-   };
+   actions[ GameAction::LEFT_CLICK ] = [this]( const ActionData& event ) { onLeftClick( event ); };
+   actions[ GameAction::CAMERA_MOVE_RIGHT ] = [this]( const ActionData& event ) { updateCameraSpeedX( event.value ); };
+   actions[ GameAction::CAMERA_MOVE_LEFT ] = [this]( const ActionData& event ) { updateCameraSpeedX( -event.value ); };
+   actions[ GameAction::CAMERA_MOVE_UP ] = [this]( const ActionData& event ) { updateCameraSpeedY( -event.value ); };
+   actions[ GameAction::CAMERA_MOVE_DOWN ] = [this]( const ActionData& event ) { updateCameraSpeedY( event.value ); };
    actions[ GameAction::CAMERA_ZOOM ] = [this]( const ActionData& event ) { updateCameraZoom( event.value ); };
 }
 
 void PlayerController::tick( float dt )
 {
+   auto sharedContext = context.lock();
+
+   // TODO Throw instead??
+   if( !sharedContext )
+      return;
+
    if( cameraSpeed.x != 0.f || cameraSpeed.y != 0.f )
-      scene->moveCamera( cameraSpeed * CAMERA_SPEED * dt );
+      sharedContext->scene->moveCamera( cameraSpeed * CAMERA_SPEED * dt );
 
    if( targetZoom != currentZoom )
    {
@@ -49,13 +44,14 @@ void PlayerController::tick( float dt )
       else
          currentZoom = std::min( targetZoom, currentZoom + change );
 
-      scene->zoomCamera( currentZoom / prevZoom );
+      sharedContext->scene->zoomCamera( currentZoom / prevZoom );
    }
 }
 
 void PlayerController::onLeftClick( const ActionData& event )
 {
-   scene->onLeftClick( event.position );
+   if( auto sharedContext = context.lock() )
+      sharedContext->scene->onLeftClick( event.position );
 }
 
 void PlayerController::onPauseGame( const GamePaused& event )

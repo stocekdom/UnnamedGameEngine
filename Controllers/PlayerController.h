@@ -37,14 +37,14 @@ class PlayerController : public Controller
       const static constexpr float SNAP_THRESHOLD = 0.01f;
       const static constexpr float MAX_ZOOM = 3.5f;
       const static constexpr float MIN_ZOOM = 0.5f;
-      const static constexpr float ZOOM_STEP = 0.1f;
-      const static constexpr float ZOOM_PER_SECOND = 2.5f;
+      const static constexpr float ZOOM_STEP = 0.3f;
+      const static constexpr float ZOOM_PER_SECOND = 6.f;
       float currentZoom = 1.f;
       float targetZoom = 1.f;
       sf::Vector2f cameraSpeed;
       std::shared_ptr<InputContext> menuContext;
       std::shared_ptr<InputContext> mainContext;
-      std::shared_ptr<GameScene> scene;
+      std::weak_ptr<GameContext> context;
 };
 
 #endif //GAME1_PLAYERCONTROLLER_H
