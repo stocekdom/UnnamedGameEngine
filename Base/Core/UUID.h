@@ -37,7 +37,7 @@ class UUID
 namespace std
 {
    template<>
-   struct std::hash<UUID>
+   struct hash<UUID>
    {
       size_t operator()( const UUID& id ) const
       {
