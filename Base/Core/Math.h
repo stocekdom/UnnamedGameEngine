@@ -21,6 +21,8 @@ namespace Math
       const static constexpr float SPRITE_HEIGHT = SPRITE_WIDTH / 2;
       // The width of the original square in the world grid
       const static constexpr float WORLD_TILE_WIDTH = SPRITE_WIDTH / 4;
+      // Offset from the tile center where the building's pivot should be, assuming the building's pivot is correctly placed at the bottom center point
+      const static constexpr float BUILDING_TILE_CENTER_Y_OFFSET = ( SPRITE_HEIGHT / 2 ) * 0.8f;
    }
 
    inline sf::Vector2f normalize( const sf::Vector2f& vector )
@@ -39,6 +41,11 @@ namespace Math
    inline sf::Vector2f screenToWorldSpace( const sf::Vector2f& screenCoords )
    {
       return sf::Vector2f{ ( screenCoords.x + 2 * screenCoords.y ) / 4, ( 2 * screenCoords.y - screenCoords.x ) / 4 };
+   }
+
+   inline sf::Vector2f worldToScreenSpace( const sf::Vector2f& worldCoords )
+   {
+      return sf::Vector2f{ 2 * worldCoords.x - 2 * worldCoords.y, worldCoords.x + worldCoords.y };
    }
 
    sf::Vector2f parentRelativeToWorldPosition( const sf::Vector2f& parentPosition,
