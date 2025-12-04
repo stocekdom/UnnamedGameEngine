@@ -76,6 +76,15 @@ add_executable(game1 main.cpp
         Base/Core/UUID.h
         Base/Core/UUID.cpp
         Entities/Buildings/BuildingType.h
+        Entities/Buildings/BuildingFactory.h
+        Entities/Buildings/Building.h
+        Entities/Buildings/BuildingFactory.cpp
+        Entities/Buildings/PeasantHouse.h
+        Entities/Buildings/PeasantHouse.cpp
+        Entities/Buildings/Building.cpp
+        Entities/Buildings/BuildingPlacementButton.h
+        Entities/Buildings/BuildingEvents.h
+        Base/Core/SpawnCategory.h
 )
 
 
