@@ -7,7 +7,9 @@
 
 #include "../Base/Input/Controller.h"
 #include "../Base/GameContext.h"
+#include "../Entities/Buildings/BuildingEvents.h"
 #include "../Base/Event/Events.h"
+#include "../Entities/Buildings/Building.h"
 #include <memory>
 
 class PlayerController : public Controller
@@ -20,9 +22,17 @@ class PlayerController : public Controller
    protected:
       void onLeftClick( const ActionData& event );
 
+      void onMouseMove( const sf::Vector2i& position );
+
       void onPauseGame( const GamePaused& event );
 
       void onResumeGame( const GameResumed& event );
+
+      void onBuildingPlacingStart( const BuildingPlacingStarted& event );
+
+      void onBuildingPlacingCancel();
+
+      void onBuildingPlaced( const sf::Vector2i& position );
 
       void updateCameraSpeedX( float x );
 
@@ -31,6 +41,7 @@ class PlayerController : public Controller
       void updateCameraZoom( float zoom );
 
    private:
+      std::weak_ptr<Building> buildingPawn;
       // Speed of camera movement since the camera speed vector is normalized.
       const static constexpr float CAMERA_SPEED = 500.f;
       // A distance between targetZoom and currentZoom that will trigger currentZoom changing directly to targetZoom.
@@ -44,6 +55,7 @@ class PlayerController : public Controller
       sf::Vector2f cameraSpeed;
       std::shared_ptr<InputContext> menuContext;
       std::shared_ptr<InputContext> mainContext;
+      std::shared_ptr<InputContext> placingContext;
       std::weak_ptr<GameContext> context;
 };
 

@@ -3,7 +3,9 @@
 //
 #include "PlayerController.h"
 #include "../Base/Core/Math.h"
+#include "../Entities/MapTile.h"
 #include "../Base/Input/ContextFactory.h"
+#include "../Entities/Buildings/BuildingFactory.h"
 
 // We initialize everything in the constructor since systems are already created at this point, and we don't need onStart
 PlayerController::PlayerController( const std::shared_ptr<GameContext>& context ) : context( context ),
@@ -11,8 +13,11 @@ PlayerController::PlayerController( const std::shared_ptr<GameContext>& context 
 {
    context->eventSystem->subscribe<GamePaused>( [this]( const GamePaused& event ) { onPauseGame( event ); } );
    context->eventSystem->subscribe<GameResumed>( [this]( const GameResumed& event ) { onResumeGame( event ); } );
+   context->eventSystem->subscribe<BuildingPlacingStarted>(
+         [this]( const BuildingPlacingStarted& event ) { onBuildingPlacingStart( event ); } );
    menuContext = ContextFactory::createMenuContext();
    mainContext = ContextFactory::createGameContext();
+   placingContext = ContextFactory::createBuildingPlacingContext();
    activeContext = mainContext;
    actions[ GameAction::LEFT_CLICK ] = [this]( const ActionData& event ) { onLeftClick( event ); };
    actions[ GameAction::CAMERA_MOVE_RIGHT ] = [this]( const ActionData& event ) { updateCameraSpeedX( event.value ); };
@@ -20,6 +25,9 @@ PlayerController::PlayerController( const std::shared_ptr<GameContext>& context 
    actions[ GameAction::CAMERA_MOVE_UP ] = [this]( const ActionData& event ) { updateCameraSpeedY( -event.value ); };
    actions[ GameAction::CAMERA_MOVE_DOWN ] = [this]( const ActionData& event ) { updateCameraSpeedY( event.value ); };
    actions[ GameAction::CAMERA_ZOOM ] = [this]( const ActionData& event ) { updateCameraZoom( event.value ); };
+   actions[ GameAction::MOUSE_MOVE ] = [this]( const ActionData& event ) { onMouseMove( event.position ); };
+   actions[ GameAction::PLACEMENT_CANCEL ] = [this]( const ActionData& event ) { onBuildingPlacingCancel(); };
+   actions[ GameAction::PLACE_BUILDING ] = [this]( const ActionData& event ) { onBuildingPlaced( event.position ); };
 }
 
 void PlayerController::tick( float dt )
@@ -61,6 +69,61 @@ void PlayerController::onPauseGame( const GamePaused& event )
 
 void PlayerController::onResumeGame( const GameResumed& event )
 {
+   activeContext = mainContext;
+}
+
+// TODO switch to ECS to make this cleaner
+void PlayerController::onBuildingPlacingStart( const BuildingPlacingStarted& event )
+{
+   // TODO properly handle left click on UI even in this context
+   activeContext = placingContext;
+
+   if( auto sharedContext = context.lock() )
+   {
+      auto building = BuildingFactory::createBuilding( event.type, event.position );
+      // TODO temporary hack to make the ghost house movable
+      building->setMobility( Mobility::MOVABLE );
+      building->onStart( sharedContext );
+      buildingPawn = building;
+   }
+}
+
+void PlayerController::onBuildingPlacingCancel()
+{
+   auto sharedContext = context.lock();
+   auto sharedPawn = buildingPawn.lock();
+
+   if( !sharedPawn || !sharedContext )
+      return;
+
+   sharedContext->scene->deleteOverlayEntityById( sharedPawn->getId() );
+   buildingPawn.reset();
+}
+
+void PlayerController::onBuildingPlaced( const sf::Vector2i& position )
+{
+   auto sharedContext = context.lock();
+   auto sharedPawn = buildingPawn.lock();
+
+   if( !sharedPawn || !sharedContext )
+      return;
+
+   // The position of the click should be enough, since in mouse move, we're snapping the house to the map tile
+   auto tile = sharedContext->scene->getMapTile( position );
+
+   auto sharedTile = tile.lock();
+
+   if( !sharedTile )
+      return;
+
+   // TODO this shouldn't be done here. Switch to ECS
+   sharedContext->scene->deleteOverlayEntityById( sharedPawn->getId() );
+   sharedPawn->setSpawnCategory( SpawnCategory::WORLD );
+   sharedPawn->setMobility( Mobility::STATIC );
+   sharedContext->scene->addEntityToScene( sharedPawn );
+   sharedTile->setBuilding( sharedPawn );
+
+   buildingPawn.reset();
    activeContext = mainContext;
 }
 
