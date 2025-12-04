@@ -5,9 +5,10 @@
 #include "../Entities/GameMap.h"
 #include "../Controllers/PlayerController.h"
 #include "UI/UIBlock.h"
-#include "UI/UIButton.h"
 #include "../Entities/ClickableText.h"
 #include "UI/UIRoot.h"
+#include "../Entities/Buildings/BuildingPlacementButton.h"
+#include "../Entities/Buildings/BuildingFactory.h"
 #include <SFML/Graphics.hpp>
 
 Game::Game()
@@ -33,13 +34,6 @@ void Game::start()
    context->inputSystem->registerController( std::make_unique<PlayerController>( context ) );
 
    {
-      auto building = std::make_shared<IsometricActor>( Mobility::STATIC, sf::Vector2f{ 1024, 256 }, 0,
-                                                        sf::Vector2f{ 0.25f, 0.25f } );
-      // TODO Call on start from scene
-      building->onStart( context );
-   }
-
-   {
       auto map = std::make_shared<GameMap>( 6, 6, sf::Vector2f{ WINDOW_WIDTH / 2 - 128, 0 } );
       map->init( context );
    }
@@ -53,6 +47,8 @@ void Game::start()
                                                    sf::Vector2f{ 10.f, ( float )window.getSize().y - 70.f } );
       auto menuButton = std::make_shared<UIButton<GamePaused>>( "Assets/menu.png", sf::Vector2f{ WINDOW_WIDTH - 60.f, 40.f } );
 
+      auto buildingButton = std::make_shared<BuildingPlacementButton<BuildingType::PEASANT_HOUSE>>( "Assets/menu.png", sf::Vector2f{ WINDOW_WIDTH - 60.f, 50.f } );
+
       auto uiText = std::make_shared<UIElementText>( "Assets/TheGoldBachelor.ttf", "Info bar", 24, sf::Color::White,
                                                      sf::Vector2f{ 10.f, 10.f } );
 
@@ -63,6 +59,7 @@ void Game::start()
       uiUpperBlock->addChild( uiText );
       uiUpperBlock->addChild( menuButton );
       uiLowerBlock->addChild( text );
+      uiLowerBlock->addChild( buildingButton );
 
       uiRoot->addChild( uiLowerBlock );
       uiRoot->addChild( uiUpperBlock );
