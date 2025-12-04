@@ -6,6 +6,7 @@
 #define GAME1_INPUTACTIONS_H
 
 #include <functional>
+#include <SFML/Window/Event.hpp>
 
 struct InputActions
 {

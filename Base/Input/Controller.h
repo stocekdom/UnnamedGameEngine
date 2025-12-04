@@ -27,6 +27,7 @@ class Controller
       void handleInput( const sf::Event& event );
 
    protected:
+      // TODO context stack so we dont have to repeat actions in contexts and contexts defines its specific actions and if the input falls through
       std::shared_ptr<InputContext> activeContext;
 
       // Uses std::function instead of a Command pattern for now since most of the time commands are just wrappers.

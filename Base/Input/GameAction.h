@@ -14,12 +14,13 @@ enum class GameAction
    CAMERA_MOVE_DOWN,
    CAMERA_ZOOM,
    LEFT_CLICK,
+   MOUSE_MOVE,
+   PLACE_BUILDING,
+   PLACEMENT_CANCEL,
 };
 
 struct ActionData
 {
-   // True - pressed, false - released
-   bool isPressed = true;
    // Value for analog actions.
    float value = 0;
    sf::Vector2i position = { 0, 0 };

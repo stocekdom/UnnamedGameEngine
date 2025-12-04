@@ -14,5 +14,7 @@ class ContextFactory
       static std::shared_ptr<InputContext> createGameContext();
 
       static std::shared_ptr<InputContext> createMenuContext();
+
+      static std::shared_ptr<InputContext> createBuildingPlacingContext();
 };
 #endif //GAME1_CONTEXTFACTORY_H

@@ -10,14 +10,26 @@ GameAction InputContext::getAction( const InputEventKey& inputEvent )
    return action == actionsMap.end() ? GameAction::NONE : action->second;
 }
 
-void InputContext::mapKey( sf::Keyboard::Key key, GameAction gameAction )
+void InputContext::mapKeyAction( sf::Keyboard::Key key, GameAction gameAction )
 {
-   actionsMap[ { InputEventKey::Type::Keyboard, key } ] = gameAction;
+   actionsMap[ { InputEventKey::Type::KeyboardPress, key } ] = gameAction;
 }
 
-void InputContext::mapButton( sf::Mouse::Button button, GameAction gameAction )
+void InputContext::mapKeyAxis( sf::Keyboard::Key key, GameAction gameAction )
 {
-   actionsMap[ { InputEventKey::Type::MouseButton, button } ] = gameAction;
+   actionsMap[ { InputEventKey::Type::KeyboardPress, key } ] = gameAction;
+   actionsMap[ { InputEventKey::Type::KeyboardRelease, key } ] = gameAction;
+}
+
+void InputContext::mapButtonAction( sf::Mouse::Button button, GameAction gameAction )
+{
+   actionsMap[ { InputEventKey::Type::MouseButtonPress, button } ] = gameAction;
+}
+
+void InputContext::mapButtonAxis( sf::Mouse::Button button, GameAction gameAction )
+{
+   actionsMap[ { InputEventKey::Type::MouseButtonPress, button } ] = gameAction;
+   actionsMap[ { InputEventKey::Type::MouseButtonRelease, button } ] = gameAction;
 }
 
 void InputContext::mapMouseMove( GameAction gameAction )

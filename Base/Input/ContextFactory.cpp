@@ -3,14 +3,16 @@
 //
 #include "ContextFactory.h"
 
+// TODO currently we're mapping axes to the same action and depend on value to determine direction. Better way?
+
 std::shared_ptr<InputContext> ContextFactory::createGameContext()
 {
    auto context = std::make_shared<InputContext>();
-   context->mapButton( sf::Mouse::Button::Left, GameAction::LEFT_CLICK );
-   context->mapKey( sf::Keyboard::D, GameAction::CAMERA_MOVE_RIGHT );
-   context->mapKey( sf::Keyboard::A, GameAction::CAMERA_MOVE_LEFT );
-   context->mapKey( sf::Keyboard::W, GameAction::CAMERA_MOVE_UP );
-   context->mapKey( sf::Keyboard::S, GameAction::CAMERA_MOVE_DOWN );
+   context->mapButtonAction( sf::Mouse::Button::Left, GameAction::LEFT_CLICK );
+   context->mapKeyAxis( sf::Keyboard::D, GameAction::CAMERA_MOVE_RIGHT );
+   context->mapKeyAxis( sf::Keyboard::A, GameAction::CAMERA_MOVE_LEFT );
+   context->mapKeyAxis( sf::Keyboard::W, GameAction::CAMERA_MOVE_UP );
+   context->mapKeyAxis( sf::Keyboard::S, GameAction::CAMERA_MOVE_DOWN );
    context->mapMouseWheel( GameAction::CAMERA_ZOOM );
    return context;
 }
@@ -18,7 +20,16 @@ std::shared_ptr<InputContext> ContextFactory::createGameContext()
 std::shared_ptr<InputContext> ContextFactory::createMenuContext()
 {
    auto context = std::make_shared<InputContext>();
-   context->mapButton( sf::Mouse::Button::Left, GameAction::LEFT_CLICK );
+   context->mapButtonAction( sf::Mouse::Button::Left, GameAction::LEFT_CLICK );
+   return context;
+}
+
+std::shared_ptr<InputContext> ContextFactory::createBuildingPlacingContext()
+{
+   auto context = createGameContext();
+   // Remap from game context
+   context->mapButtonAction( sf::Mouse::Button::Left, GameAction::PLACE_BUILDING );
+   context->mapMouseMove( GameAction::MOUSE_MOVE );
    return context;
 }
 

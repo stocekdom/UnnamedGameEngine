@@ -8,7 +8,6 @@ void Controller::handleInput( const sf::Event& event )
    // Initialization before switch to avoid compiler warning.
    GameAction action;
 
-   //std::cout << "Event: " << event.type << std::endl;
    // TODO lot of repeated code in keys and buttons.
    switch( event.type )
    {
@@ -17,20 +16,20 @@ void Controller::handleInput( const sf::Event& event )
          if( keyStates[ event.key.code ] )
             break;
 
-         action = activeContext->getAction( { InputEventKey::Type::Keyboard, event.key.code } );
+         action = activeContext->getAction( { InputEventKey::Type::KeyboardPress, event.key.code } );
          keyStates[ event.key.code ] = true;
 
          if( actions.count( action ) )
-            actions[ action ]( { true, 1.f } );
+            actions[ action ]( { 1.f } );
 
          break;
 
       case sf::Event::KeyReleased:
          keyStates[ event.key.code ] = false;
-         action = activeContext->getAction( { InputEventKey::Type::Keyboard, event.key.code } );
+         action = activeContext->getAction( { InputEventKey::Type::KeyboardRelease, event.key.code } );
 
          if( actions.count( action ) )
-            actions[ action ]( { false, 0.f } );
+            actions[ action ]( { 0.f } );
 
          break;
 
@@ -38,20 +37,20 @@ void Controller::handleInput( const sf::Event& event )
          if( buttonStates[ event.mouseButton.button ] )
             break;
 
-         action = activeContext->getAction( { InputEventKey::Type::MouseButton, event.mouseButton.button } );
+         action = activeContext->getAction( { InputEventKey::Type::MouseButtonPress, event.mouseButton.button } );
          keyStates[ event.mouseButton.button ] = true;
 
          if( actions.count( action ) )
-            actions[ action ]( { true, 1.f, { event.mouseButton.x, event.mouseButton.y } } );
+            actions[ action ]( { 1.f, { event.mouseButton.x, event.mouseButton.y } } );
 
          break;
 
       case sf::Event::MouseButtonReleased:
          buttonStates[ event.mouseButton.button ] = false;
-         action = activeContext->getAction( { InputEventKey::Type::MouseButton, event.mouseButton.button } );
+         action = activeContext->getAction( { InputEventKey::Type::MouseButtonRelease, event.mouseButton.button } );
 
          if( actions.count( action ) )
-            actions[ action ]( { false, 0.f, { event.mouseButton.x, event.mouseButton.y} } );
+            actions[ action ]( { 0.f, { event.mouseButton.x, event.mouseButton.y } } );
 
          break;
 
@@ -59,7 +58,7 @@ void Controller::handleInput( const sf::Event& event )
          action = activeContext->getAction( { InputEventKey::Type::MouseMove } );
 
          if( actions.count( action ) )
-            actions[ action ]( { false, 0.f, { event.mouseMove.x, event.mouseMove.y } } );
+            actions[ action ]( { 0.f, { event.mouseMove.x, event.mouseMove.y } } );
 
          break;
 
@@ -67,7 +66,7 @@ void Controller::handleInput( const sf::Event& event )
          action = activeContext->getAction( { InputEventKey::Type::MouseWheel } );
 
          if( actions.count( action ) )
-            actions[ action ]( { false, event.mouseWheelScroll.delta } );
+            actions[ action ]( { event.mouseWheelScroll.delta } );
 
          break;
 

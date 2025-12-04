@@ -11,8 +11,10 @@ struct InputEventKey
 {
    enum class Type
    {
-      Keyboard,
-      MouseButton,
+      KeyboardPress,
+      KeyboardRelease,
+      MouseButtonPress,
+      MouseButtonRelease,
       MouseMove,
       MouseWheel,
       None
