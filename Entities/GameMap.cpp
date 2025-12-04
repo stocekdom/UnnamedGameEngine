@@ -1,9 +1,9 @@
-#include <SFML/System/Vector2.hpp>
-#include <cmath>
 #include "../Base/Scene.h"
 #include "GameMap.h"
 #include "MapTile.h"
 #include "../Base/Core/Math.h"
+#include <SFML/System/Vector2.hpp>
+#include <cmath>
 
 //
 // Created by dominik on 14.11.25.
@@ -25,7 +25,8 @@ void GameMap::init( std::shared_ptr<GameContext>& context )
                          ( float )y * ( Math::IsometricConstants::SPRITE_WIDTH / 2 );
          float screenY = mapStart.y + ( float )y * ( Math::IsometricConstants::SPRITE_HEIGHT / 2 ) +
                          ( float )x * ( Math::IsometricConstants::SPRITE_HEIGHT / 2 );
-         auto tileTmp = std::make_shared<MapTile>( "Assets/grass1.png", Mobility::STATIC, sf::Vector2f{ screenX, screenY } );
+         auto tileTmp = std::make_shared<MapTile>( "Assets/grass1.png", SpawnCategory::WORLD, Mobility::STATIC,
+                                                   sf::Vector2f{ screenX, screenY } );
          tileTmp->onStart( context );
          gameMap.push_back( tileTmp );
       }
@@ -34,19 +35,57 @@ void GameMap::init( std::shared_ptr<GameContext>& context )
 
 bool GameMap::onClick( const sf::Vector2f& location )
 {
+   auto tile = getTile( location );
+   if( tile.x < 0 || tile.y < 0 || tile.x >= mapWidth || tile.y >= mapHeight )
+      return false;
+
+   if( auto t = gameMap[ tile.x * mapWidth + tile.y ].lock() )
+      t->setHeight( 10 );
+
+   return true;
+}
+
+sf::Vector2f GameMap::snapToMapTile( const sf::Vector2f& mousePosition )
+{
+   auto tile = getTile( mousePosition );
+
+   if( tile.x < 0 || tile.y < 0 || tile.x >= mapWidth || tile.y >= mapHeight )
+      return mousePosition;
+
+   return getScreenCoords( tile );
+}
+
+
+std::weak_ptr<MapTile> GameMap::getMapTile( const sf::Vector2f& mousePosition )
+{
+   auto tile = getTile( mousePosition );
+   if( tile.x < 0 || tile.y < 0 || tile.x >= mapWidth || tile.y >= mapHeight )
+      return {};
+
+   return gameMap[ tile.x * mapWidth + tile.y ];
+}
+
+sf::Vector2i GameMap::getTile( const sf::Vector2f& position ) const
+{
    // Offset the click location to the center of the map in screen space. The center of the map is considered the top corner of the diamond
-   auto mapStartOffsetLocation = location - mapStart;
+   auto mapStartOffsetLocation = position - mapStart;
    // Offset again by half the sprite width to get the center of the tile
    mapStartOffsetLocation.x -= Math::IsometricConstants::SPRITE_WIDTH / 2;
    auto worldLocation = Math::screenToWorldSpace( mapStartOffsetLocation );
    int worldX = std::floor( worldLocation.x / Math::IsometricConstants::WORLD_TILE_WIDTH );
    int worldY = std::floor( worldLocation.y / Math::IsometricConstants::WORLD_TILE_WIDTH );
+   return { worldX, worldY };
+}
 
-   if( worldX < 0 || worldY < 0 || worldX >= mapWidth || worldY >= mapHeight )
-      return false;
+sf::Vector2f GameMap::getScreenCoords( const sf::Vector2i& tile ) const
+{
+   auto screenCoords = Math::worldToScreenSpace(
+         sf::Vector2f{
+               ( float )tile.x * Math::IsometricConstants::WORLD_TILE_WIDTH + Math::IsometricConstants::WORLD_TILE_WIDTH / 2,
+               ( float )tile.y * Math::IsometricConstants::WORLD_TILE_WIDTH + Math::IsometricConstants::WORLD_TILE_WIDTH / 2 } );
 
-   if( auto t = gameMap[ worldX * mapWidth + worldY ].lock() )
-      t->setHeight( 10 );
-
-   return true;
+   screenCoords.x += Math::IsometricConstants::SPRITE_WIDTH / 2;
+   screenCoords.x += mapStart.x;
+   screenCoords.y += mapStart.y;
+   return screenCoords;
 }

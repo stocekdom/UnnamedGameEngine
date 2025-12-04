@@ -5,9 +5,11 @@
 #include "../Base/Core/Math.h"
 #include <utility>
 
-MapTile::MapTile( std::string texturePath, Mobility mobilityStatus, const sf::Vector2<float>& position, float rotation,
-                  const sf::Vector2<float>& scale, float height, bool isVisible )
-      : IsometricActor( mobilityStatus, position, rotation, scale, height, isVisible ), tileTexture( std::move( texturePath ) )
+MapTile::MapTile( std::string texturePath, SpawnCategory spawnCategory, Mobility mobilityStatus,
+                  const sf::Vector2<float>& position, float rotation, const sf::Vector2<float>& scale, float height,
+                  bool isVisible )
+      : IsometricActor( spawnCategory, mobilityStatus, position, rotation, scale, height, isVisible ),
+        tileTexture( std::move( texturePath ) )
 {
 }
 
@@ -23,5 +25,9 @@ void MapTile::onStart( std::shared_ptr<GameContext>& context )
    Actor::onStart( context );
    // Force the origin to be in the top-left corner.
    sprite.setOrigin( 0, 0 );
+}
 
+void MapTile::setBuilding( const std::shared_ptr<Building>& newBuilding )
+{
+   building = newBuilding;
 }
