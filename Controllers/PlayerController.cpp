@@ -20,10 +20,23 @@ PlayerController::PlayerController( const std::shared_ptr<GameContext>& context 
    placingContext = ContextFactory::createBuildingPlacingContext();
    activeContext = mainContext;
    actions[ GameAction::LEFT_CLICK ] = [this]( const ActionData& event ) { onLeftClick( event ); };
-   actions[ GameAction::CAMERA_MOVE_RIGHT ] = [this]( const ActionData& event ) { updateCameraSpeedX( event.value ); };
-   actions[ GameAction::CAMERA_MOVE_LEFT ] = [this]( const ActionData& event ) { updateCameraSpeedX( -event.value ); };
-   actions[ GameAction::CAMERA_MOVE_UP ] = [this]( const ActionData& event ) { updateCameraSpeedY( -event.value ); };
-   actions[ GameAction::CAMERA_MOVE_DOWN ] = [this]( const ActionData& event ) { updateCameraSpeedY( event.value ); };
+   // Added if condition to prevent camera stopping if the user holds the opposite buttons (holding A and starts holding D) and releases one of them, setting the camera speed to 0
+   actions[ GameAction::CAMERA_MOVE_RIGHT ] = [this]( const ActionData& event ) {
+      if( cameraSpeed.x >= 0.f || event.value != 0.f )
+         updateCameraSpeedX( event.value );
+   };
+   actions[ GameAction::CAMERA_MOVE_LEFT ] = [this]( const ActionData& event ) {
+      if( cameraSpeed.x <= 0.f || event.value != 0.f )
+         updateCameraSpeedX( -event.value );
+   };
+   actions[ GameAction::CAMERA_MOVE_UP ] = [this]( const ActionData& event ) {
+      if( cameraSpeed.y <= 0.f || event.value != 0.f )
+         updateCameraSpeedY( -event.value );
+   };
+   actions[ GameAction::CAMERA_MOVE_DOWN ] = [this]( const ActionData& event ) {
+      if( cameraSpeed.y >= 0.f || event.value != 0.f )
+         updateCameraSpeedY( event.value );
+   };
    actions[ GameAction::CAMERA_ZOOM ] = [this]( const ActionData& event ) { updateCameraZoom( event.value ); };
    actions[ GameAction::MOUSE_MOVE ] = [this]( const ActionData& event ) { onMouseMove( event.position ); };
    actions[ GameAction::PLACEMENT_CANCEL ] = [this]( const ActionData& event ) { onBuildingPlacingCancel(); };
