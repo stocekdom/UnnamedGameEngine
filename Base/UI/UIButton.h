@@ -21,7 +21,7 @@ class UIButton : public UIElement
       explicit UIButton( std::string texturePath, const sf::Vector2f& position = { 0.f, 0.f }, float rotation = 0,
                          const sf::Vector2f& scale = { 1.f, 1.f }, bool isVisible = true );
 
-      void onStart( std::shared_ptr<GameContext>& context ) override;
+      void onStart( GameContext* context ) override;
 
       void draw( sf::RenderTarget& target, const Renderer& renderer ) override;
 
@@ -45,9 +45,9 @@ UIButton<EventType>::UIButton( std::string texturePath, const sf::Vector2f& posi
 }
 
 template<typename EventType>
-void UIButton<EventType>::onStart( std::shared_ptr<GameContext>& context )
+void UIButton<EventType>::onStart( GameContext* context )
 {
-   gameContext = context.get();
+   gameContext = context;
    buttonSprite.setTexture( context->textureManager->loadTexture( texturePath ) );
    buttonSprite.setPosition( getPosition() );
    buttonSprite.setRotation( getRotation() );

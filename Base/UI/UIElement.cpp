@@ -9,7 +9,7 @@ UIElement::UIElement( const sf::Vector2f& position, float rotation, const sf::Ve
 {
 }
 
-void UIElement::onStart( std::shared_ptr<GameContext>& context )
+void UIElement::onStart( GameContext* context )
 {
    for( auto& child: children )
       child->onStart( context );

@@ -13,7 +13,7 @@ class PeasantHouse : public Building
       explicit PeasantHouse( SpawnCategory spawnCategory, const sf::Vector2f& position = { 0.f, 0.f }, float rotation = 0,
                              const sf::Vector2f& scale = { 1.f, 1.f }, float height = 0, bool isVisible = true );
 
-      void onStart( std::shared_ptr<GameContext>& context ) override;
+      void onStart( GameContext* context ) override;
 };
 
 #endif //GAME1_PEASANTHOUSE_H

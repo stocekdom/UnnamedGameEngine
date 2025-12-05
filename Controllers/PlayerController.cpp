@@ -3,12 +3,12 @@
 //
 #include "PlayerController.h"
 #include "../Base/Core/Math.h"
-#include "../Entities/MapTile.h"
+#include "../Base/GameMap/MapTile.h"
 #include "../Base/Input/ContextFactory.h"
 #include "../Entities/Buildings/BuildingFactory.h"
 
 // We initialize everything in the constructor since systems are already created at this point, and we don't need onStart
-PlayerController::PlayerController( const std::shared_ptr<GameContext>& context ) : context( context ),
+PlayerController::PlayerController( const std::shared_ptr<GameContext>& context ) : context( context.get() ),
                                                                                     cameraSpeed( 0.f, 0.f )
 {
    context->eventSystem->subscribe<GamePaused>( [this]( const GamePaused& event ) { onPauseGame( event ); } );
@@ -32,14 +32,8 @@ PlayerController::PlayerController( const std::shared_ptr<GameContext>& context 
 
 void PlayerController::tick( float dt )
 {
-   auto sharedContext = context.lock();
-
-   // TODO Throw instead??
-   if( !sharedContext )
-      return;
-
    if( cameraSpeed.x != 0.f || cameraSpeed.y != 0.f )
-      sharedContext->scene->moveCamera( cameraSpeed * CAMERA_SPEED * dt );
+      context->scene->moveCamera( cameraSpeed * CAMERA_SPEED * dt );
 
    if( targetZoom != currentZoom )
    {
@@ -52,14 +46,13 @@ void PlayerController::tick( float dt )
       else
          currentZoom = std::min( targetZoom, currentZoom + change );
 
-      sharedContext->scene->zoomCamera( currentZoom / prevZoom );
+      context->scene->zoomCamera( currentZoom / prevZoom );
    }
 }
 
 void PlayerController::onLeftClick( const ActionData& event )
 {
-   if( auto sharedContext = context.lock() )
-      sharedContext->scene->onLeftClick( event.position );
+   context->uiSystem->onLeftClick( event.position );
 }
 
 void PlayerController::onPauseGame( const GamePaused& event )
@@ -73,56 +66,62 @@ void PlayerController::onResumeGame( const GameResumed& event )
 }
 
 // TODO switch to ECS to make this cleaner
+void PlayerController::onMouseMove( const sf::Vector2i& position )
+{
+   auto sharedPawn = buildingPawn.lock();
+
+   if( !sharedPawn )
+      return;
+
+   auto snappedPosition = context->gameMapSystem->snapToMapTile( position );
+   // Offset from the tile center to be closer to the bottom left corner of the ile
+   snappedPosition.y += Math::IsometricConstants::BUILDING_TILE_CENTER_Y_OFFSET;
+   sharedPawn->setPosition( snappedPosition );
+}
+
 void PlayerController::onBuildingPlacingStart( const BuildingPlacingStarted& event )
 {
    // TODO properly handle left click on UI even in this context
    activeContext = placingContext;
 
-   if( auto sharedContext = context.lock() )
-   {
-      auto building = BuildingFactory::createBuilding( event.type, event.position );
-      // TODO temporary hack to make the ghost house movable
-      building->setMobility( Mobility::MOVABLE );
-      building->onStart( sharedContext );
-      buildingPawn = building;
-   }
+   auto building = BuildingFactory::createBuilding( event.type, event.position );
+   // TODO temporary hack to make the ghost house movable
+   building->setMobility( Mobility::MOVABLE );
+   building->onStart( context );
+   buildingPawn = building;
 }
 
 void PlayerController::onBuildingPlacingCancel()
 {
-   auto sharedContext = context.lock();
    auto sharedPawn = buildingPawn.lock();
 
-   if( !sharedPawn || !sharedContext )
+   if( !sharedPawn )
       return;
 
-   sharedContext->scene->deleteOverlayEntityById( sharedPawn->getId() );
+   context->scene->deleteOverlayEntityById( sharedPawn->getId() );
    buildingPawn.reset();
 }
 
 void PlayerController::onBuildingPlaced( const sf::Vector2i& position )
 {
-   auto sharedContext = context.lock();
+   // UI handled first
+   if( context->uiSystem->onLeftClick( position ) )
+      return;
+
    auto sharedPawn = buildingPawn.lock();
 
-   if( !sharedPawn || !sharedContext )
+   if( !sharedPawn )
       return;
 
    // The position of the click should be enough, since in mouse move, we're snapping the house to the map tile
-   auto tile = sharedContext->scene->getMapTile( position );
-
-   auto sharedTile = tile.lock();
-
-   if( !sharedTile )
+   if( !context->gameMapSystem->placeBuilding( position, sharedPawn ) )
       return;
 
    // TODO this shouldn't be done here. Switch to ECS
-   sharedContext->scene->deleteOverlayEntityById( sharedPawn->getId() );
+   context->scene->deleteOverlayEntityById( sharedPawn->getId() );
    sharedPawn->setSpawnCategory( SpawnCategory::WORLD );
    sharedPawn->setMobility( Mobility::STATIC );
-   sharedContext->scene->addEntityToScene( sharedPawn );
-   sharedTile->setBuilding( sharedPawn );
-
+   context->scene->addEntityToScene( sharedPawn );
    buildingPawn.reset();
    activeContext = mainContext;
 }

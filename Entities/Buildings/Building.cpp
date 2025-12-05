@@ -10,7 +10,7 @@ Building::Building( SpawnCategory spawnCategory, const sf::Vector2f& position, f
 {
 }
 
-void Building::onStart( std::shared_ptr<GameContext>& context )
+void Building::onStart( GameContext* context )
 {
    // Ensures all building have the same pivot point.
    sprite.setOrigin( sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height );

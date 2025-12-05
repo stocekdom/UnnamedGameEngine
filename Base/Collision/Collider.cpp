@@ -33,7 +33,7 @@ void Collider::setIsEnabled( bool enabled )
    isEnabled = enabled;
 }
 
-void Collider::onStart( std::shared_ptr<GameContext>& context )
+void Collider::onStart( GameContext* context )
 {
    auto entity = shared_from_this();
    context->scene->addEntityToScene( entity );

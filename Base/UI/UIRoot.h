@@ -13,7 +13,7 @@ class UIRoot : public UIElement
    public:
       explicit UIRoot( const std::shared_ptr<UIElement>& menuLayer );
 
-      void onStart( std::shared_ptr<GameContext>& context ) override;
+      void onStart( GameContext* context ) override;
 
       void setMenuLayer( const std::shared_ptr<UIElement>& newMenuLayer );
 

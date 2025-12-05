@@ -33,7 +33,7 @@ bool UIRoot::onClick( const sf::Vector2f& position )
    return UIElement::onClick( position );
 }
 
-void UIRoot::onStart( std::shared_ptr<GameContext>& context )
+void UIRoot::onStart( GameContext* context )
 {
    // Use lambda as wrappers for registering methods to events instead of using std::bind
    context->eventSystem->subscribe<GameResumed>( [this]( const GameResumed& event ) { onResumeGame( event ); } );

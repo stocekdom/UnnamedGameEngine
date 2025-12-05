@@ -1,7 +1,6 @@
 #include "SpacialEntity.h"
 #include "../Core/Math.h"
 #include <SFML/System/Vector2.hpp>
-#include <valarray>
 
 //
 // Created by dominik on 31.10.25.

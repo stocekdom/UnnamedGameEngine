@@ -2,7 +2,7 @@
 // Created by dominik on 14.11.25.
 //
 #include "MapTile.h"
-#include "../Base/Core/Math.h"
+#include "../Core/Math.h"
 #include <utility>
 
 MapTile::MapTile( std::string texturePath, SpawnCategory spawnCategory, Mobility mobilityStatus,
@@ -13,7 +13,7 @@ MapTile::MapTile( std::string texturePath, SpawnCategory spawnCategory, Mobility
 {
 }
 
-void MapTile::onStart( std::shared_ptr<GameContext>& context )
+void MapTile::onStart( GameContext* context )
 {
    sprite.setTexture( context->textureManager->loadTexture( tileTexture ) );
    // Calculate scale based on tile width so all tiles have the same size.
@@ -25,6 +25,11 @@ void MapTile::onStart( std::shared_ptr<GameContext>& context )
    Actor::onStart( context );
    // Force the origin to be in the top-left corner.
    sprite.setOrigin( 0, 0 );
+}
+
+bool MapTile::isOccupied() const
+{
+   return building.lock() != nullptr;
 }
 
 void MapTile::setBuilding( const std::shared_ptr<Building>& newBuilding )

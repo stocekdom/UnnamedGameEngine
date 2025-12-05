@@ -11,6 +11,8 @@
 #include "TextureManager.h"
 #include "Input/InputSystem.h"
 #include "Event/EventSystem.h"
+#include "UI/UISystem.h"
+#include "GameMap/GameMapSystem.h"
 
 /**
  * Simple context for global systems.
@@ -22,6 +24,8 @@ struct GameContext {
    std::shared_ptr<TextureManager> textureManager;
    std::shared_ptr<InputSystem> inputSystem;
    std::shared_ptr<EventSystem> eventSystem;
+   std::shared_ptr<GameMapSystem> gameMapSystem;
+   std::shared_ptr<UISystem> uiSystem;
 };
 
 #endif //GAME1_GAMECONTEXT_H

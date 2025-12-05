@@ -13,7 +13,7 @@ class Building : public IsometricActor
       Building( SpawnCategory spawnCategory, const sf::Vector2f& position, float rotation, const sf::Vector2f& scale,
                 float height, bool isVisible );
 
-      void onStart( std::shared_ptr<GameContext>& context ) override;
+      void onStart( GameContext* context ) override;
 };
 
 #endif //GAME1_BUILDING_H

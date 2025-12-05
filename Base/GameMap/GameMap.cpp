@@ -1,7 +1,7 @@
-#include "../Base/Scene.h"
+#include "../Scene.h"
 #include "GameMap.h"
 #include "MapTile.h"
-#include "../Base/Core/Math.h"
+#include "../Core/Math.h"
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
 
@@ -13,10 +13,8 @@ GameMap::GameMap( size_t mapHeight, size_t mapWidth, const sf::Vector2f& mapStar
 {
 }
 
-void GameMap::init( std::shared_ptr<GameContext>& context )
+void GameMap::init( GameContext* context )
 {
-   context->scene->addGameMap( shared_from_this() );
-
    for( size_t x = 0; x < mapWidth; ++x )
    {
       for( size_t y = 0; y < mapHeight; ++y )
@@ -35,7 +33,7 @@ void GameMap::init( std::shared_ptr<GameContext>& context )
 
 bool GameMap::onClick( const sf::Vector2f& location )
 {
-   auto tile = getTile( location );
+   auto tile = getTileIndex( location );
    if( tile.x < 0 || tile.y < 0 || tile.x >= mapWidth || tile.y >= mapHeight )
       return false;
 
@@ -47,7 +45,7 @@ bool GameMap::onClick( const sf::Vector2f& location )
 
 sf::Vector2f GameMap::snapToMapTile( const sf::Vector2f& mousePosition )
 {
-   auto tile = getTile( mousePosition );
+   auto tile = getTileIndex( mousePosition );
 
    if( tile.x < 0 || tile.y < 0 || tile.x >= mapWidth || tile.y >= mapHeight )
       return mousePosition;
@@ -55,17 +53,16 @@ sf::Vector2f GameMap::snapToMapTile( const sf::Vector2f& mousePosition )
    return getScreenCoords( tile );
 }
 
-
 std::weak_ptr<MapTile> GameMap::getMapTile( const sf::Vector2f& mousePosition )
 {
-   auto tile = getTile( mousePosition );
+   auto tile = getTileIndex( mousePosition );
    if( tile.x < 0 || tile.y < 0 || tile.x >= mapWidth || tile.y >= mapHeight )
       return {};
 
    return gameMap[ tile.x * mapWidth + tile.y ];
 }
 
-sf::Vector2i GameMap::getTile( const sf::Vector2f& position ) const
+sf::Vector2i GameMap::getTileIndex( const sf::Vector2f& position ) const
 {
    // Offset the click location to the center of the map in screen space. The center of the map is considered the top corner of the diamond
    auto mapStartOffsetLocation = position - mapStart;

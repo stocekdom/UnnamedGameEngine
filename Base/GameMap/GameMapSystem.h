@@ -1,0 +1,49 @@
+//
+// Created by dominik on 04.12.25.
+//
+
+#ifndef GAME1_GAMEMAPSYSTEM_H
+#define GAME1_GAMEMAPSYSTEM_H
+
+#include <memory>
+#include <SFML/System/Vector2.hpp>
+
+class MapTile;
+class GameMap;
+class GameContext;
+class GameScene;
+class Building;
+
+class GameMapSystem
+{
+   public:
+      void onStart( GameContext* context );
+
+      void generateMap( size_t mapHeight, size_t mapWidth, const sf::Vector2f& mapStart, size_t seed = 0 );
+
+      /**
+       * Returns a position in screen space of the tile center that is closest to the mouse position.
+       * If the mouse position is outside of the map, returns the same position.
+       */
+      sf::Vector2f snapToMapTile( const sf::Vector2i& mousePosition );
+
+      /**
+       * Gets the tile at the given position. If the position is out of the map bounds, returns an empty weak pointer.
+       */
+      std::weak_ptr<MapTile> getMapTile( const sf::Vector2i& mousePosition );
+
+      /**
+       * Places a building on the map.
+       * @param position Position in screen space of the tile to place the building on.
+       * @param building Pointer to the building to place.
+       * @return Bool indicating whether the building was placed successfully or if the tile was already occupied or the position was out of bounds.
+       */
+      bool placeBuilding( const sf::Vector2i& position, const std::shared_ptr<Building>& building );
+
+   private:
+      std::unique_ptr<GameMap> map{};
+      // Raw pointer to avoid overhead since all systems are managed by Game class which outlives this object.
+      GameScene* scene;
+};
+
+#endif //GAME1_GAMEMAPSYSTEM_H

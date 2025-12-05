@@ -44,10 +44,10 @@ add_executable(game1 main.cpp
         Base/Entity/IsometricActor.cpp
         Base/TextureManager.h
         Base/TextureManager.cpp
-        Entities/MapTile.h
-        Entities/MapTile.cpp
-        Entities/GameMap.h
-        Entities/GameMap.cpp
+        Base/GameMap/MapTile.h
+        Base/GameMap/MapTile.cpp
+        Base/GameMap/GameMap.h
+        Base/GameMap/GameMap.cpp
         Base/Input/InputSystem.h
         Base/Input/InputSystem.cpp
         Base/Input/Controller.cpp
@@ -85,6 +85,10 @@ add_executable(game1 main.cpp
         Entities/Buildings/BuildingPlacementButton.h
         Entities/Buildings/BuildingEvents.h
         Base/Core/SpawnCategory.h
+        Base/UI/UISystem.h
+        Base/GameMap/GameMapSystem.h
+        Base/GameMap/GameMapSystem.cpp
+        Base/UI/UISystem.cpp
 )
 
 

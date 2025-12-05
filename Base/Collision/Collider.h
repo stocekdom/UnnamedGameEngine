@@ -21,7 +21,7 @@ class Collider : public SpacialEntity
       explicit Collider( Collidable* owningActor, Mobility mobilityStatus, sf::Vector2f position = { 0, 0 }, float rotation = 0,
                          sf::Vector2f scale = { 1, 1 }, bool isVisible = false );
 
-      void onStart( std::shared_ptr<GameContext>& context ) override;
+      void onStart( GameContext* context ) override;
 
       [[nodiscard]] bool isColliderEnabled() const;
 

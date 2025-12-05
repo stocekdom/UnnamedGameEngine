@@ -2,7 +2,7 @@
 // Created by dominik on 03.10.25.
 //
 #include "Game.h"
-#include "../Entities/GameMap.h"
+#include "GameMap/GameMap.h"
 #include "../Controllers/PlayerController.h"
 #include "UI/UIBlock.h"
 #include "../Entities/ClickableText.h"
@@ -10,6 +10,7 @@
 #include "../Entities/Buildings/BuildingPlacementButton.h"
 #include "../Entities/Buildings/BuildingFactory.h"
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 Game::Game()
 {
@@ -20,6 +21,8 @@ Game::Game()
    context->eventSystem = std::make_shared<EventSystem>();
    context->collisionSystem = std::make_shared<CollisionSystem>();
    context->scene = std::make_shared<GameScene>();
+   context->gameMapSystem = std::make_shared<GameMapSystem>();
+   context->uiSystem = std::make_shared<UISystem>();
 }
 
 void Game::start()
@@ -34,11 +37,6 @@ void Game::start()
    context->inputSystem->registerController( std::make_unique<PlayerController>( context ) );
 
    {
-      auto map = std::make_shared<GameMap>( 6, 6, sf::Vector2f{ WINDOW_WIDTH / 2 - 128, 0 } );
-      map->init( context );
-   }
-
-   {
       auto uiUpperBlock = std::make_shared<UIBlock>( sf::Vector2f{ WINDOW_WIDTH, 80 }, sf::Color( 100, 10, 10, 155 ),
                                                      sf::Vector2f{ 0.f, 0.f } );
       auto uiLowerBlock = std::make_shared<UIBlock>( sf::Vector2f{ WINDOW_WIDTH, 100 }, sf::Color( 100, 10, 10 ),
@@ -47,7 +45,10 @@ void Game::start()
                                                    sf::Vector2f{ 10.f, ( float )window.getSize().y - 70.f } );
       auto menuButton = std::make_shared<UIButton<GamePaused>>( "Assets/menu.png", sf::Vector2f{ WINDOW_WIDTH - 60.f, 40.f } );
 
-      auto buildingButton = std::make_shared<BuildingPlacementButton<BuildingType::PEASANT_HOUSE>>( "Assets/menu.png", sf::Vector2f{ WINDOW_WIDTH - 60.f, 50.f } );
+      auto buildingButton = std::make_shared<BuildingPlacementButton<BuildingType::PEASANT_HOUSE>>( "Assets/menu.png",
+                                                                                                    sf::Vector2f{
+                                                                                                          WINDOW_WIDTH - 60.f,
+                                                                                                          50.f } );
 
       auto uiText = std::make_shared<UIElementText>( "Assets/TheGoldBachelor.ttf", "Info bar", 24, sf::Color::White,
                                                      sf::Vector2f{ 10.f, 10.f } );
@@ -63,11 +64,15 @@ void Game::start()
 
       uiRoot->addChild( uiLowerBlock );
       uiRoot->addChild( uiUpperBlock );
-      context->scene->addUIRootComponent( uiRoot );
+      context->uiSystem->addUiRootComponent( uiRoot );
    }
 
-   context->scene->onStart( window, context );
+   context->gameMapSystem->generateMap( 6, 6, sf::Vector2f{ WINDOW_WIDTH / 2 - 128, 0 } );
+   context->gameMapSystem->onStart( context.get() );
+   context->uiSystem->onStart( window, context.get() );
+   context->scene->onStart( window );
 
+   std::cout << "\033[92m[INFO]: Game starting!" << "\033[0m" << std::endl;
    // Main loop
    while( window.isOpen() )
    {
@@ -94,7 +99,10 @@ void Game::start()
       context->scene->update( frameTime );
       window.clear();
       context->scene->renderScene( window, *renderer );
+      context->uiSystem->renderUI( window, *renderer );
       window.display();
    }
+
+   std::cout << "\033[96m[INFO]: Game ending!" << "\033[0m" << std::endl;
 }
 

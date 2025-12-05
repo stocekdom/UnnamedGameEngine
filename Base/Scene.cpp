@@ -4,13 +4,6 @@
 #include "Scene.h"
 #include "Entity/Entity.h"
 #include "UI/UIElement.h"
-#include "../Entities/GameMap.h"
-
-GameScene::GameScene()
-{
-   // Make an empty default UI root to avoid nullptr checks
-   uiRoot = std::make_shared<UIElement>( sf::Vector2f{ 0.f, 0.f }, 0, sf::Vector2f{ 0.f, 0.f }, false );
-}
 
 void GameScene::addEntityToScene( const std::shared_ptr<Entity>& actor )
 {
@@ -56,11 +49,6 @@ void GameScene::deleteOverlayEntityById( const UUID& id )
       }
 }
 
-void GameScene::addUIRootComponent( const std::shared_ptr<UIElement>& root )
-{
-   uiRoot = root;
-}
-
 void GameScene::updateFixed( float fixedDt )
 {
    for( auto& actor: tickableActors )
@@ -81,6 +69,11 @@ void GameScene::update( float deltaTime )
       actor->tick( deltaTime );
 }
 
+sf::Vector2f GameScene::getWorldCoordinates( const sf::Vector2i& screenCoords )
+{
+   return mainWindow->mapPixelToCoords( screenCoords, *mainView );
+}
+
 const std::vector<std::shared_ptr<Observer>>& GameScene::getObservers() const
 {
    return observers;
@@ -91,28 +84,11 @@ void GameScene::addObserver( const std::shared_ptr<Observer>& observer )
    observers.push_back( observer );
 }
 
-void GameScene::addGameMap( const std::shared_ptr<GameMap>& gameMap )
+void GameScene::onStart( sf::RenderWindow& window )
 {
-   map = gameMap;
-}
-
-void GameScene::onLeftClick( const sf::Vector2i& position )
-{
-   if( uiRoot->onClick( sf::Vector2f{ position } ) )
-      return;
-
-   // Adjust for camera position of the main view. UI view doesn't move, so we don't need to adjust it
-   auto realPosition = mainWindow->mapPixelToCoords( position, *mainView );
-   map->onClick( realPosition );
-}
-
-void GameScene::onStart( sf::RenderWindow& window, std::shared_ptr<GameContext>& context )
-{
-   onStartCalled = true;
    // TODO make window smart pointer in the game class
    mainWindow = &window;
    mainView = std::make_shared<sf::View>( window.getDefaultView() );
-   uiView = std::make_shared<sf::View>( *mainView );
 
    // TODO simple Y sorting. Use AABB for better quality and precision
    std::sort( staticActors.begin(), staticActors.end(),
@@ -120,8 +96,6 @@ void GameScene::onStart( sf::RenderWindow& window, std::shared_ptr<GameContext>&
                  return a->getPosition().y < b->getPosition().y;
               }
    );
-
-   uiRoot->onStart( context );
 }
 
 const std::vector<std::shared_ptr<Entity>>& GameScene::getStaticEntities() const
@@ -142,10 +116,6 @@ void GameScene::renderScene( sf::RenderTarget& target, const Renderer& renderer 
    for( auto& actor: overlayActors )
       if( actor->isVisible() )
          renderer.render( actor->getDrawable(), target );
-
-   // Draw UI tree
-   target.setView( *uiView );
-   uiRoot->draw( target, renderer );
 }
 
 void GameScene::moveCamera( const sf::Vector2f& delta )
@@ -183,14 +153,3 @@ void GameScene::spawnWorldActor( const std::shared_ptr<Entity>& actor )
          break;
    }
 }
-
-sf::Vector2f GameScene::snapToMapTile( const sf::Vector2i& mousePosition )
-{
-   return map->snapToMapTile( mainWindow->mapPixelToCoords( mousePosition, *mainView ) );
-}
-
-std::weak_ptr<MapTile> GameScene::getMapTile( const sf::Vector2i& mousePosition )
-{
-   return map->getMapTile( mainWindow->mapPixelToCoords( mousePosition, *mainView ) );
-}
-

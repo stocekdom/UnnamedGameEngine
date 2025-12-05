@@ -23,7 +23,7 @@ class UIElement : public Clickable, public std::enable_shared_from_this<UIElemen
 
       virtual ~UIElement() = default;
 
-      virtual void onStart( std::shared_ptr<GameContext>& context );
+      virtual void onStart( GameContext* context );
       // TODO currently just simple UI. might add tick function in the future
 
       [[nodiscard]] virtual bool isVisible() const;

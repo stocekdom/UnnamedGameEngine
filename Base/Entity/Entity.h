@@ -28,7 +28,8 @@ class Entity : public std::enable_shared_from_this<Entity>
 
       virtual ~Entity() = default;
 
-      virtual void onStart( std::shared_ptr<GameContext>& context ) = 0;
+      // TODO passing the context should be fixed with ECS
+      virtual void onStart( GameContext* context ) = 0;
 
       // Tick with fixed time passed between frames. Usage: Simulation, physics, etc.
       virtual void tickFixed( float fixedDt ) = 0;

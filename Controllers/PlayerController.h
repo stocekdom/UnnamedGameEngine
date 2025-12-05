@@ -56,7 +56,7 @@ class PlayerController : public Controller
       std::shared_ptr<InputContext> menuContext;
       std::shared_ptr<InputContext> mainContext;
       std::shared_ptr<InputContext> placingContext;
-      std::weak_ptr<GameContext> context;
+      GameContext* context;
 };
 
 #endif //GAME1_PLAYERCONTROLLER_H

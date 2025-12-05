@@ -14,19 +14,15 @@
 #include "Renderer.h"
 #include "Core/UUID.h"
 
-class UIElement;
 class Entity;
-class GameMap;
-class MapTile;
 class GameContext;
 
 class GameScene
 {
    public:
-
-      GameScene();
-
       ~GameScene() = default;
+
+      void onStart( sf::RenderWindow& window );
 
       void addEntityToScene( const std::shared_ptr<Entity>& actor );
 
@@ -35,24 +31,13 @@ class GameScene
       // TODO this isn't clean switch to ECS
       void deleteOverlayEntityById( const UUID& id );
 
-      void addUIRootComponent( const std::shared_ptr<UIElement>& root );
-
       [[nodiscard]] const std::vector<std::shared_ptr<Entity>>& getStaticEntities() const;
 
       [[nodiscard]] const std::vector<std::shared_ptr<Observer>>& getObservers() const;
 
       void addObserver( const std::shared_ptr<Observer>& observer );
 
-      void addGameMap( const std::shared_ptr<GameMap>& gameMap );
-
-      // Since the scene stores UI elements and map for now, we need to handle click events.
-      void onLeftClick( const sf::Vector2i& position );
-
-      sf::Vector2f snapToMapTile( const sf::Vector2i& mousePosition );
-
-      std::weak_ptr<MapTile> getMapTile( const sf::Vector2i& mousePosition );
-
-      void onStart( sf::RenderWindow& window, std::shared_ptr<GameContext>& context );
+      sf::Vector2f getWorldCoordinates( const sf::Vector2i& screenCoords );
 
       void updateFixed( float fixedDt );
 
@@ -68,13 +53,6 @@ class GameScene
       // Window, view
       sf::RenderWindow* mainWindow = nullptr;
       std::shared_ptr<sf::View> mainView;
-      std::shared_ptr<sf::View> uiView;
-      // ===================================
-      // UI
-      std::shared_ptr<UIElement> uiRoot;
-      //========================================
-      // Map
-      std::shared_ptr<GameMap> map;
       // ========================================
       // Entities
       // Entities that can't be moved. Sorted in onStart method

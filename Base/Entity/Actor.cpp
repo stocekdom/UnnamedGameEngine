@@ -10,7 +10,7 @@ Actor::Actor( SpawnCategory spawnCategory, Mobility mobility, sf::Vector2f posit
    isEntityDirty = true;
 }
 
-void Actor::onStart( std::shared_ptr<GameContext>& context )
+void Actor::onStart( GameContext* context )
 {
    context->scene->addEntityToScene( shared_from_this() );
 }

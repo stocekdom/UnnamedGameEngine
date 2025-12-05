@@ -11,7 +11,7 @@ PeasantHouse::PeasantHouse( SpawnCategory spawnCategory, const sf::Vector2f& pos
 {
 }
 
-void PeasantHouse::onStart( std::shared_ptr<GameContext>& context )
+void PeasantHouse::onStart( GameContext* context )
 {
    // TODO add random variants
    sprite.setTexture( context->textureManager->loadTexture( "Assets/house1.png" ) );
