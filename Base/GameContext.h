@@ -13,6 +13,7 @@
 #include "Event/EventSystem.h"
 #include "UI/UISystem.h"
 #include "GameMap/GameMapSystem.h"
+#include "Data/ItemRegistry.h"
 
 /**
  * Simple context for global systems.
@@ -26,6 +27,7 @@ struct GameContext {
    std::shared_ptr<EventSystem> eventSystem;
    std::shared_ptr<GameMapSystem> gameMapSystem;
    std::shared_ptr<UISystem> uiSystem;
+   std::shared_ptr<ItemRegistry> itemRegistry;
 };
 
 #endif //GAME1_GAMECONTEXT_H

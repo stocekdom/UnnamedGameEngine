@@ -89,6 +89,17 @@ add_executable(game1 main.cpp
         Base/GameMap/GameMapSystem.h
         Base/GameMap/GameMapSystem.cpp
         Base/UI/UISystem.cpp
+        Base/Data/ItemDefinition.h
+        Base/Data/ItemRegistry.h
+        Base/Data/ItemRegistry.cpp
+        Base/Data/ItemInstance.h
+        Base/Data/InventoryComponent.h
+        Base/Data/InventoryComponent.cpp
+        Base/Data/ItemInstance.cpp
+        Base/Player.h
+        Base/Data/PlayerInventoryComponent.h
+        Base/Data/ItemEvents.h
+        Base/Data/PlayerInventoryComponent.cpp
 )
 
 

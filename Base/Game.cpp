@@ -7,6 +7,7 @@
 #include "UI/UIRoot.h"
 #include "../Src/Entities/Buildings/BuildingPlacementButton.h"
 #include "../Src/Entities/Buildings/BuildingFactory.h"
+#include "../Src/GameItemRegistry.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -21,6 +22,7 @@ Game::Game()
    context->scene = std::make_shared<GameScene>();
    context->gameMapSystem = std::make_shared<GameMapSystem>();
    context->uiSystem = std::make_shared<UISystem>();
+   context->itemRegistry = std::make_shared<GameItemRegistry>();
 }
 
 void Game::start()
