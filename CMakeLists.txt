@@ -97,9 +97,17 @@ add_executable(game1 main.cpp
         Base/Data/InventoryComponent.cpp
         Base/Data/ItemInstance.cpp
         Base/Player.h
+        Src/Resources.h
+        Src/UI/ResourceBar.h
+        Src/UI/ResourceCounter.h
+        Src/UI/Fonts.h
+        Src/UI/ResourceCounter.cpp
+        Src/UI/ResourceBar.cpp
         Base/Data/PlayerInventoryComponent.h
         Base/Data/ItemEvents.h
         Base/Data/PlayerInventoryComponent.cpp
+        Src/GameItemRegistry.h
+        Src/GameItemRegistry.cpp
 )
 
 

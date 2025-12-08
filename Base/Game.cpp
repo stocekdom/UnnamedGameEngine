@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "GameMap/GameMap.h"
 #include "../Src/Controllers/PlayerController.h"
+#include "../Src/UI/ResourceBar.h"
 #include "UI/UIRoot.h"
 #include "../Src/Entities/Buildings/BuildingPlacementButton.h"
 #include "../Src/Entities/Buildings/BuildingFactory.h"
@@ -37,8 +38,8 @@ void Game::start()
    context->inputSystem->registerController( std::make_unique<PlayerController>( context ) );
 
    {
-      auto uiUpperBlock = std::make_shared<UIBlock>( sf::Vector2f{ WINDOW_WIDTH, 80 }, sf::Color( 100, 10, 10, 155 ),
-                                                     sf::Vector2f{ 0.f, 0.f } );
+      auto uiUpperBlock = std::make_shared<ResourceBar>( sf::Vector2f{ WINDOW_WIDTH, 80 }, sf::Color( 100, 10, 10, 155 ),
+                                                         sf::Vector2f{ 0.f, 0.f } );
       auto uiLowerBlock = std::make_shared<UIBlock>( sf::Vector2f{ WINDOW_WIDTH, 100 }, sf::Color( 100, 10, 10 ),
                                                      sf::Vector2f{ 0.f, ( float )window.getSize().y - 100.f } );
       auto menuButton = std::make_shared<UIButton<GamePaused>>( "Assets/Icons/menu.png",
@@ -47,16 +48,16 @@ void Game::start()
       auto buildingButton = std::make_shared<BuildingPlacementButton<BuildingType::PEASANT_HOUSE>>( "Assets/Icons/houseIcon.png",
                                                                                                     sf::Vector2f{ 60.f, 50.f } );
 
-      auto uiText = std::make_shared<UIElementText>( "Assets/TheGoldBachelor.ttf", "Info bar", 24, sf::Color::White,
-                                                     sf::Vector2f{ 10.f, 10.f } );
+      auto addItemButtonPlaceholder = std::make_shared<UIButton<PlayerInventoryItemAdded>>( "Assets/Icons/menu.png",
+                                                                                            sf::Vector2f{ 160.f, 50.f } );
 
       auto placeholderMenu = std::make_shared<UIButton<GameResumed>>( "Assets/Icons/menu.png",
                                                                       sf::Vector2f{ WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 }, 0,
                                                                       sf::Vector2f{ 5.f, 5.f } );
       auto uiRoot = std::make_shared<UIRoot>( placeholderMenu );
-      uiUpperBlock->addChild( uiText );
       uiUpperBlock->addChild( menuButton );
       uiLowerBlock->addChild( buildingButton );
+      uiLowerBlock->addChild( addItemButtonPlaceholder );
 
       uiRoot->addChild( uiLowerBlock );
       uiRoot->addChild( uiUpperBlock );
