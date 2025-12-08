@@ -15,7 +15,7 @@ MapTile::MapTile( std::string texturePath, SpawnCategory spawnCategory, Mobility
 
 void MapTile::onStart( GameContext* context )
 {
-   sprite.setTexture( context->textureManager->loadTexture( tileTexture ) );
+   sprite.setTexture( context->resourceManager->loadTexture( tileTexture ) );
    // Calculate scale based on tile width so all tiles have the same size.
    // We use width because all isometric tiles can be blocks and height tells us nothing about the tile.
    // We need to know the size of the base which is and the height is width/2.

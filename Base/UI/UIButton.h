@@ -48,7 +48,7 @@ template<typename EventType>
 void UIButton<EventType>::onStart( GameContext* context )
 {
    gameContext = context;
-   buttonSprite.setTexture( context->textureManager->loadTexture( texturePath ) );
+   buttonSprite.setTexture( context->resourceManager->loadTexture( texturePath ) );
    buttonSprite.setPosition( getPosition() );
    buttonSprite.setRotation( getRotation() );
    buttonSprite.setScale( getScale() );

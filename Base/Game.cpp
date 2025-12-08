@@ -14,7 +14,7 @@ Game::Game()
 {
    context = std::make_shared<GameContext>();
    renderer = std::make_shared<Renderer>();
-   context->textureManager = std::make_shared<TextureManager>();
+   context->resourceManager = std::make_shared<ResourceManager>();
    context->inputSystem = std::make_shared<InputSystem>();
    context->eventSystem = std::make_shared<EventSystem>();
    context->collisionSystem = std::make_shared<CollisionSystem>();

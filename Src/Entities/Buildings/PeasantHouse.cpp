@@ -13,6 +13,6 @@ PeasantHouse::PeasantHouse( SpawnCategory spawnCategory, const sf::Vector2f& pos
 void PeasantHouse::onStart( GameContext* context )
 {
    // TODO add random variants
-   sprite.setTexture( context->textureManager->loadTexture( "Assets/Buildings/house1.png" ) );
+   sprite.setTexture( context->resourceManager->loadTexture( "Assets/Buildings/house1.png" ) );
    Building::onStart( context );
 }

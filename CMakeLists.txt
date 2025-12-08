@@ -42,8 +42,8 @@ add_executable(game1 main.cpp
         Base/GameContext.h
         Base/Entity/IsometricActor.h
         Base/Entity/IsometricActor.cpp
-        Base/TextureManager.h
-        Base/TextureManager.cpp
+        Base/ResourceManager.h
+        Base/ResourceManager.cpp
         Base/GameMap/MapTile.h
         Base/GameMap/MapTile.cpp
         Base/GameMap/GameMap.h

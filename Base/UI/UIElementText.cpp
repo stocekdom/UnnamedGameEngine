@@ -1,29 +1,21 @@
 #include <SFML/Graphics/Drawable.hpp>
+#include <utility>
 #include "UIElementText.h"
 
 //
 // Created by dominik on 15.10.25.
 //
 
-// TODO rework to onStart instead of constructor
-UIElementText::UIElementText( const std::string& fontPath, const std::string& inText, int size, sf::Color color,
+UIElementText::UIElementText( std::string fontPath, const std::string& inText, int size, sf::Color color,
                               sf::Vector2f position, float rotation, bool isVisible )
-      : UIElement( position, rotation, { 1.0f, 1.0f }, isVisible )
+      : UIElement( position, rotation, { 1.0f, 1.0f }, isVisible ), fontPath( std::move( fontPath ) )
 {
-   if( !font.loadFromFile( fontPath ) )
-   {
-      throw std::runtime_error( "Could not load font at " + fontPath );
-   }
-
-   text.setFont( font );
    text.setString( inText );
    text.setCharacterSize( size );
    text.setFillColor( color );
-   text.setPosition( position );
-   text.setRotation( rotation );
 }
 
-void UIElementText::setText( std::string& newText )
+void UIElementText::setText( const std::string& newText )
 {
    text.setString( newText );
 }
@@ -37,4 +29,14 @@ void UIElementText::draw( sf::RenderTarget& target, const Renderer& renderer )
 {
    renderer.render( text, target );
    UIElement::draw( target, renderer );
+}
+
+void UIElementText::onStart( GameContext* context )
+{
+   text.setFont( context->resourceManager->loadFont( fontPath ) );
+
+   text.setPosition( getPosition() );
+   text.setRotation( getRotation() );
+
+   UIElement::onStart( context );
 }

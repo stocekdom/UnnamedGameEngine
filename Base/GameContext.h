@@ -8,7 +8,7 @@
 #include <memory>
 #include "Scene.h"
 #include "Collision/CollisionSystem.h"
-#include "TextureManager.h"
+#include "ResourceManager.h"
 #include "Input/InputSystem.h"
 #include "Event/EventSystem.h"
 #include "UI/UISystem.h"
@@ -21,7 +21,7 @@
 struct GameContext {
    std::shared_ptr<GameScene> scene;
    std::shared_ptr<CollisionSystem> collisionSystem;
-   std::shared_ptr<TextureManager> textureManager;
+   std::shared_ptr<ResourceManager> resourceManager;
    std::shared_ptr<InputSystem> inputSystem;
    std::shared_ptr<EventSystem> eventSystem;
    std::shared_ptr<GameMapSystem> gameMapSystem;
