@@ -47,6 +47,7 @@ void GameScene::deleteOverlayEntityById( const UUID& id )
          overlayActors.pop_back();
          return;
       }
+
 }
 
 void GameScene::updateFixed( float fixedDt )
@@ -96,6 +97,8 @@ void GameScene::onStart( sf::RenderWindow& window )
                  return a->getPosition().y < b->getPosition().y;
               }
    );
+
+   onStartCalled = true;
 }
 
 const std::vector<std::shared_ptr<Entity>>& GameScene::getStaticEntities() const
