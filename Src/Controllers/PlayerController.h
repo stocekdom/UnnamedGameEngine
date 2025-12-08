@@ -5,10 +5,10 @@
 #ifndef GAME1_PLAYERCONTROLLER_H
 #define GAME1_PLAYERCONTROLLER_H
 
-#include "../Base/Input/Controller.h"
-#include "../Base/GameContext.h"
+#include "../../Base/Input/Controller.h"
+#include "../../Base/GameContext.h"
 #include "../Entities/Buildings/BuildingEvents.h"
-#include "../Base/Event/Events.h"
+#include "../../Base/Event/Events.h"
 #include "../Entities/Buildings/Building.h"
 #include <memory>
 

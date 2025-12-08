@@ -6,7 +6,7 @@
 #define GAME1_BUILDINGPLACEMENTBUTTON_H
 
 #include "BuildingEvents.h"
-#include "../../Base/UI/UIButton.h"
+#include "../../../Base/UI/UIButton.h"
 
 template<BuildingType T>
 class BuildingPlacementButton : public UIButton<BuildingPlacingStarted>

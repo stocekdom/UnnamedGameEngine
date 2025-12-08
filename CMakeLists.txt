@@ -52,14 +52,14 @@ add_executable(game1 main.cpp
         Base/Input/InputSystem.cpp
         Base/Input/Controller.cpp
         Base/Input/InputActions.h
-        Controllers/PlayerController.h
-        Controllers/PlayerController.cpp
+        Src/Controllers/PlayerController.h
+        Src/Controllers/PlayerController.cpp
         Base/Input/Clickable.h
         Base/Core/Mobility.h
         Base/UI/UIBlock.h
         Base/UI/UIBlock.cpp
-        Entities/ClickableText.h
-        Entities/ClickableText.cpp
+        Src/Entities/ClickableText.h
+        Src/Entities/ClickableText.cpp
         Base/Event/EventSystem.h
         Base/Event/CallbackContainer.h
         Base/Event/Events.h
@@ -75,15 +75,15 @@ add_executable(game1 main.cpp
         Base/Core/Math.cpp
         Base/Core/UUID.h
         Base/Core/UUID.cpp
-        Entities/Buildings/BuildingType.h
-        Entities/Buildings/BuildingFactory.h
-        Entities/Buildings/Building.h
-        Entities/Buildings/BuildingFactory.cpp
-        Entities/Buildings/PeasantHouse.h
-        Entities/Buildings/PeasantHouse.cpp
-        Entities/Buildings/Building.cpp
-        Entities/Buildings/BuildingPlacementButton.h
-        Entities/Buildings/BuildingEvents.h
+        Src/Entities/Buildings/BuildingType.h
+        Src/Entities/Buildings/BuildingFactory.h
+        Src/Entities/Buildings/Building.h
+        Src/Entities/Buildings/BuildingFactory.cpp
+        Src/Entities/Buildings/PeasantHouse.h
+        Src/Entities/Buildings/PeasantHouse.cpp
+        Src/Entities/Buildings/Building.cpp
+        Src/Entities/Buildings/BuildingPlacementButton.h
+        Src/Entities/Buildings/BuildingEvents.h
         Base/Core/SpawnCategory.h
         Base/UI/UISystem.h
         Base/GameMap/GameMapSystem.h

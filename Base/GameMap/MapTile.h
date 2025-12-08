@@ -5,7 +5,7 @@
 #ifndef GAME1_MAPTILE_H
 #define GAME1_MAPTILE_H
 
-#include "../../Entities/Buildings/Building.h"
+#include "../../Src/Entities/Buildings/Building.h"
 
 class MapTile : public IsometricActor
 {

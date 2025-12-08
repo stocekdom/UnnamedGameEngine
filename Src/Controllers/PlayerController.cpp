@@ -2,9 +2,9 @@
 // Created by dominik on 15.11.25.
 //
 #include "PlayerController.h"
-#include "../Base/Core/Math.h"
-#include "../Base/GameMap/MapTile.h"
-#include "../Base/Input/ContextFactory.h"
+#include "../../Base/Core/Math.h"
+#include "../../Base/GameMap/MapTile.h"
+#include "../../Base/Input/ContextFactory.h"
 #include "../Entities/Buildings/BuildingFactory.h"
 
 // We initialize everything in the constructor since systems are already created at this point, and we don't need onStart

@@ -5,7 +5,7 @@
 #ifndef GAME1_BUILDING_H
 #define GAME1_BUILDING_H
 
-#include "../../Base/Entity/IsometricActor.h"
+#include "../../../Base/Entity/IsometricActor.h"
 
 class Building : public IsometricActor
 {

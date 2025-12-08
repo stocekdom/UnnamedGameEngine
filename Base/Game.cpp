@@ -3,12 +3,10 @@
 //
 #include "Game.h"
 #include "GameMap/GameMap.h"
-#include "../Controllers/PlayerController.h"
-#include "UI/UIBlock.h"
-#include "../Entities/ClickableText.h"
+#include "../Src/Controllers/PlayerController.h"
 #include "UI/UIRoot.h"
-#include "../Entities/Buildings/BuildingPlacementButton.h"
-#include "../Entities/Buildings/BuildingFactory.h"
+#include "../Src/Entities/Buildings/BuildingPlacementButton.h"
+#include "../Src/Entities/Buildings/BuildingFactory.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 

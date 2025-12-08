@@ -5,7 +5,7 @@
 #ifndef GAME1_CLICKABLETEXT_H
 #define GAME1_CLICKABLETEXT_H
 
-#include "../Base/UI/UIElementText.h"
+#include "../../Base/UI/UIElementText.h"
 
 class ClickableText : public UIElementText
 {
