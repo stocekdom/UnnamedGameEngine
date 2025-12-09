@@ -13,13 +13,9 @@
 class PlayerInventoryComponent : public InventoryComponent
 {
    public:
-      void onStart( GameContext* context ) override;
-
       bool addItem( const std::string& id, unsigned int amount ) override;
 
       unsigned int removeItem( const std::string& id, unsigned int amount ) override;
-
-   private:
-      GameContext* contextPtr = nullptr;
 };
+
 #endif //GAME1_PLAYERINVENTORYCOMPONENT_H

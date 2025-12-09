@@ -6,13 +6,14 @@
 
 void InventoryComponent::onStart( GameContext* context )
 {
+   context_ = context;
 }
 
 bool InventoryComponent::addItem( const std::string& id, unsigned int amount )
 {
    // Only add needs to check the definition if the item is not already in the inventory.
    // O(1) lookup.
-   auto def = registry->getDefinition( id );
+   auto def = context_->itemRegistry->getDefinition( id );
    if( def == nullptr )
       return false;
 
