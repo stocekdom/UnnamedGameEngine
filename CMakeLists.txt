@@ -108,6 +108,12 @@ add_executable(game1 main.cpp
         Base/Data/PlayerInventoryComponent.cpp
         Src/GameItemRegistry.h
         Src/GameItemRegistry.cpp
+        Base/Time/TimerHandle.h
+        Base/Time/Timer.h
+        Base/Time/TimeManager.h
+        Base/Time/Timer.cpp
+        Base/Time/TimerHandle.cpp
+        Base/Time/TimeManager.cpp
 )
 
 
