@@ -5,6 +5,7 @@
 #include "GameMap/GameMap.h"
 #include "../Src/Controllers/PlayerController.h"
 #include "../Src/UI/ResourceBar.h"
+#include "Data/PlayerInventoryComponent.h"
 #include "UI/UIRoot.h"
 #include "../Src/Entities/Buildings/BuildingPlacementButton.h"
 #include "../Src/Entities/Buildings/BuildingFactory.h"
@@ -14,6 +15,7 @@
 
 Game::Game()
 {
+   player = std::make_shared<PlayerInventoryComponent>();
    context = std::make_shared<GameContext>();
    renderer = std::make_shared<Renderer>();
    context->resourceManager = std::make_shared<ResourceManager>();
@@ -24,6 +26,7 @@ Game::Game()
    context->gameMapSystem = std::make_shared<GameMapSystem>();
    context->uiSystem = std::make_shared<UISystem>();
    context->itemRegistry = std::make_shared<GameItemRegistry>();
+   context->timeManager = std::make_shared<TimeManager>();
 }
 
 void Game::start()
@@ -46,10 +49,10 @@ void Game::start()
                                                                 sf::Vector2f{ WINDOW_WIDTH - 60.f, 40.f } );
 
       auto buildingButton = std::make_shared<BuildingPlacementButton<BuildingType::PEASANT_HOUSE>>( "Assets/Icons/houseIcon.png",
-                                                                                                    sf::Vector2f{ 60.f, 50.f } );
+         sf::Vector2f{ 60.f, 50.f } );
 
       auto addItemButtonPlaceholder = std::make_shared<UIButton<PlayerInventoryItemAdded>>( "Assets/Icons/menu.png",
-                                                                                            sf::Vector2f{ 160.f, 50.f } );
+         sf::Vector2f{ 160.f, 50.f } );
 
       auto placeholderMenu = std::make_shared<UIButton<GameResumed>>( "Assets/Icons/menu.png",
                                                                       sf::Vector2f{ WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 }, 0,
@@ -68,8 +71,13 @@ void Game::start()
    context->gameMapSystem->onStart( context.get() );
    context->uiSystem->onStart( window, context.get() );
    context->scene->onStart( window );
+   player->onStart( context.get() );
 
+   auto timer = context->timeManager->makeRepeatingTimer( 5, [this]() { player->addItem( "res_stone", 5 ); } );
    std::cout << "\033[92m[INFO]: Game starting!" << "\033[0m" << std::endl;
+
+   // TODO temporary
+   player->addItem( "res_wood", 10 );
    // Main loop
    while( window.isOpen() )
    {
@@ -87,8 +95,9 @@ void Game::start()
 
       while( accumulator >= FIXED_DT )
       {
-         context->scene->updateFixed( FIXED_DT );
          context->collisionSystem->update( FIXED_DT );
+         context->timeManager->update( FIXED_DT );
+         context->scene->updateFixed( FIXED_DT );
          accumulator -= FIXED_DT;
       }
 
@@ -102,4 +111,3 @@ void Game::start()
 
    std::cout << "\033[96m[INFO]: Game ending!" << "\033[0m" << std::endl;
 }
-

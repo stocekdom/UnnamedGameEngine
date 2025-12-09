@@ -8,7 +8,8 @@
 #include "GameContext.h"
 #include "Renderer.h"
 
-// TODO use engine class to store scene, renderer and collision system and use DI
+class PlayerInventoryComponent;
+
 class Game
 {
    public:
@@ -19,6 +20,8 @@ class Game
       void start();
 
    private:
+      // TODO use a player class instead once we have more functinality for it
+      std::shared_ptr<PlayerInventoryComponent> player;
       std::shared_ptr<Renderer> renderer;
       std::shared_ptr<GameContext> context;
 };

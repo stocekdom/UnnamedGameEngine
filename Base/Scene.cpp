@@ -47,7 +47,6 @@ void GameScene::deleteOverlayEntityById( const UUID& id )
          overlayActors.pop_back();
          return;
       }
-
 }
 
 void GameScene::updateFixed( float fixedDt )
