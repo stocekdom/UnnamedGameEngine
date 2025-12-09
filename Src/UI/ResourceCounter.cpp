@@ -28,7 +28,7 @@ void ResourceCounter::onStart( GameContext* context )
 
    // TODO text isnt automatically centered, implement own extension of sfml text
    // Add a text component and add it as a child. Position is size / 2 + 4 since the icon is centered, and we add 4 pixels of space
-   auto text = std::make_shared<UIElementText>( Fonts::mainFont, "100", 18, sf::Color::White,
+   auto text = std::make_shared<UIElementText>( Fonts::mainFont, "0", 18, sf::Color::White,
                                                 sf::Vector2f{ -12.f, size / 2 - 5.f } );
    textComponent = std::move( text );
    addChild( textComponent );
