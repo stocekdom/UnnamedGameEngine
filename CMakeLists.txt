@@ -114,6 +114,8 @@ add_executable(game1 main.cpp
         Base/Time/Timer.cpp
         Base/Time/TimerHandle.cpp
         Base/Time/TimeManager.cpp
+        Base/Logging/Logger.h
+        Base/Logging/Logger.cpp
 )
 
 

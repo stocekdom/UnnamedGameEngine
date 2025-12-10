@@ -3,14 +3,14 @@
 //
 #include "GameMapSystem.h"
 #include "GameMap.h"
-#include <iostream>
+#include "../Logging/Logger.h"
 
 void GameMapSystem::onStart( GameContext* context )
 {
    if( map )
       map->init( context );
    else
-      std::cout << "\033[93m[WARN]: Map it not initialized]" << "\033[0m" << std::endl;
+      LOG_WARNING( "Map it not initialized!" );
 
    scene = context->scene.get();
 }

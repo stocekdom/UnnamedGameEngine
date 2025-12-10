@@ -1,7 +1,7 @@
 //
 // Created by dominik on 06.12.25.
 //
-#include <stdexcept>
+#include "../Logging/Logger.h"
 #include "ItemInstance.h"
 
 // TODO switch to const reference instead of pointer to avoid null checks?
@@ -10,7 +10,7 @@ ItemInstance::ItemInstance( unsigned int amount, const ItemDefinition* definitio
 {
    // TODO log error
    if( definition == nullptr )
-      throw std::invalid_argument( "ItemDefinition cannot be null" );
+      LOG_ERROR( "ItemDefinition inside ItemInstance cannot be null" );
 }
 
 const std::string& ItemInstance::getInstanceId() const

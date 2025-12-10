@@ -10,8 +10,8 @@
 #include "../Src/Entities/Buildings/BuildingPlacementButton.h"
 #include "../Src/Entities/Buildings/BuildingFactory.h"
 #include "../Src/GameItemRegistry.h"
+#include "Logging/Logger.h"
 #include <SFML/Graphics.hpp>
-#include <iostream>
 
 Game::Game()
 {
@@ -68,13 +68,19 @@ void Game::start()
    }
 
    context->gameMapSystem->generateMap( 6, 6, sf::Vector2f{ WINDOW_WIDTH / 2 - 128, 0 } );
+   LOG_INFO( "Game map generated" );
    context->gameMapSystem->onStart( context.get() );
+   LOG_INFO( "Game map system started" )
    context->uiSystem->onStart( window, context.get() );
+   LOG_INFO( "UI system started" );
    context->scene->onStart( window );
+   LOG_INFO( "Scene started" );
    player->onStart( context.get() );
+   LOG_INFO( "Player class started" );
 
    auto timer = context->timeManager->makeRepeatingTimer( 5, [this]() { player->addItem( "res_stone", 5 ); } );
-   std::cout << "\033[92m[INFO]: Game starting!" << "\033[0m" << std::endl;
+
+   LOG_INFO( "Game starting" );
 
    // TODO temporary
    player->addItem( "res_wood", 10 );
@@ -109,5 +115,5 @@ void Game::start()
       window.display();
    }
 
-   std::cout << "\033[96m[INFO]: Game ending!" << "\033[0m" << std::endl;
+   LOG_INFO( "Game ending!" );
 }

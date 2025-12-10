@@ -2,6 +2,7 @@
 // Created by dominik on 14.11.25.
 //
 #include "ResourceManager.h"
+#include "Logging/Logger.h"
 
 const sf::Texture& ResourceManager::loadTexture( const std::string& path )
 {
@@ -13,7 +14,7 @@ const sf::Texture& ResourceManager::loadTexture( const std::string& path )
 
       if( !newTexture->loadFromFile( path ) )
       {
-         throw std::runtime_error( "Could not load texture at " + path );
+         LOG_ERROR( "Could not load texture at " + path );
       }
 
       textures[ path ] = std::move( newTexture );
@@ -32,7 +33,7 @@ const sf::Font& ResourceManager::loadFont( const std::string& path )
 
       if( !newFont->loadFromFile( path ) )
       {
-         throw std::runtime_error( "Could not load font at " + path );
+         LOG_ERROR( "Could not load font at " + path );
       }
 
       fonts[ path ] = std::move( newFont );
