@@ -7,7 +7,6 @@
 
 #include <unordered_map>
 #include <typeindex>
-#include <vector>
 #include <memory>
 #include "CallbackContainer.h"
 
@@ -41,7 +40,7 @@ void EventSystem::subscribe( std::function<void( const T& )> callback )
    // Get the type index of the event type T
    std::type_index index = std::type_index( typeid( T ) );
 
-   if( subscribers.find( index ) == subscribers.end() )
+   if( !subscribers.contains( index ) )
    {
       subscribers[ index ] = std::make_unique<CallbackContainer<T>>();
    }

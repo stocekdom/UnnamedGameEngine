@@ -1,7 +1,6 @@
 //
 // Created by dominik on 08.12.25.
 //
-#include <iostream>
 #include "ResourceCounter.h"
 #include "Fonts.h"
 
@@ -26,7 +25,7 @@ void ResourceCounter::onStart( GameContext* context )
    // Center icon
    icon.setOrigin( icon.getLocalBounds().width / 2, icon.getLocalBounds().height / 2 );
 
-   // TODO text isnt automatically centered, implement own extension of sfml text
+   // TODO text isn't automatically centered, implement own extension of sfml text
    // Add a text component and add it as a child. Position is size / 2 + 4 since the icon is centered, and we add 4 pixels of space
    auto text = std::make_shared<UIElementText>( Fonts::mainFont, "0", 18, sf::Color::White,
                                                 sf::Vector2f{ -12.f, size / 2 - 5.f } );
@@ -37,7 +36,7 @@ void ResourceCounter::onStart( GameContext* context )
    UIElement::onStart( context );
 }
 
-void ResourceCounter::updateCounterAmount( unsigned int newAmount )
+void ResourceCounter::updateCounterAmount( unsigned int newAmount ) const
 {
    textComponent->setText( std::to_string( newAmount ) );
 }

@@ -8,10 +8,9 @@ void Subject::addObserver( const std::shared_ptr<Observer>& observer )
    observers.push_back( observer );
 }
 
-void Subject::notifyObservers( EventData data )
+void Subject::notifyObservers( EventData data ) const
 {
    for( auto& observer: observers )
       if( auto o = observer.lock() )
          o->notify( data );
 }
-

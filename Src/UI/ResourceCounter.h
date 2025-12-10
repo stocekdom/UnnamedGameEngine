@@ -18,7 +18,7 @@ class ResourceCounter : public UIElement
 
       void draw( sf::RenderTarget& target, const Renderer& renderer ) override;
 
-      void updateCounterAmount( unsigned int newAmount );
+      void updateCounterAmount( unsigned int newAmount ) const;
 
       const std::string& getCountedItemId() const;
 

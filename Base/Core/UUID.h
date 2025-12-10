@@ -34,15 +34,12 @@ class UUID
 };
 
 // Std hash template specialization.
-namespace std
+template<>
+struct std::hash<UUID>
 {
-   template<>
-   struct hash<UUID>
+   size_t operator()( const UUID& id ) const noexcept
    {
-      size_t operator()( const UUID& id ) const
-      {
-         return std::hash<uint64_t>{}( id.value() );
-      }
-   };
-}
+      return std::hash<uint64_t>{}( id.value() );
+   }
+};
 #endif //GAME1_UUID_H

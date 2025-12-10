@@ -7,7 +7,6 @@
 
 #include "Collidable.h"
 #include "../Entity/SpacialEntity.h"
-#include <memory>
 
 class ColliderRect;
 
@@ -17,7 +16,6 @@ class ColliderPoint;
 class Collider : public SpacialEntity
 {
    public:
-
       explicit Collider( Collidable* owningActor, Mobility mobilityStatus, sf::Vector2f position = { 0, 0 }, float rotation = 0,
                          sf::Vector2f scale = { 1, 1 }, bool isVisible = false );
 

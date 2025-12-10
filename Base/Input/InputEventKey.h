@@ -5,8 +5,6 @@
 #ifndef GAME1_INPUTEVENTKEY_H
 #define GAME1_INPUTEVENTKEY_H
 
-#include <cstddef>
-
 struct InputEventKey
 {
    enum class Type
@@ -34,7 +32,7 @@ struct InputEventKeyHash
 {
    size_t operator()( const InputEventKey& k ) const noexcept
    {
-      return ( size_t )k.type * 1024 + ( size_t )( k.code + 1 );
+      return static_cast<size_t>( k.type ) * 1024 + static_cast<size_t>( k.code + 1 );
    }
 };
 

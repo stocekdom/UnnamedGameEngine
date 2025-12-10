@@ -13,19 +13,16 @@
 #include <memory>
 #include <vector>
 
-// TODO adding anything new to constructor of entities results in updating every constructor of a class inheriting from Entity. Find a better solution or use ECS.
-
 /**
  * Base class for all entities.
  * Provides basic methods for spacial information and ticking.
  * Also creates a tree hierarchy for entities. Contains a weak pointer to the parent entity and a vector of weak pointers to children.
  * Provides default implementations for marking the entity dirty and working with parents.
- * @warning Override the implemented methods at your own risk, or call them in the overridden methods.
+ * @warning Override the implemented methods at your own risk or call them in the overridden methods.
  */
 class Entity : public std::enable_shared_from_this<Entity>
 {
    public:
-
       virtual ~Entity() = default;
 
       // TODO passing the context should be fixed with ECS

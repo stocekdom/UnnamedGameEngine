@@ -8,13 +8,13 @@
 #include "../Entities/Buildings/BuildingFactory.h"
 
 // We initialize everything in the constructor since systems are already created at this point, and we don't need onStart
-PlayerController::PlayerController( const std::shared_ptr<GameContext>& context ) : context( context.get() ),
-                                                                                    cameraSpeed( 0.f, 0.f )
+PlayerController::PlayerController( const std::shared_ptr<GameContext>& context ) : cameraSpeed( 0.f, 0.f ),
+                                                                                    context( context.get() )
 {
    context->eventSystem->subscribe<GamePaused>( [this]( const GamePaused& event ) { onPauseGame( event ); } );
    context->eventSystem->subscribe<GameResumed>( [this]( const GameResumed& event ) { onResumeGame( event ); } );
    context->eventSystem->subscribe<BuildingPlacingStarted>(
-         [this]( const BuildingPlacingStarted& event ) { onBuildingPlacingStart( event ); } );
+      [this]( const BuildingPlacingStarted& event ) { onBuildingPlacingStart( event ); } );
    menuContext = ContextFactory::createMenuContext();
    mainContext = ContextFactory::createGameContext();
    placingContext = ContextFactory::createBuildingPlacingContext();
@@ -63,8 +63,9 @@ void PlayerController::tick( float dt )
    }
 }
 
-void PlayerController::onLeftClick( const ActionData& event )
+void PlayerController::onLeftClick( const ActionData& event ) const
 {
+   // ReSharper disable once CppExpressionWithoutSideEffects
    context->uiSystem->onLeftClick( event.position );
 }
 

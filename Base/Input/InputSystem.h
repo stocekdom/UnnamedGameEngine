@@ -19,7 +19,7 @@ class InputSystem
 
       void update( float dt );
 
-      void handleInput( sf::Event event );
+      void handleInput( const sf::Event& event ) const;
 
       void registerController( std::unique_ptr<Controller> controller );
 

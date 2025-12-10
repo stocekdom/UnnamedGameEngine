@@ -6,7 +6,7 @@
 
 // TODO switch to const reference instead of pointer to avoid null checks?
 ItemInstance::ItemInstance( unsigned int amount, const ItemDefinition* definition ) : itemAmount( amount ),
-                                                                                      definition( definition )
+   definition( definition )
 {
    // TODO log error
    if( definition == nullptr )
@@ -39,4 +39,3 @@ unsigned int ItemInstance::removeAmount( unsigned int amount )
    itemAmount -= toRemove;
    return toRemove;
 }
-

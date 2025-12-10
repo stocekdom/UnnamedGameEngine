@@ -9,11 +9,13 @@
 
 /**
  * An interface for entities that can be collided with
- * Provides default implementation for collider storage and registering
+ * Provides a default implementation for collider storage and registering
  */
 class Collidable
 {
    public:
+      virtual ~Collidable() = default;
+
       virtual void onCollision( const Collidable* other, CollisionInfo& info ) = 0;
 };
 #endif //GAME1_COLLIDABLE_H

@@ -22,7 +22,7 @@ void Entity::setDirty()
 {
    isEntityDirty = true;
 
-   for( auto& child : children )
+   for( auto& child: children )
    {
       if( auto c = child.lock() )
          c->setDirty();

@@ -5,7 +5,7 @@
 #include "CollisionHelper.h"
 
 ColliderPoint::ColliderPoint( Mobility mobilityStatus, const sf::Vector2f& position, Collidable* owningActor )
-      : Collider( owningActor, mobilityStatus, position )
+   : Collider( owningActor, mobilityStatus, position )
 {
    collider.setFillColor( sf::Color::Yellow );
    collider.setRadius( 2.0f );

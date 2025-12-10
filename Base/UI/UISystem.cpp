@@ -16,13 +16,13 @@ void UISystem::onStart( sf::RenderWindow& window, GameContext* context )
    uiRoot->onStart( context );
 }
 
-void UISystem::renderUI( sf::RenderTarget& target, const Renderer& renderer )
+void UISystem::renderUI( sf::RenderTarget& target, const Renderer& renderer ) const
 {
    target.setView( *uiView );
    uiRoot->draw( target, renderer );
 }
 
-bool UISystem::onLeftClick( const sf::Vector2i& position )
+bool UISystem::onLeftClick( const sf::Vector2i& position ) const
 {
    return uiRoot->onClick( sf::Vector2f{ position } );
 }
@@ -31,4 +31,3 @@ void UISystem::addUiRootComponent( const std::shared_ptr<UIElement>& root )
 {
    uiRoot = root;
 }
-

@@ -17,4 +17,3 @@ std::shared_ptr<Building> BuildingFactory::createBuilding( BuildingType type, co
 
    return nullptr;
 }
-

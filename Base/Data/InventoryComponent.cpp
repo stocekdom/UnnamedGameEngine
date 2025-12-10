@@ -46,4 +46,3 @@ unsigned int InventoryComponent::getAmount( const std::string& id )
 
    return 0;
 }
-

@@ -8,7 +8,7 @@
 #include "ItemInstance.h"
 #include <vector>
 
-class GameContext;
+struct GameContext;
 
 class InventoryComponent
 {

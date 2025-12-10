@@ -7,7 +7,7 @@
 //
 SpacialEntity::SpacialEntity( Mobility mobility, const sf::Vector2f& position, float rotation,
                               const sf::Vector2f& scale, bool isVisible )
-      : mobility( mobility ), isVisibleEntity( isVisible ), localPosition( position ), localRotation( rotation ), localScale( scale )
+   : mobility( mobility ), isVisibleEntity( isVisible ), localPosition( position ), localRotation( rotation ), localScale( scale )
 {
 }
 

@@ -20,7 +20,7 @@ void Controller::handleInput( const sf::Event& event )
          action = activeContext->getAction( { InputEventKey::Type::KeyboardPress, event.key.code } );
          keyStates[ event.key.code ] = true;
 
-         if( actions.count( action ) )
+         if( actions.contains( action ) )
             actions[ action ]( { 1.f } );
 
          break;
@@ -29,7 +29,7 @@ void Controller::handleInput( const sf::Event& event )
          keyStates[ event.key.code ] = false;
          action = activeContext->getAction( { InputEventKey::Type::KeyboardRelease, event.key.code } );
 
-         if( actions.count( action ) )
+         if( actions.contains( action ) )
             actions[ action ]( { 0.f } );
 
          break;
@@ -41,7 +41,7 @@ void Controller::handleInput( const sf::Event& event )
          action = activeContext->getAction( { InputEventKey::Type::MouseButtonPress, event.mouseButton.button } );
          keyStates[ event.mouseButton.button ] = true;
 
-         if( actions.count( action ) )
+         if( actions.contains( action ) )
             actions[ action ]( { 1.f, { event.mouseButton.x, event.mouseButton.y } } );
 
          break;
@@ -50,7 +50,7 @@ void Controller::handleInput( const sf::Event& event )
          buttonStates[ event.mouseButton.button ] = false;
          action = activeContext->getAction( { InputEventKey::Type::MouseButtonRelease, event.mouseButton.button } );
 
-         if( actions.count( action ) )
+         if( actions.contains( action ) )
             actions[ action ]( { 0.f, { event.mouseButton.x, event.mouseButton.y } } );
 
          break;
@@ -58,7 +58,7 @@ void Controller::handleInput( const sf::Event& event )
       case sf::Event::MouseMoved:
          action = activeContext->getAction( { InputEventKey::Type::MouseMove } );
 
-         if( actions.count( action ) )
+         if( actions.contains( action ) )
             actions[ action ]( { 0.f, { event.mouseMove.x, event.mouseMove.y } } );
 
          break;
@@ -66,7 +66,7 @@ void Controller::handleInput( const sf::Event& event )
       case sf::Event::MouseWheelScrolled:
          action = activeContext->getAction( { InputEventKey::Type::MouseWheel } );
 
-         if( actions.count( action ) )
+         if( actions.contains( action ) )
             actions[ action ]( { event.mouseWheelScroll.delta } );
 
          break;

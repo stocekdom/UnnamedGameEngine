@@ -23,7 +23,7 @@ class ItemInstance
       /**
        * Removes the given amount from the item.
        * @param amount Amount to remove.
-       * @return Returns the amount the was removed. If the amount is greater than the amount of the item, the amount of the item is returned.
+       * @return Returns the amount that was removed. If the amount is greater than the amount of the item, the amount of the item is returned.
        */
       unsigned int removeAmount( unsigned int amount );
 

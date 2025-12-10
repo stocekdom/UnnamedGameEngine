@@ -41,4 +41,3 @@ void InputContext::mapMouseWheel( GameAction gameAction )
 {
    actionsMap[ { InputEventKey::Type::MouseWheel } ] = gameAction;
 }
-

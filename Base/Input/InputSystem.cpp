@@ -5,8 +5,7 @@
 #include "Controller.h"
 #include <vector>
 
-
-void InputSystem::handleInput( sf::Event event )
+void InputSystem::handleInput( const sf::Event& event ) const
 {
    for( auto& controller: controllers )
       controller->handleInput( event );

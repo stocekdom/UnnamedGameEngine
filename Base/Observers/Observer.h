@@ -10,6 +10,8 @@
 class Observer
 {
    public:
+      virtual ~Observer() = default;
+
       virtual void notify( EventData data ) = 0;
 };
 #endif //GAME1_OBSERVER_H

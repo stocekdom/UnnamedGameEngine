@@ -59,17 +59,17 @@ void GameScene::updateFixed( float fixedDt )
 
 void GameScene::update( float deltaTime )
 {
-   for( auto& actor: staticActors )
+   for( const auto& actor: staticActors )
       actor->tick( deltaTime );
 
-   for( auto& actor: movableActors )
+   for( const auto& actor: movableActors )
       actor->tick( deltaTime );
 
-   for( auto& actor: overlayActors )
+   for( const auto& actor: overlayActors )
       actor->tick( deltaTime );
 }
 
-sf::Vector2f GameScene::getWorldCoordinates( const sf::Vector2i& screenCoords )
+sf::Vector2f GameScene::getWorldCoordinates( const sf::Vector2i& screenCoords ) const
 {
    return mainWindow->mapPixelToCoords( screenCoords, *mainView );
 }
@@ -91,10 +91,10 @@ void GameScene::onStart( sf::RenderWindow& window )
    mainView = std::make_shared<sf::View>( window.getDefaultView() );
 
    // TODO simple Y sorting. Use AABB for better quality and precision
-   std::sort( staticActors.begin(), staticActors.end(),
-              []( const std::shared_ptr<Entity>& a, const std::shared_ptr<Entity>& b ) {
-                 return a->getPosition().y < b->getPosition().y;
-              }
+   std::ranges::sort( staticActors,
+                      []( const std::shared_ptr<Entity>& a, const std::shared_ptr<Entity>& b ) {
+                         return a->getPosition().y < b->getPosition().y;
+                      }
    );
 
    onStartCalled = true;
@@ -105,7 +105,7 @@ const std::vector<std::shared_ptr<Entity>>& GameScene::getStaticEntities() const
    return staticActors;
 }
 
-void GameScene::renderScene( sf::RenderTarget& target, const Renderer& renderer )
+void GameScene::renderScene( sf::RenderTarget& target, const Renderer& renderer ) const
 {
    // Draw entities
    // TODO currently only static entities are rendered. Add merging with the movable entities
@@ -120,12 +120,12 @@ void GameScene::renderScene( sf::RenderTarget& target, const Renderer& renderer 
          renderer.render( actor->getDrawable(), target );
 }
 
-void GameScene::moveCamera( const sf::Vector2f& delta )
+void GameScene::moveCamera( const sf::Vector2f& delta ) const
 {
    mainView->move( delta );
 }
 
-void GameScene::zoomCamera( float zoom )
+void GameScene::zoomCamera( float zoom ) const
 {
    mainView->zoom( zoom );
 }
@@ -137,10 +137,10 @@ void GameScene::spawnWorldActor( const std::shared_ptr<Entity>& actor )
       case Mobility::STATIC:
          if( onStartCalled )
          {
-            auto it = std::lower_bound( staticActors.begin(), staticActors.end(), actor,
-                                        []( const std::shared_ptr<Entity>& a, const std::shared_ptr<Entity>& b ) {
-                                           return a->getPosition().y < b->getPosition().y;
-                                        } );
+            auto it = std::ranges::lower_bound( staticActors, actor,
+                                                []( const std::shared_ptr<Entity>& a, const std::shared_ptr<Entity>& b ) {
+                                                   return a->getPosition().y < b->getPosition().y;
+                                                } );
 
             staticActors.insert( it, actor );
          }

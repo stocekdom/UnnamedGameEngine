@@ -8,7 +8,7 @@
 //
 ClickableText::ClickableText( const std::string& fontPath, const std::string& inText, int size, sf::Color color,
                               sf::Vector2f position, float rotation, bool isVisible )
-                              : UIElementText( fontPath, inText + " Unclicked", size, color, position, rotation, isVisible ), origText( inText )
+   : UIElementText( fontPath, inText + " Unclicked", size, color, position, rotation, isVisible ), origText( inText )
 {
 }
 

@@ -9,8 +9,8 @@
 
 /**
  * Base class for actors that are drawn in isometric projection
- * Inherits all functionality from Actor including spacial information and sprite handling
- * In addition adds height information for isometric projection to mimic 3D effect
+ * Inherits all functionality from Actor including spacial information and sprite handling,
+ * In addition, adds height information for isometric projection to mimic 3D effect
  */
 class IsometricActor : public Actor
 {

@@ -11,8 +11,8 @@
 
 /**
  * Basic button UI class that can be clicked and trigger an event.
- * When the event is triggered, empty event data is sent to the event system. To add custom event with data, override the onClick method.
- * @tparam EventType A type of event that is triggered when the button is clicked and sent to event system
+ * When the event is triggered, empty event data is sent to the event system. To add a custom event with data, override the onClick method.
+ * @tparam EventType A type of event that is triggered when the button is clicked and sent to the event system
  */
 template<typename EventType>
 class UIButton : public UIElement
@@ -78,7 +78,7 @@ bool UIButton<EventType>::onClick( const sf::Vector2f& position )
 
 // TODO quick specialization for testing. Remove later
 template<>
-bool UIButton<PlayerInventoryItemAdded>::onClick(const sf::Vector2f& position)
+inline bool UIButton<PlayerInventoryItemAdded>::onClick(const sf::Vector2f& position)
 {
    if( buttonSprite.getGlobalBounds().contains( position ) )
    {

@@ -6,7 +6,7 @@
 
 Collider::Collider( Collidable* owningActor, Mobility mobilityStatus, sf::Vector2f position, float rotation,
                     sf::Vector2f scale, bool isVisible )
-      : SpacialEntity( mobilityStatus, position, rotation, scale, isVisible ), owner( owningActor ), isEnabled( true )
+   : SpacialEntity( mobilityStatus, position, rotation, scale, isVisible ), isEnabled( true ), owner( owningActor )
 {
 }
 
@@ -35,11 +35,10 @@ void Collider::setIsEnabled( bool enabled )
 
 void Collider::onStart( GameContext* context )
 {
-   auto entity = shared_from_this();
+   const auto entity = shared_from_this();
    context->scene->addEntityToScene( entity );
 
-   std::shared_ptr<Collider> collider = std::dynamic_pointer_cast<Collider>( entity );
-   if( collider )
+   if( const std::shared_ptr<Collider> collider = std::dynamic_pointer_cast<Collider>( entity ) )
    {
       context->collisionSystem->registerCollider( collider );
    }

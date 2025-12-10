@@ -11,8 +11,9 @@
 class UIBlock : public UIElement
 {
    public:
-      explicit UIBlock( const sf::Vector2f& extents, sf::Color fillColor = sf::Color::Blue, const sf::Vector2f& position = { 0.f, 0.f },
-               float rotation = 0, bool isVisible = true );
+      explicit UIBlock( const sf::Vector2f& extents, sf::Color fillColor = sf::Color::Blue,
+                        const sf::Vector2f& position = { 0.f, 0.f },
+                        float rotation = 0, bool isVisible = true );
 
       bool onClick( const sf::Vector2f& position ) override;
 

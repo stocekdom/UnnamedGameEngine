@@ -11,7 +11,6 @@
 class ItemRegistry
 {
    public:
-
       ItemRegistry() = default;
 
       explicit ItemRegistry( const std::unordered_map<std::string, ItemDefinition>& defs );

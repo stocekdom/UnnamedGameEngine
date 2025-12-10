@@ -23,7 +23,7 @@ void UIRoot::draw( sf::RenderTarget& target, const Renderer& renderer )
 
 bool UIRoot::onClick( const sf::Vector2f& position )
 {
-   // Only click the menu layer if it is visible (active) and dont propagate the signal further
+   // Only click the menu layer if it is visible (active) and don't propagate the signal further
    if( menuLayer->isVisible() )
    {
       menuLayer->onClick( position );
@@ -43,12 +43,12 @@ void UIRoot::onStart( GameContext* context )
    menuLayer->setIsVisibleElement( false );
 }
 
-void UIRoot::onPauseGame( const GamePaused& event )
+void UIRoot::onPauseGame( const GamePaused& event ) const
 {
    menuLayer->setIsVisibleElement( true );
 }
 
-void UIRoot::onResumeGame( const GameResumed& event )
+void UIRoot::onResumeGame( const GameResumed& event ) const
 {
    menuLayer->setIsVisibleElement( false );
 }

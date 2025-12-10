@@ -40,4 +40,3 @@ const sf::Font& ResourceManager::loadFont( const std::string& path )
 
    return *fonts.at( path );
 }
-

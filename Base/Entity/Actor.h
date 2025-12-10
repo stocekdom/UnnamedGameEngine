@@ -7,15 +7,14 @@
 
 #include "SpacialEntity.h"
 #include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
 /**
  * Base class for all entities that can be drawn on the screen
  * Uses basic SFML sprite for drawing. Can be instantiated but doesn't have a texture for the sprite.
- * Provides all functionality for spacial information, ticking and sprite handling.
- * Provides necessary functionality for handling the sprite, spacial information, entity hierarchy and ticking
- * @warning Override the implemented methods at your own risk, or call them in the overridden methods.
+ * Provides all functionality for spacial information, ticking, and sprite handling.
+ * Provides necessary functionality for handling the sprite, spacial information, entity hierarchy, and ticking
+ * @warning Override the implemented methods at your own risk or call them in the overridden methods.
  */
 class Actor : public SpacialEntity
 {

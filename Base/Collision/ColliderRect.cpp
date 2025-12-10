@@ -7,7 +7,7 @@
 
 ColliderRect::ColliderRect( Mobility mobilityStatus, const sf::Vector2f& position, const sf::Vector2f& extents,
                             float rotation, Collidable* owningActor )
-      : Collider( owningActor, mobilityStatus, position, rotation ), halfExtents( extents / 2.0f ), rotation( rotation )
+   : Collider( owningActor, mobilityStatus, position, rotation ), halfExtents( extents / 2.0f ), rotation( rotation )
 {
    collider.setOutlineThickness( 1.5f );
    collider.setOutlineColor( sf::Color::Yellow );

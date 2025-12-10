@@ -13,7 +13,7 @@
 
 /**
  * Base class for all UI elements with lightweight spacial information.
- * Doesnt provide any component that will get drawn. It's up to the derived classes to implement how they will get drawn.
+ * Doesn't provide any component that will get drawn. It's up to the derived classes to implement how they will get drawn.
  * This class isn't abstract and can be used for empty UI elements.
  */
 class UIElement : public Clickable, public std::enable_shared_from_this<UIElement>
@@ -21,9 +21,8 @@ class UIElement : public Clickable, public std::enable_shared_from_this<UIElemen
    public:
       UIElement( const sf::Vector2f& position, float rotation, const sf::Vector2f& scale, bool isVisible );
 
-      virtual ~UIElement() = default;
-
       virtual void onStart( GameContext* context );
+
       // TODO currently just simple UI. might add tick function in the future
 
       [[nodiscard]] virtual bool isVisible() const;

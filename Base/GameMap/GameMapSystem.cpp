@@ -21,17 +21,17 @@ void GameMapSystem::generateMap( size_t mapHeight, size_t mapWidth, const sf::Ve
    map = std::make_unique<GameMap>( mapHeight, mapWidth, mapStart );
 }
 
-sf::Vector2f GameMapSystem::snapToMapTile( const sf::Vector2i& mousePosition )
+sf::Vector2f GameMapSystem::snapToMapTile( const sf::Vector2i& mousePosition ) const
 {
    return map->snapToMapTile( scene->getWorldCoordinates( mousePosition ) );
 }
 
-std::weak_ptr<MapTile> GameMapSystem::getMapTile( const sf::Vector2i& mousePosition )
+std::weak_ptr<MapTile> GameMapSystem::getMapTile( const sf::Vector2i& mousePosition ) const
 {
    return map->getMapTile( scene->getWorldCoordinates( mousePosition ) );
 }
 
-bool GameMapSystem::placeBuilding( const sf::Vector2i& position, const std::shared_ptr<Building>& building )
+bool GameMapSystem::placeBuilding( const sf::Vector2i& position, const std::shared_ptr<Building>& building ) const
 {
    auto tile = map->getMapTile( scene->getWorldCoordinates( position ) ).lock();
 
@@ -46,4 +46,3 @@ bool GameMapSystem::placeBuilding( const sf::Vector2i& position, const std::shar
 
    return false;
 }
-

@@ -5,7 +5,7 @@
 
 IsometricActor::IsometricActor( SpawnCategory spawnCategory, Mobility mobilityStatus, sf::Vector2f position, float rotation,
                                 sf::Vector2f scale, float height, bool isVisible )
-      : Actor( spawnCategory, mobilityStatus, position, rotation, scale, isVisible ), localHeight( height )
+   : Actor( spawnCategory, mobilityStatus, position, rotation, scale, isVisible ), localHeight( height )
 {
 }
 

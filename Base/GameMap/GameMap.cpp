@@ -9,7 +9,7 @@
 // Created by dominik on 14.11.25.
 //
 GameMap::GameMap( size_t mapHeight, size_t mapWidth, const sf::Vector2f& mapStart )
-      : mapHeight( mapHeight ), mapStart( mapStart ), mapWidth( mapWidth )
+   : mapWidth( mapWidth ), mapHeight( mapHeight ), mapStart( mapStart )
 {
 }
 
@@ -19,10 +19,10 @@ void GameMap::init( GameContext* context )
    {
       for( size_t y = 0; y < mapHeight; ++y )
       {
-         float screenX = mapStart.x + ( float )x * ( Math::IsometricConstants::SPRITE_WIDTH / 2 ) -
-                         ( float )y * ( Math::IsometricConstants::SPRITE_WIDTH / 2 );
-         float screenY = mapStart.y + ( float )y * ( Math::IsometricConstants::SPRITE_HEIGHT / 2 ) +
-                         ( float )x * ( Math::IsometricConstants::SPRITE_HEIGHT / 2 );
+         float screenX = mapStart.x + static_cast<float>( x ) * ( Math::IsometricConstants::SPRITE_WIDTH / 2 ) -
+                         static_cast<float>( y ) * ( Math::IsometricConstants::SPRITE_WIDTH / 2 );
+         float screenY = mapStart.y + static_cast<float>( y ) * ( Math::IsometricConstants::SPRITE_HEIGHT / 2 ) +
+                         static_cast<float>( x ) * ( Math::IsometricConstants::SPRITE_HEIGHT / 2 );
          auto tileTmp = std::make_shared<MapTile>( "Assets/grass1.png", SpawnCategory::WORLD, Mobility::STATIC,
                                                    sf::Vector2f{ screenX, screenY } );
          tileTmp->onStart( context );
@@ -43,7 +43,7 @@ bool GameMap::onClick( const sf::Vector2f& location )
    return true;
 }
 
-sf::Vector2f GameMap::snapToMapTile( const sf::Vector2f& mousePosition )
+sf::Vector2f GameMap::snapToMapTile( const sf::Vector2f& mousePosition ) const
 {
    auto tile = getTileIndex( mousePosition );
 
@@ -77,9 +77,10 @@ sf::Vector2i GameMap::getTileIndex( const sf::Vector2f& position ) const
 sf::Vector2f GameMap::getScreenCoords( const sf::Vector2i& tile ) const
 {
    auto screenCoords = Math::worldToScreenSpace(
-         sf::Vector2f{
-               ( float )tile.x * Math::IsometricConstants::WORLD_TILE_WIDTH + Math::IsometricConstants::WORLD_TILE_WIDTH / 2,
-               ( float )tile.y * Math::IsometricConstants::WORLD_TILE_WIDTH + Math::IsometricConstants::WORLD_TILE_WIDTH / 2 } );
+      sf::Vector2f{
+         static_cast<float>( tile.x ) * Math::IsometricConstants::WORLD_TILE_WIDTH + Math::IsometricConstants::WORLD_TILE_WIDTH / 2,
+         static_cast<float>( tile.y ) * Math::IsometricConstants::WORLD_TILE_WIDTH + Math::IsometricConstants::WORLD_TILE_WIDTH / 2
+      } );
 
    screenCoords.x += Math::IsometricConstants::SPRITE_WIDTH / 2;
    screenCoords.x += mapStart.x;

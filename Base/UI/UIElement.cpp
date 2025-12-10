@@ -5,7 +5,7 @@
 #include "../Core/Math.h"
 
 UIElement::UIElement( const sf::Vector2f& position, float rotation, const sf::Vector2f& scale, bool isVisible )
-      : localPosition( position ), localRotation( rotation ), localScale( scale ), isVisibleElement( isVisible )
+   : localPosition( position ), localRotation( rotation ), localScale( scale ), isVisibleElement( isVisible )
 {
 }
 
@@ -96,6 +96,5 @@ void UIElement::draw( sf::RenderTarget& target, const Renderer& renderer )
 
 bool UIElement::onClick( const sf::Vector2f& position )
 {
-   return std::any_of( children.begin(), children.end(),
-                       [&]( const std::shared_ptr<UIElement>& child ) { return child->onClick( position ); } );
+   return std::ranges::any_of( children, [&]( const std::shared_ptr<UIElement>& child ) { return child->onClick( position ); } );
 }

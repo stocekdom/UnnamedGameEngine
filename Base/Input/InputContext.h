@@ -28,8 +28,8 @@ class InputContext
       void mapMouseWheel( GameAction gameAction );
 
    private:
+      bool consumesInput = false;
       std::unordered_map<InputEventKey, GameAction, InputEventKeyHash> actionsMap;
-      bool consumesInput;
 };
 
 #endif //GAME1_INPUTCONTEXT_H

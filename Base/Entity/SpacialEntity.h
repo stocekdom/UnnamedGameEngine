@@ -8,16 +8,15 @@
 #include "Entity.h"
 
 /**
- * Abstract base class for 2D entities that have position, rotation and scale
+ * Abstract base class for 2D entities that have position, rotation, and scale
  * Doesn't provide any component that gets drawn
- * Provides getters and setters for position, rotation and scale
+ * Provides getters and setters for position, rotation, and scale
  * Also allows setting the visibility of the entity
- * @warning Override the implemented methods at your own risk, or call them in the overridden methods.
+ * @warning Override the implemented methods at your own risk or call them in the overridden methods.
  */
 class SpacialEntity : public Entity
 {
    public:
-
       SpacialEntity( Mobility mobility, const sf::Vector2f& position, float rotation, const sf::Vector2f& scale,
                      bool isVisible );
 

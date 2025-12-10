@@ -11,8 +11,6 @@ class Renderer
 {
    public:
       void render( const sf::Drawable& drawable, sf::RenderTarget& target ) const;
-
-   private:
 };
 
 #endif //GAME1_RENDERER_H

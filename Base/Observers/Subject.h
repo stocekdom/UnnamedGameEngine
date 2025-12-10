@@ -15,7 +15,7 @@ class Subject
       void addObserver( const std::shared_ptr<Observer>& observer );
 
    protected:
-      void notifyObservers( EventData data );
+      void notifyObservers( EventData data ) const;
 
    private:
       std::vector<std::weak_ptr<Observer>> observers;

@@ -13,7 +13,7 @@
 /**
  * Basic controller providing a way to map keyboard and mouse events to functions with support for different contexts.
  * Implements default input handling for keyboard and mouse events.
- * Concrete controllers shouldn't need to override this class and they should only define their mappings.
+ * Concrete controllers shouldn't need to override this class, and they should only define their mappings.
  */
 class Controller
 {
@@ -34,8 +34,8 @@ class Controller
       std::unordered_map<GameAction, std::function<void( const ActionData& data )>> actions;
 
    private:
-      bool keyStates[sf::Keyboard::Key::KeyCount]{};
-      bool buttonStates[sf::Mouse::Button::ButtonCount]{};
+      bool keyStates[ sf::Keyboard::Key::KeyCount ]{};
+      bool buttonStates[ sf::Mouse::Button::ButtonCount ]{};
 };
 
 #endif //GAME1_CONTROLLER_H

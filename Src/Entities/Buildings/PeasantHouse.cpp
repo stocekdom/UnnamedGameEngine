@@ -6,7 +6,7 @@
 
 PeasantHouse::PeasantHouse( SpawnCategory spawnCategory, const sf::Vector2f& position, float rotation, const sf::Vector2f& scale,
                             float height, bool isVisible )
-      : Building( spawnCategory, position, rotation, scale, height, isVisible )
+   : Building( spawnCategory, position, rotation, scale, height, isVisible )
 {
 }
 

@@ -24,6 +24,8 @@ namespace Resources
    };
 
    inline const std::array<std::string, ITEM_COUNT> ID_ARRAY = { "res_wood", "res_fish", "res_stone" };
-   inline const std::array<std::string, ITEM_COUNT> TEXTURE_ARRAY = { "Assets/Icons/houseIcon.png", "Assets/Icons/houseIcon.png", "Assets/Icons/houseIcon.png" };
+   inline const std::array<std::string, ITEM_COUNT> TEXTURE_ARRAY = {
+      "Assets/Icons/houseIcon.png", "Assets/Icons/houseIcon.png", "Assets/Icons/houseIcon.png"
+   };
 }
 #endif //GAME1_RESOURCES_H

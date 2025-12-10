@@ -7,7 +7,6 @@
 
 #include <vector>
 #include <memory>
-#include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "Observers/Observer.h"
@@ -15,7 +14,7 @@
 #include "Core/UUID.h"
 
 class Entity;
-class GameContext;
+struct GameContext;
 
 class GameScene
 {
@@ -37,17 +36,17 @@ class GameScene
 
       void addObserver( const std::shared_ptr<Observer>& observer );
 
-      sf::Vector2f getWorldCoordinates( const sf::Vector2i& screenCoords );
+      sf::Vector2f getWorldCoordinates( const sf::Vector2i& screenCoords ) const;
 
       void updateFixed( float fixedDt );
 
       void update( float deltaTime );
 
-      void renderScene( sf::RenderTarget& target, const Renderer& renderer );
+      void renderScene( sf::RenderTarget& target, const Renderer& renderer ) const;
 
-      void moveCamera( const sf::Vector2f& delta );
+      void moveCamera( const sf::Vector2f& delta ) const;
 
-      void zoomCamera( float zoom );
+      void zoomCamera( float zoom ) const;
 
    private:
       // Window, view

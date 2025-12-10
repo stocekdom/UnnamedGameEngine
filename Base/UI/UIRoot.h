@@ -22,9 +22,9 @@ class UIRoot : public UIElement
       bool onClick( const sf::Vector2f& position ) override;
 
    private:
-      void onPauseGame( const GamePaused& event );
+      void onPauseGame( const GamePaused& event ) const;
 
-      void onResumeGame( const GameResumed& event );
+      void onResumeGame( const GameResumed& event ) const;
 
       std::shared_ptr<UIElement> menuLayer;
 };

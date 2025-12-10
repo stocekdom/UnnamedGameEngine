@@ -22,7 +22,7 @@ class BuildingPlacementButton : public UIButton<BuildingPlacingStarted>
 template<BuildingType T>
 BuildingPlacementButton<T>::BuildingPlacementButton( const std::string& texturePath, const sf::Vector2f& position, float rotation,
                                                      const sf::Vector2f& scale, bool isVisible )
-      : UIButton( texturePath, position, rotation, scale, isVisible )
+   : UIButton( texturePath, position, rotation, scale, isVisible )
 {
 }
 

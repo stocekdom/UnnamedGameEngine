@@ -1,7 +1,7 @@
 #include "UUID.h"
 
 std::mt19937_64 UUID::s_engine(
-      static_cast<uint64_t>(std::chrono::high_resolution_clock::now().time_since_epoch().count())
+   static_cast<uint64_t>( std::chrono::high_resolution_clock::now().time_since_epoch().count() )
 );
 
 std::uniform_int_distribution<uint64_t> UUID::s_dist;

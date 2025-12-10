@@ -31,11 +31,11 @@ Game::Game()
 
 void Game::start()
 {
-   const int WINDOW_WIDTH = 1920;
-   const int WINDOW_HEIGHT = 1080;
+   constexpr int WINDOW_WIDTH = 1920;
+   constexpr int WINDOW_HEIGHT = 1080;
    sf::RenderWindow window( sf::VideoMode( WINDOW_WIDTH, WINDOW_HEIGHT ), "Game" );
    sf::Clock clock;
-   const float FIXED_DT = 1.0f / 128.0f;
+   constexpr float FIXED_DT = 1.0f / 128.0f;
    float accumulator = 0.f;
 
    context->inputSystem->registerController( std::make_unique<PlayerController>( context ) );
@@ -44,7 +44,7 @@ void Game::start()
       auto uiUpperBlock = std::make_shared<ResourceBar>( sf::Vector2f{ WINDOW_WIDTH, 80 }, sf::Color( 100, 10, 10, 155 ),
                                                          sf::Vector2f{ 0.f, 0.f } );
       auto uiLowerBlock = std::make_shared<UIBlock>( sf::Vector2f{ WINDOW_WIDTH, 100 }, sf::Color( 100, 10, 10 ),
-                                                     sf::Vector2f{ 0.f, ( float )window.getSize().y - 100.f } );
+                                                     sf::Vector2f{ 0.f, static_cast<float>( window.getSize().y ) - 100.f } );
       auto menuButton = std::make_shared<UIButton<GamePaused>>( "Assets/Icons/menu.png",
                                                                 sf::Vector2f{ WINDOW_WIDTH - 60.f, 40.f } );
 

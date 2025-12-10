@@ -30,4 +30,3 @@ void ItemRegistry::addDefinition( const ItemDefinition& definition )
 {
    definitions.emplace( definition.id, definition );
 }
-

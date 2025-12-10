@@ -32,4 +32,3 @@ std::shared_ptr<InputContext> ContextFactory::createBuildingPlacingContext()
    context->mapMouseMove( GameAction::MOUSE_MOVE );
    return context;
 }
-

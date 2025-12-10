@@ -5,7 +5,6 @@
 #ifndef GAME1_COLLISIONSYSTEM_H
 #define GAME1_COLLISIONSYSTEM_H
 
-
 #include <vector>
 #include <memory>
 

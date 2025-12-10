@@ -19,15 +19,15 @@ class ResourceBar : public UIBlock
 
    private:
       const float INNER_PADDING = 10.f;
-      const static constexpr float COUNTER_WIDTH = 48.f;
-      const static constexpr float X_PADDING = 64.f;
+      static constexpr float COUNTER_WIDTH = 48.f;
+      static constexpr float X_PADDING = 64.f;
       std::vector<std::shared_ptr<ResourceCounter>> counters;
 
-      void onResourceAdd( const PlayerInventoryItemAdded& data );
+      void onResourceAdd( const PlayerInventoryItemAdded& data ) const;
 
-      void onResourceRemove( const PlayerInventoryItemRemoved& data );
+      void onResourceRemove( const PlayerInventoryItemRemoved& data ) const;
 
-      void counterUpdateImpl( const std::string& id, unsigned int amount );
+      void counterUpdateImpl( const std::string& id, unsigned int amount ) const;
 };
 
 #endif //GAME1_RESOURCEBAR_H

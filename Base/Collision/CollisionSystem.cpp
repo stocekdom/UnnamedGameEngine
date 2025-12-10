@@ -3,7 +3,6 @@
 //
 #include "CollisionSystem.h"
 #include "Collider.h"
-#include <cmath>
 
 void CollisionSystem::registerCollider( const std::shared_ptr<Collider>& collider )
 {
@@ -49,7 +48,7 @@ void CollisionSystem::update( float dt )
 
 void CollisionSystem::debugSwitch()
 {
-   for( auto& collider : colliders )
+   for( auto& collider: colliders )
    {
       if( auto c = collider.lock() )
          c->setIsVisibleEntity( !isDebugged );
@@ -57,4 +56,3 @@ void CollisionSystem::debugSwitch()
       isDebugged = !isDebugged;
    }
 }
-

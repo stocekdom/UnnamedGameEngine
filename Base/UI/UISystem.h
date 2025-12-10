@@ -11,7 +11,7 @@
 #include "../Renderer.h"
 
 class UIElement;
-class GameContext;
+struct GameContext;
 
 class UISystem
 {
@@ -20,9 +20,9 @@ class UISystem
 
       void onStart( sf::RenderWindow& window, GameContext* context );
 
-      void renderUI( sf::RenderTarget& target, const Renderer& renderer );
+      void renderUI( sf::RenderTarget& target, const Renderer& renderer ) const;
 
-      bool onLeftClick( const sf::Vector2i& position );
+      bool onLeftClick( const sf::Vector2i& position ) const;
 
       void addUiRootComponent( const std::shared_ptr<UIElement>& root );
 

@@ -5,7 +5,7 @@
 
 Actor::Actor( SpawnCategory spawnCategory, Mobility mobility, sf::Vector2f position, float rotation, sf::Vector2f scale,
               bool isVisible )
-      : SpacialEntity( mobility, position, rotation, scale, isVisible ), spawnCategory( spawnCategory )
+   : SpacialEntity( mobility, position, rotation, scale, isVisible ), spawnCategory( spawnCategory )
 {
    isEntityDirty = true;
 }

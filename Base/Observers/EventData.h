@@ -5,7 +5,6 @@
 #ifndef GAME1_EVENTDATA_H
 #define GAME1_EVENTDATA_H
 
-#include <cstddef>
 #include <variant>
 #include <SFML/System/Vector2.hpp>
 
@@ -16,7 +15,9 @@ struct CollisionEventData
 
 struct ScoreboardUpdateEventData
 {
-   explicit ScoreboardUpdateEventData( size_t pts ) : points( pts ){};
+   explicit ScoreboardUpdateEventData( size_t pts ) : points( pts )
+   {
+   };
 
    size_t points;
 };
