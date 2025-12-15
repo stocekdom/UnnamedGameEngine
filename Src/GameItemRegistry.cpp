@@ -6,10 +6,14 @@
 
 GameItemRegistry::GameItemRegistry()
 {
-   definitions.emplace( Resources::ID_ARRAY[ Resources::ITEM_FISH ],
+   definitions.emplace( Resources::ID_ARRAY[ Resources::ITEM_ROCKS ], ItemDefinition{
+                           Resources::ID_ARRAY[ Resources::ITEM_ROCKS ], "Rocks", "Rocks",
+                           Resources::TEXTURE_ARRAY[ Resources::ITEM_ROCKS ], ItemCategory::RESOURCE, 9999
+                        } );
+   definitions.emplace( Resources::ID_ARRAY[ Resources::ITEM_BERRIES ],
                         ItemDefinition{
-                           Resources::ID_ARRAY[ Resources::ITEM_FISH ], "Fish", "Fish",
-                           Resources::TEXTURE_ARRAY[ Resources::ITEM_FISH ], ItemCategory::RESOURCE, 9999
+                           Resources::ID_ARRAY[ Resources::ITEM_BERRIES ], "Berries", "Berries",
+                           Resources::TEXTURE_ARRAY[ Resources::ITEM_BERRIES ], ItemCategory::RESOURCE, 9999
                         } );
    definitions.emplace( Resources::ID_ARRAY[ Resources::ITEM_STONE ],
                         ItemDefinition{

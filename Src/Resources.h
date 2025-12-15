@@ -18,14 +18,15 @@ namespace Resources
    enum ItemID
    {
       ITEM_WOOD,
-      ITEM_FISH,
+      ITEM_BERRIES,
+      ITEM_ROCKS,
       ITEM_STONE,
       ITEM_COUNT
    };
 
-   inline const std::array<std::string, ITEM_COUNT> ID_ARRAY = { "res_wood", "res_fish", "res_stone" };
+   inline const std::array<std::string, ITEM_COUNT> ID_ARRAY = { "res_wood", "res_berries", "res_rocks", "res_stone" };
    inline const std::array<std::string, ITEM_COUNT> TEXTURE_ARRAY = {
-      "Assets/Icons/houseIcon.png", "Assets/Icons/houseIcon.png", "Assets/Icons/houseIcon.png"
+      "Assets/Icons/woodIco.png", "Assets/Icons/berriesIco.png", "Assets/Icons/rocksIco.png", "Assets/Icons/stoneIco.png"
    };
 }
 #endif //GAME1_RESOURCES_H
