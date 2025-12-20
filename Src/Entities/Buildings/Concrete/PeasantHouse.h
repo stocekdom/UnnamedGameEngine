@@ -14,6 +14,8 @@ class PeasantHouse : public Building
                              const sf::Vector2f& scale = { 1.f, 1.f }, float height = 0, bool isVisible = true );
 
       void onStart( GameContext* context ) override;
+
+      bool canBePlaced( const std::shared_ptr<MapTile>& tile ) override;
 };
 
 #endif //GAME1_PEASANTHOUSE_H

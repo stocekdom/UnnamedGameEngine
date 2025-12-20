@@ -2,7 +2,7 @@
 // Created by dominik on 08.12.25.
 //
 #include "ResourceBar.h"
-#include "../Resources.h"
+#include "../GameItems.h"
 
 ResourceBar::ResourceBar( const sf::Vector2f& extents, const sf::Color& fillColor, const sf::Vector2f& position, float rotation,
                           bool isVisible )

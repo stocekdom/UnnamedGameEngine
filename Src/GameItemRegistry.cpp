@@ -2,7 +2,7 @@
 // Created by dominik on 08.12.25.
 //
 #include "GameItemRegistry.h"
-#include "Resources.h"
+#include "GameItems.h"
 
 GameItemRegistry::GameItemRegistry()
 {

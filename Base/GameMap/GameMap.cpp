@@ -5,6 +5,8 @@
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
 
+#include "../../Src/Entities/ResourceFactory.h"
+
 //
 // Created by dominik on 14.11.25.
 //
@@ -25,7 +27,30 @@ void GameMap::init( GameContext* context )
                          static_cast<float>( x ) * ( Math::IsometricConstants::SPRITE_HEIGHT / 2 );
          auto tileTmp = std::make_shared<MapTile>( "Assets/grass1.png", SpawnCategory::WORLD, Mobility::STATIC,
                                                    sf::Vector2f{ screenX, screenY } );
-         tileTmp->onStart( context );
+
+         // Temporary for testing. Done like this so the weakptr from shared_ptr to resource doesnt expire immediately
+         if( ( x + y * mapWidth ) % 9 == 0 )
+         {
+            auto res = ResourceFactory::createResource( Resources::ResourceSource::STONES, {
+                                                           Math::IsometricConstants::SPRITE_HEIGHT,
+                                                           Math::IsometricConstants::SPRITE_HEIGHT
+                                                        } );
+            tileTmp->setResource( res );
+            tileTmp->onStart( context );
+         }
+         else if( ( x + y * mapWidth ) % 12 == 0 )
+         {
+            auto res = ResourceFactory::createResource( Resources::ResourceSource::TREE, {
+                                                           Math::IsometricConstants::SPRITE_HEIGHT,
+                                                           Math::IsometricConstants::SPRITE_HEIGHT
+                                                        } );
+            tileTmp->setResource( res );
+            tileTmp->onStart( context );
+         }
+         else
+         {
+            tileTmp->onStart( context );
+         }
          gameMap.push_back( tileTmp );
       }
    }
@@ -33,13 +58,13 @@ void GameMap::init( GameContext* context )
 
 bool GameMap::onClick( const sf::Vector2f& location )
 {
+   /*
    auto tile = getTileIndex( location );
    if( tile.x < 0 || tile.y < 0 || tile.x >= mapWidth || tile.y >= mapHeight )
       return false;
 
    if( auto t = gameMap[ tile.x * mapWidth + tile.y ].lock() )
-      t->setHeight( 10 );
-
+*/
    return true;
 }
 
@@ -78,8 +103,10 @@ sf::Vector2f GameMap::getScreenCoords( const sf::Vector2i& tile ) const
 {
    auto screenCoords = Math::worldToScreenSpace(
       sf::Vector2f{
-         static_cast<float>( tile.x ) * Math::IsometricConstants::WORLD_TILE_WIDTH + Math::IsometricConstants::WORLD_TILE_WIDTH / 2,
-         static_cast<float>( tile.y ) * Math::IsometricConstants::WORLD_TILE_WIDTH + Math::IsometricConstants::WORLD_TILE_WIDTH / 2
+         static_cast<float>( tile.x ) * Math::IsometricConstants::WORLD_TILE_WIDTH + Math::IsometricConstants::WORLD_TILE_WIDTH /
+         2,
+         static_cast<float>( tile.y ) * Math::IsometricConstants::WORLD_TILE_WIDTH + Math::IsometricConstants::WORLD_TILE_WIDTH /
+         2
       } );
 
    screenCoords.x += Math::IsometricConstants::SPRITE_WIDTH / 2;

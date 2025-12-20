@@ -3,6 +3,7 @@
 //
 #include "GameMapSystem.h"
 #include "GameMap.h"
+#include "../../Src/Entities/Buildings/Building.h"
 #include "../Logging/Logger.h"
 
 void GameMapSystem::onStart( GameContext* context )
@@ -21,9 +22,12 @@ void GameMapSystem::generateMap( size_t mapHeight, size_t mapWidth, const sf::Ve
    map = std::make_unique<GameMap>( mapHeight, mapWidth, mapStart );
 }
 
-sf::Vector2f GameMapSystem::snapToMapTile( const sf::Vector2i& mousePosition ) const
+SnapToTileResult GameMapSystem::snapToMapTile( const sf::Vector2i& mousePosition ) const
 {
-   return map->snapToMapTile( scene->getWorldCoordinates( mousePosition ) );
+   auto pos = map->snapToMapTile( scene->getWorldCoordinates( mousePosition ) );
+   auto tile = map->getMapTile( pos );
+
+   return { pos, tile };
 }
 
 std::weak_ptr<MapTile> GameMapSystem::getMapTile( const sf::Vector2i& mousePosition ) const
@@ -38,9 +42,10 @@ bool GameMapSystem::placeBuilding( const sf::Vector2i& position, const std::shar
    if( !tile )
       return false;
 
-   if( !tile->isOccupied() )
+   if( building->canBePlaced( tile ) )
    {
       tile->setBuilding( building );
+      building->onPlaced( tile );
       return true;
    }
 

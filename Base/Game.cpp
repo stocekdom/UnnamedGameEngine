@@ -48,11 +48,11 @@ void Game::start()
       auto menuButton = std::make_shared<UIButton<GamePaused>>( "Assets/Icons/menu.png",
                                                                 sf::Vector2f{ WINDOW_WIDTH - 60.f, 40.f } );
 
+      // TODO add a separate component for building buttons
       auto buildingButton = std::make_shared<BuildingPlacementButton<BuildingType::PEASANT_HOUSE>>( "Assets/Icons/houseIcon.png",
          sf::Vector2f{ 60.f, 50.f } );
-
-      auto addItemButtonPlaceholder = std::make_shared<UIButton<PlayerInventoryItemAdded>>( "Assets/Icons/menu.png",
-         sf::Vector2f{ 160.f, 50.f } );
+      auto minerButton = std::make_shared<BuildingPlacementButton<BuildingType::STONE_MINER>>( "Assets/Icons/stoneMinerIco.png",
+         sf::Vector2f{ 134.f, 50.f } );
 
       auto placeholderMenu = std::make_shared<UIButton<GameResumed>>( "Assets/Icons/menu.png",
                                                                       sf::Vector2f{ WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 }, 0,
@@ -60,7 +60,7 @@ void Game::start()
       auto uiRoot = std::make_shared<UIRoot>( placeholderMenu );
       uiUpperBlock->addChild( menuButton );
       uiLowerBlock->addChild( buildingButton );
-      uiLowerBlock->addChild( addItemButtonPlaceholder );
+      uiLowerBlock->addChild( minerButton );
 
       uiRoot->addChild( uiLowerBlock );
       uiRoot->addChild( uiUpperBlock );

@@ -87,10 +87,27 @@ void PlayerController::onMouseMove( const sf::Vector2i& position )
    if( !sharedPawn )
       return;
 
-   auto snappedPosition = context->gameMapSystem->snapToMapTile( position );
+   auto snapResult = context->gameMapSystem->snapToMapTile( position );
    // Offset from the tile center to be closer to the bottom left corner of the ile
-   snappedPosition.y += Math::IsometricConstants::BUILDING_TILE_CENTER_Y_OFFSET;
-   sharedPawn->setPosition( snappedPosition );
+   snapResult.position.y += Math::IsometricConstants::BUILDING_TILE_CENTER_Y_OFFSET;
+   sharedPawn->setPosition( snapResult.position );
+
+   auto sharedTile = snapResult.tile.lock();
+
+   if( !sharedTile )
+      return;
+
+   auto canBePlaced = sharedPawn->canBePlaced( sharedTile );
+
+   if( canBePlaced != previousBuildingPlacingState )
+   {
+      if( canBePlaced )
+         sharedPawn->setOverlayColor( GreenOverlay );
+      else
+         sharedPawn->setOverlayColor( RedOverlay );
+   }
+
+   previousBuildingPlacingState = canBePlaced;
 }
 
 void PlayerController::onBuildingPlacingStart( const BuildingPlacingStarted& event )
@@ -98,10 +115,18 @@ void PlayerController::onBuildingPlacingStart( const BuildingPlacingStarted& eve
    // TODO properly handle left click on UI even in this context
    activeContext = placingContext;
 
+   // Delete previous pawn if we click on UI without placing the previous one
+   if( auto prevPawn = buildingPawn.lock() )
+      context->scene->deleteOverlayEntityById( prevPawn->getId() );
+
    auto building = BuildingFactory::createBuilding( event.type, event.position );
    // TODO temporary hack to make the ghost house movable
    building->setMobility( Mobility::MOVABLE );
    building->onStart( context );
+
+   // Set overlay and placement status so we can work with it in onMouseMove
+   previousBuildingPlacingState = false;
+   building->setOverlayColor( RedOverlay );
    buildingPawn = building;
 }
 
@@ -118,6 +143,7 @@ void PlayerController::onBuildingPlacingCancel()
 
 void PlayerController::onBuildingPlaced( const sf::Vector2i& position )
 {
+   // TODO do this in main controller class
    // UI handled first
    if( context->uiSystem->onLeftClick( position ) )
       return;
@@ -132,12 +158,7 @@ void PlayerController::onBuildingPlaced( const sf::Vector2i& position )
       return;
 
    // TODO this shouldn't be done here. Switch to ECS
-   context->scene->deleteOverlayEntityById( sharedPawn->getId() );
-   sharedPawn->setSpawnCategory( SpawnCategory::WORLD );
-   sharedPawn->setMobility( Mobility::STATIC );
-   context->scene->addEntityToScene( sharedPawn );
-   buildingPawn.reset();
-   activeContext = mainContext;
+   movePawnFromOverlayToWorld( sharedPawn );
 }
 
 void PlayerController::updateCameraSpeedX( float x )
@@ -160,4 +181,15 @@ void PlayerController::updateCameraZoom( float zoom )
       targetZoom *= ( 1.f + ZOOM_STEP ); // Zoom out
 
    targetZoom = std::clamp( targetZoom, MIN_ZOOM, MAX_ZOOM );
+}
+
+void PlayerController::movePawnFromOverlayToWorld( const std::shared_ptr<Building>& building )
+{
+   context->scene->deleteOverlayEntityById( building->getId() );
+   building->setSpawnCategory( SpawnCategory::WORLD );
+   building->setMobility( Mobility::STATIC );
+   context->scene->addEntityToScene( building );
+   building->setOverlayColor( DefaultOverlay );
+   buildingPawn.reset();
+   activeContext = mainContext;
 }

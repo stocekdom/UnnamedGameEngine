@@ -58,8 +58,6 @@ add_executable(game1 main.cpp
         Base/Core/Mobility.h
         Base/UI/UIBlock.h
         Base/UI/UIBlock.cpp
-        Src/Entities/ClickableText.h
-        Src/Entities/ClickableText.cpp
         Base/Event/EventSystem.h
         Base/Event/CallbackContainer.h
         Base/Event/Events.h
@@ -79,8 +77,8 @@ add_executable(game1 main.cpp
         Src/Entities/Buildings/BuildingFactory.h
         Src/Entities/Buildings/Building.h
         Src/Entities/Buildings/BuildingFactory.cpp
-        Src/Entities/Buildings/PeasantHouse.h
-        Src/Entities/Buildings/PeasantHouse.cpp
+        Src/Entities/Buildings/Concrete/PeasantHouse.h
+        Src/Entities/Buildings/Concrete/PeasantHouse.cpp
         Src/Entities/Buildings/Building.cpp
         Src/Entities/Buildings/BuildingPlacementButton.h
         Src/Entities/Buildings/BuildingEvents.h
@@ -97,7 +95,7 @@ add_executable(game1 main.cpp
         Base/Data/InventoryComponent.cpp
         Base/Data/ItemInstance.cpp
         Base/Player.h
-        Src/Resources.h
+        Src/GameItems.h
         Src/UI/ResourceBar.h
         Src/UI/ResourceCounter.h
         Src/UI/Fonts.h
@@ -116,6 +114,12 @@ add_executable(game1 main.cpp
         Base/Time/TimeManager.cpp
         Base/Logging/Logger.h
         Base/Logging/Logger.cpp
+        Src/Entities/ResourceActor.h
+        Src/Entities/ResourceActor.cpp
+        Src/Entities/ResourceFactory.h
+        Src/Entities/ResourceFatory.cpp
+        Src/Entities/Buildings/Concrete/StoneMiner.h
+        Src/Entities/Buildings/Concrete/StoneMiner.cpp
 )
 
 

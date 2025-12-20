@@ -32,7 +32,28 @@ bool MapTile::isOccupied() const
    return building.lock() != nullptr;
 }
 
+Resources::Resource MapTile::getResourceType() const
+{
+   if( auto r = resource.lock() )
+      return r->getResource();
+
+   return Resources::ITEM_NONE;
+}
+
+std::weak_ptr<ResourceActor> MapTile::getResource() const
+{
+   return resource;
+}
+
 void MapTile::setBuilding( const std::shared_ptr<Building>& newBuilding )
 {
    building = newBuilding;
+}
+
+void MapTile::setResource( const std::shared_ptr<ResourceActor>& newResource )
+{
+   resource = newResource;
+   // Add as child for better location manipulation (0,0) for resource sprite matches the tile
+   // Buildings position is set separately using snap to tile so we don't need it as a child
+   addChild( newResource );
 }

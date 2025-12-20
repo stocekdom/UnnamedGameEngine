@@ -41,6 +41,11 @@ class PlayerController : public Controller
       void updateCameraZoom( float zoom );
 
    private:
+      // Predefined colors for building coloring when placing
+      static inline const sf::Color DefaultOverlay = sf::Color( 255, 255, 255, 216 );
+      static inline const sf::Color RedOverlay = sf::Color( 255, 128, 128, 216 );
+      static inline const sf::Color GreenOverlay = sf::Color( 128, 255, 128, 216 );
+
       sf::Vector2f cameraSpeed;
       // Speed of camera movement since the camera speed vector is normalized.
       static constexpr float CAMERA_SPEED = 500.f;
@@ -57,6 +62,10 @@ class PlayerController : public Controller
       std::shared_ptr<InputContext> placingContext;
       GameContext* context;
       std::weak_ptr<Building> buildingPawn;
+      // Flag to optimize placing. If we remember last state we only have to call setColor of the sprite on state change
+      bool previousBuildingPlacingState = false;
+
+      void movePawnFromOverlayToWorld( const std::shared_ptr<Building>& building );
 };
 
 #endif //GAME1_PLAYERCONTROLLER_H

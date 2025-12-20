@@ -9,5 +9,6 @@ enum class BuildingType
 {
    NONE,
    PEASANT_HOUSE,
+   STONE_MINER,
 };
 #endif //GAME1_BUILDINGTYPE_H

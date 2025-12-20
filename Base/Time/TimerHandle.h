@@ -11,6 +11,8 @@
 class TimerHandle
 {
    public:
+      TimerHandle() = default;
+
       explicit TimerHandle( const std::shared_ptr<Timer>& timer );
 
       [[nodiscard]] bool isValid() const;

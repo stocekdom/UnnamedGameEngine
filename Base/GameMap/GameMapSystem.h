@@ -14,6 +14,14 @@ class GameMap;
 class GameScene;
 class Building;
 
+// TODO use sharedptr for map tiles inside gamemap
+struct SnapToTileResult
+{
+   sf::Vector2f position;
+   std::weak_ptr<MapTile> tile;
+};
+
+// TODO make the map system generic and let the user specify gamemap class, so we dont have to modify base classes for more funcionalitydd
 class GameMapSystem
 {
    public:
@@ -24,13 +32,14 @@ class GameMapSystem
       /**
        * Returns a position in the screen space of the tile center that is closest to the mouse position.
        * If the mouse position is outside the map, it returns the same position.
+       * @return A structure with the position and the tile. If the position is out of bounds, the resulting position is the same as input position and tile is nullptr
        */
-      sf::Vector2f snapToMapTile( const sf::Vector2i& mousePosition ) const;
+      [[nodiscard]] SnapToTileResult snapToMapTile( const sf::Vector2i& mousePosition ) const;
 
       /**
        * Gets the tile at the given position. If the position is out of the map bounds, returns an empty weak pointer.
        */
-      std::weak_ptr<MapTile> getMapTile( const sf::Vector2i& mousePosition ) const;
+      [[nodiscard]] std::weak_ptr<MapTile> getMapTile( const sf::Vector2i& mousePosition ) const;
 
       /**
        * Places a building on the map.
@@ -38,7 +47,7 @@ class GameMapSystem
        * @param building Pointer to the building to place.
        * @return Bool indicating whether the building was placed successfully or if the tile was already occupied or the position was out of bounds.
        */
-      bool placeBuilding( const sf::Vector2i& position, const std::shared_ptr<Building>& building ) const;
+      [[nodiscard]] bool placeBuilding( const sf::Vector2i& position, const std::shared_ptr<Building>& building ) const;
 
    private:
       std::unique_ptr<GameMap> map{};

@@ -5,7 +5,9 @@
 #ifndef GAME1_MAPTILE_H
 #define GAME1_MAPTILE_H
 
-#include "../../Src/Entities/Buildings/Building.h"
+#include "../../Src/Entities/ResourceActor.h"
+
+class Building;
 
 class MapTile : public IsometricActor
 {
@@ -18,10 +20,17 @@ class MapTile : public IsometricActor
 
       bool isOccupied() const;
 
+      Resources::Resource getResourceType() const;
+
+      std::weak_ptr<ResourceActor> getResource() const;
+
       void setBuilding( const std::shared_ptr<Building>& newBuilding );
+
+      void setResource( const std::shared_ptr<ResourceActor>& newResource );
 
    protected:
       std::string tileTexture;
+      std::weak_ptr<ResourceActor> resource;
       std::weak_ptr<Building> building;
 };
 
