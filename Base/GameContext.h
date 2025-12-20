@@ -14,6 +14,7 @@
 #include "UI/UISystem.h"
 #include "GameMap/GameMapSystem.h"
 #include "Data/ItemRegistry.h"
+#include "Data/PlayerInventoryComponent.h"
 #include "Time/TimeManager.h"
 
 /**
@@ -21,6 +22,8 @@
  * @warning Do not use with non-global systems.
  */
 struct GameContext {
+   // TODO use a player class instead once we have more functinality for it
+   std::shared_ptr<PlayerInventoryComponent> player;
    std::shared_ptr<GameScene> scene;
    std::shared_ptr<CollisionSystem> collisionSystem;
    std::shared_ptr<ResourceManager> resourceManager;

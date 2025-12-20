@@ -15,9 +15,9 @@
 
 Game::Game()
 {
-   player = std::make_shared<PlayerInventoryComponent>();
    context = std::make_shared<GameContext>();
    renderer = std::make_shared<Renderer>();
+   context->player = std::make_shared<PlayerInventoryComponent>();
    context->resourceManager = std::make_shared<ResourceManager>();
    context->inputSystem = std::make_shared<InputSystem>();
    context->eventSystem = std::make_shared<EventSystem>();
@@ -75,15 +75,12 @@ void Game::start()
    LOG_INFO( "UI system started" );
    context->scene->onStart( window );
    LOG_INFO( "Scene started" );
-   player->onStart( context.get() );
+   context->player->onStart( context.get() );
    LOG_INFO( "Player class started" );
-
-   auto timer = context->timeManager->makeRepeatingTimer( 5, [this]() { player->addItem( "res_stone", 5 ); } );
-
    LOG_INFO( "Game starting" );
 
    // TODO temporary
-   player->addItem( "res_wood", 10 );
+   context->player->addItem( "res_wood", 20 );
    // Main loop
    while( window.isOpen() )
    {
