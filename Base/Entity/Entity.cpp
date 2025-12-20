@@ -3,6 +3,13 @@
 //
 #include "Entity.h"
 
+void Entity::onStart( GameContext* context )
+{
+   for( auto& child: children )
+      if( auto c = child.lock() )
+         c->onStart( context );
+}
+
 std::weak_ptr<Entity> Entity::getParent()
 {
    return parent;

@@ -12,6 +12,7 @@ Actor::Actor( SpawnCategory spawnCategory, Mobility mobility, sf::Vector2f posit
 
 void Actor::onStart( GameContext* context )
 {
+   Entity::onStart( context );
    context->scene->addEntityToScene( shared_from_this() );
 }
 
