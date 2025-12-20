@@ -5,7 +5,7 @@
 #ifndef GAME1_MOBILITY_H
 #define GAME1_MOBILITY_H
 
-enum class Mobility{
+enum Mobility{
    STATIC,
    MOVABLE,
 };

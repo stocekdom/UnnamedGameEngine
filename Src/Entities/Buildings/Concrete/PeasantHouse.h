@@ -5,7 +5,7 @@
 #ifndef GAME1_PEASANTHOUSE_H
 #define GAME1_PEASANTHOUSE_H
 
-#include "Building.h"
+#include "../Building.h"
 
 class PeasantHouse : public Building
 {

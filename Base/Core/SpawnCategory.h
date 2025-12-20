@@ -8,7 +8,7 @@
 /**
  * Defines how the entity should be spawned and how it's handled by the scene upon registering
  */
-enum class SpawnCategory
+enum SpawnCategory
 {
    WORLD, // Entities that are part of the world and are rendered based on their depth. Rendered below overlays
    OVERLAY, // Entities that are drawn on top of everything else and act as overlays. They are not sorted by depth
