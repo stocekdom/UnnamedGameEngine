@@ -11,10 +11,7 @@
 class StoneMiner : public Building
 {
    public:
-      explicit StoneMiner( SpawnCategory spawnCategory, const sf::Vector2f& position = { 0.f, 0.f }, float rotation = 0,
-                       const sf::Vector2f& scale = { 1.f, 1.f }, float height = 0, bool isVisible = true );
-
-      void onStart( GameContext* context ) override;
+      explicit StoneMiner( REQ_ARGS, const ActorParams& params );
 
       bool canBePlaced( const std::shared_ptr<MapTile>& tile ) override;
 
@@ -25,7 +22,7 @@ class StoneMiner : public Building
       TimerHandle harvestTimer;
       std::weak_ptr<ResourceActor> resource;
 
-      void harvestResource();
+      //void harvestResource();
 };
 
 #endif //GAME1_STONEMINER_H

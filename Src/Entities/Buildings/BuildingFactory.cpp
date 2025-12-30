@@ -2,21 +2,36 @@
 // Created by dominik on 03.12.25.
 //
 #include "BuildingFactory.h"
+
+#include "BuildingSprites.h"
 #include "Concrete/PeasantHouse.h"
 #include "Concrete/StoneMiner.h"
 
-std::shared_ptr<Building> BuildingFactory::createBuilding( BuildingType type, const sf::Vector2f& position )
+std::shared_ptr<Building> BuildingFactory::createBuilding( GameScene* scene, BuildingType type, const sf::Vector2f& position )
 {
    switch( type )
    {
-      // TODO add option to specify spawn category
       case BuildingType::PEASANT_HOUSE:
-         return std::make_shared<PeasantHouse>( SpawnCategory::OVERLAY, position, 0, sf::Vector2f{ 0.8f, 0.8f } );
+      {
+         auto b = scene->addFunctionalEntity<PeasantHouse>( ActorParams{ position } );
+         addComponent( scene, b->getEntityId(), type );
+         return b;
+      }
       case BuildingType::STONE_MINER:
-         return std::make_shared<StoneMiner>( SpawnCategory::OVERLAY, position, 0, sf::Vector2f{ 0.8f, 0.8f } );
+      {
+         auto b = scene->addFunctionalEntity<StoneMiner>( ActorParams{ position } );
+         addComponent( scene, b->getEntityId(), type );
+         return b;
+      }
       default:
          break;
    }
 
    return nullptr;
+}
+
+void BuildingFactory::addComponent( GameScene* scene, Entity entity, BuildingType type )
+{
+   scene->addComponent<OverlaySpriteComponent>( entity, entity,
+                                                std::string{ BuildingSprites::buildingSprites[ BuildingType::PEASANT_HOUSE ] } );
 }

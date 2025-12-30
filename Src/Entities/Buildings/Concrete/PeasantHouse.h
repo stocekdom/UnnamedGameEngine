@@ -7,13 +7,11 @@
 
 #include "../Building.h"
 
+// TODO add house logic
 class PeasantHouse : public Building
 {
    public:
-      explicit PeasantHouse( SpawnCategory spawnCategory, const sf::Vector2f& position = { 0.f, 0.f }, float rotation = 0,
-                             const sf::Vector2f& scale = { 1.f, 1.f }, float height = 0, bool isVisible = true );
-
-      void onStart( GameContext* context ) override;
+      explicit PeasantHouse( REQ_ARGS, const ActorParams& params );
 
       bool canBePlaced( const std::shared_ptr<MapTile>& tile ) override;
 };

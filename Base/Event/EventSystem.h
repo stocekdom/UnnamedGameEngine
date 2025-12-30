@@ -60,6 +60,7 @@ void EventSystem::publish( const T& event )
    if( it == subscribers.end() )
       return;
 
+   // TODO update casting to the one in component registry
    auto& container = static_cast<CallbackContainer<T>&>( *it->second );
 
    for( auto& callback: container.callbackContainer )

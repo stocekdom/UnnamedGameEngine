@@ -36,12 +36,12 @@ namespace Resources
    };
 
    // Centralized place storing string id's of resources. Use with Resource enum
-   inline const std::array<std::string, ITEM_COUNT> ID_ARRAY = { "res_wood", "res_berries", "res_rocks", "res_stone" };
-   inline const std::array<std::string, ITEM_COUNT> TEXTURE_ARRAY = {
+   inline constexpr std::array<std::string_view, ITEM_COUNT> ID_ARRAY = { "res_wood", "res_berries", "res_rocks", "res_stone" };
+   inline constexpr std::array<std::string_view, ITEM_COUNT> TEXTURE_ARRAY = {
       "Assets/Icons/woodIco.png", "Assets/Icons/berriesIco.png", "Assets/Icons/rocksIco.png", "Assets/Icons/stoneIco.png"
    };
    // Array of assets for resource sources. Use with ResourceSource enum
-   inline const std::array<std::string, SOURCE_COUNT> SOURCE_TEXTURE_ARRAY = {
+   inline constexpr std::array<std::string_view, SOURCE_COUNT> SOURCE_TEXTURE_ARRAY = {
       "Assets/Resources/trees.png", "Assets/Resources/berry1.png", "Assets/Resources/rocks.png" };
 }
 #endif //GAME1_RESOURCES_H

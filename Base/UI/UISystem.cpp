@@ -16,7 +16,7 @@ void UISystem::onStart( sf::RenderWindow& window, GameContext* context )
    uiRoot->onStart( context );
 }
 
-void UISystem::renderUI( sf::RenderTarget& target, const Renderer& renderer ) const
+void UISystem::render( sf::RenderTarget& target, const Renderer& renderer ) const
 {
    target.setView( *uiView );
    uiRoot->draw( target, renderer );

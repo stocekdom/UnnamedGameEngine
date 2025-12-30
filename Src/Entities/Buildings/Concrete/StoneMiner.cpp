@@ -6,19 +6,12 @@
 
 #include "../../../../Base/Logging/Logger.h"
 
-StoneMiner::StoneMiner( SpawnCategory spawnCategory, const sf::Vector2f& position, float rotation, const sf::Vector2f& scale,
-                        float height, bool isVisible )
-   : Building( spawnCategory, position, rotation, scale, height, isVisible )
-{
-}
+// TODO handle pausing if resource is depleted
+// TODO add timer component
 
-void StoneMiner::onStart( GameContext* context )
+StoneMiner::StoneMiner( Entity id, GameScene* scene, const ActorParams& params )
+   : Building( id, scene, params ), context_( nullptr )
 {
-   sprite.setTexture( context->resourceManager->loadTexture( "Assets/Buildings/stoneMiner.png" ) );
-   Building::onStart( context );
-   context_ = context;
-
-   // TODO handle pausing if resource is depleted
 }
 
 bool StoneMiner::canBePlaced( const std::shared_ptr<MapTile>& tile )
@@ -41,8 +34,8 @@ void StoneMiner::onPlaced( const std::shared_ptr<MapTile>& tile )
       LOG_ERROR( "Stone mine placed with invalid tile resource" )
       return;
    }
-
+/*
    harvestTimer = context_->timeManager->makeRepeatingTimer( r->getHarvestTime(), [this, r] {
       context_->player->addItem( Resources::ID_ARRAY[ Resources::Resource::ITEM_ROCKS ], r->harvest() );
-   } );
+   } );*/
 }

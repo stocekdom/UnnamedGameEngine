@@ -6,17 +6,14 @@
 #define GAME1_MAPTILE_H
 
 #include "../../Src/Entities/ResourceActor.h"
+#include "../Entity/SpriteActor.h"
 
 class Building;
 
-class MapTile : public IsometricActor
+class MapTile : public SpriteActor
 {
    public:
-      MapTile( std::string texturePath, SpawnCategory spawnCategory, Mobility mobilityStatus,
-               const sf::Vector2f& position = { 0.f, 0.f }, float rotation = 0, const sf::Vector2f& scale = { 1.0f, 1.0f },
-               float height = 0, bool isVisible = true );
-
-      void onStart( GameContext* context ) override;
+      MapTile( REQ_ARGS, const std::string& texturePath, const ActorParams& params = ActorParams() );
 
       bool isOccupied() const;
 
@@ -29,7 +26,6 @@ class MapTile : public IsometricActor
       void setResource( const std::shared_ptr<ResourceActor>& newResource );
 
    protected:
-      std::string tileTexture;
       std::weak_ptr<ResourceActor> resource;
       std::weak_ptr<Building> building;
 };

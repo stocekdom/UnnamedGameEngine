@@ -16,14 +16,12 @@ void ResourceBar::onStart( GameContext* context )
 {
    for( int i = 0; i < Resources::ITEM_COUNT; ++i )
    {
+      // Left padding + (padding between counters * index) + half of the counter's width to get the center * ( index + 1 )
+      float buttonX = X_PADDING + ( COUNTER_WIDTH / 2 ) +
+                      ( INNER_PADDING * static_cast<float>( i ) + COUNTER_WIDTH * static_cast<float>( i ) );
       // Add a counter for each resource. Calculate position to account for the centered pivotal point
-      auto counter = std::make_shared<ResourceCounter>( Resources::ID_ARRAY[ i ], COUNTER_WIDTH, sf::Vector2f{
-                                                           // Left padding + (padding between counters * index) + half of the counter's width to get the center * ( index + 1 )
-                                                           X_PADDING + ( COUNTER_WIDTH / 2 ) + (
-                                                              INNER_PADDING * static_cast<float>( i ) + COUNTER_WIDTH *
-                                                              static_cast<float>( i ) ),
-                                                           block.getLocalBounds().height / 2.f - 5.f
-                                                        } );
+      auto counter = std::make_shared<ResourceCounter>( std::string{ Resources::ID_ARRAY[ i ] }, COUNTER_WIDTH,
+                                                        sf::Vector2f{ buttonX, block.getLocalBounds().height / 2.f - 5.f } );
 
       counters.push_back( counter );
       addChild( counter );

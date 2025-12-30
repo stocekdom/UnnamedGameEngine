@@ -4,23 +4,26 @@
 
 #include "ResourceFactory.h"
 
-std::shared_ptr<ResourceActor> ResourceFactory::createResource( Resources::ResourceSource resource,
-                                                                const sf::Vector2f& position )
+std::shared_ptr<ResourceActor> ResourceFactory::createResource( GameScene* scene, Resources::ResourceSource resource,
+                                                              const sf::Vector2f& position )
 {
    switch( resource )
    {
       case Resources::ResourceSource::BERRY_BUSH:
          // TODO Add random amount in range
-         return std::make_shared<ResourceActor>( position, 0, sf::Vector2f{ 1.f, 1.f }, true, 9999,
-                                                 Resources::Resource::ITEM_BERRIES, Resources::ResourceSource::BERRY_BUSH, 10 );
+
+         return scene->addFunctionalEntity<ResourceActor>( Resources::Resource::ITEM_BERRIES,
+                                                           Resources::ResourceSource::BERRY_BUSH, 2000, 1, 9999,
+                                                           ActorParams( position ) );
 
       case Resources::ResourceSource::STONES:
-         return std::make_shared<ResourceActor>( position, 0, sf::Vector2f{ 1.f, 1.f }, true, 4000,
-                                        Resources::Resource::ITEM_ROCKS, Resources::ResourceSource::STONES, 5, 5 );
+         return scene->addFunctionalEntity<ResourceActor>( Resources::Resource::ITEM_ROCKS, Resources::ResourceSource::STONES,
+                                                           4000, 5, 9999, ActorParams( position ) );
 
       case Resources::ResourceSource::TREE:
-         return std::make_shared<ResourceActor>( position, 0, sf::Vector2f{ 1.f, 1.f }, true, 1000,
-                                                 Resources::Resource::ITEM_WOOD, Resources::ResourceSource::TREE, 20 );
+         return scene->addFunctionalEntity<ResourceActor>( Resources::Resource::ITEM_WOOD, Resources::ResourceSource::TREE, 1000,
+                                                           10, 9999, ActorParams( position ) );
+
       default:
          return nullptr;
    }

@@ -22,6 +22,7 @@ struct SnapToTileResult
 };
 
 // TODO make the map system generic and let the user specify gamemap class, so we dont have to modify base classes for more funcionalitydd
+// TODO inherit from system and get the map size from game state
 class GameMapSystem
 {
    public:

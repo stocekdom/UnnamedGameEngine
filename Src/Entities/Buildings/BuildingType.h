@@ -5,10 +5,11 @@
 #ifndef GAME1_BUILDINGTYPE_H
 #define GAME1_BUILDINGTYPE_H
 
-enum class BuildingType
+enum BuildingType
 {
-   NONE,
    PEASANT_HOUSE,
    STONE_MINER,
+   COUNT,
+   NONE,
 };
 #endif //GAME1_BUILDINGTYPE_H

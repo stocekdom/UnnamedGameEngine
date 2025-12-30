@@ -1,3 +1,7 @@
+//
+// Created by dominik on 14.11.25.
+//
+
 #include "../Scene.h"
 #include "GameMap.h"
 #include "MapTile.h"
@@ -5,11 +9,6 @@
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
 
-#include "../../Src/Entities/ResourceFactory.h"
-
-//
-// Created by dominik on 14.11.25.
-//
 GameMap::GameMap( size_t mapHeight, size_t mapWidth, const sf::Vector2f& mapStart )
    : mapWidth( mapWidth ), mapHeight( mapHeight ), mapStart( mapStart )
 {
@@ -25,9 +24,10 @@ void GameMap::init( GameContext* context )
                          static_cast<float>( y ) * ( Math::IsometricConstants::SPRITE_WIDTH / 2 );
          float screenY = mapStart.y + static_cast<float>( y ) * ( Math::IsometricConstants::SPRITE_HEIGHT / 2 ) +
                          static_cast<float>( x ) * ( Math::IsometricConstants::SPRITE_HEIGHT / 2 );
-         auto tileTmp = std::make_shared<MapTile>( "Assets/grass1.png", SpawnCategory::WORLD, Mobility::STATIC,
-                                                   sf::Vector2f{ screenX, screenY } );
 
+         auto tileTmp = context->scene->addFunctionalEntity<MapTile>( "Assets/grass1.png",
+                                                                      ActorParams{ sf::Vector2f{ screenX, screenY } } );
+         /*
          // Temporary for testing. Done like this so the weakptr from shared_ptr to resource doesnt expire immediately
          if( ( x + y * mapWidth ) % 9 == 0 )
          {
@@ -51,23 +51,24 @@ void GameMap::init( GameContext* context )
          {
             tileTmp->onStart( context );
          }
-         gameMap.push_back( tileTmp );
+         */
+         gameMap.emplace_back( tileTmp );
       }
    }
 }
 
+/*
 bool GameMap::onClick( const sf::Vector2f& location )
 {
-   /*
    auto tile = getTileIndex( location );
    if( tile.x < 0 || tile.y < 0 || tile.x >= mapWidth || tile.y >= mapHeight )
       return false;
 
    if( auto t = gameMap[ tile.x * mapWidth + tile.y ].lock() )
-*/
+
    return true;
 }
-
+*/
 sf::Vector2f GameMap::snapToMapTile( const sf::Vector2f& mousePosition ) const
 {
    auto tile = getTileIndex( mousePosition );

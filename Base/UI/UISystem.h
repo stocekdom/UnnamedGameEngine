@@ -20,7 +20,7 @@ class UISystem
 
       void onStart( sf::RenderWindow& window, GameContext* context );
 
-      void renderUI( sf::RenderTarget& target, const Renderer& renderer ) const;
+      void render( sf::RenderTarget& target, const Renderer& renderer ) const;
 
       bool onLeftClick( const sf::Vector2i& position ) const;
 

@@ -14,34 +14,22 @@ add_executable(game1 main.cpp
         Base/Renderer.cpp
         Base/Game.cpp
         Base/Input/Controller.h
-        Base/Collision/Collider.h
         Base/Collision/CollisionInfo.h
         Base/Collision/CollisionSystem.h
-        Base/Collision/Collider.cpp
-        Base/Collision/ColliderRect.h
-        Base/Collision/ColliderPoint.h
-        Base/Collision/ColliderRect.cpp
-        Base/Collision/ColliderPoint.cpp
         Base/Collision/CollisionSystem.cpp
         Base/Observers/Subject.h
         Base/Observers/Observer.h
         Base/Observers/Subject.cpp
         Base/Observers/EventData.h
-        Base/Entity/Entity.h
         Base/UI/UIElement.h
-        Base/Entity/SpacialEntity.h
         Base/UI/UIElementText.h
         Base/UI/UIElementText.cpp
         Base/Core/Math.h
-        Base/Entity/SpacialEntity.cpp
-        Base/Entity/Entity.cpp
         Base/UI/UIElement.cpp
         Base/Collision/Collidable.h
         Base/Collision/ColliderType.h
         Base/Collision/CollisionHelper.h
         Base/GameContext.h
-        Base/Entity/IsometricActor.h
-        Base/Entity/IsometricActor.cpp
         Base/ResourceManager.h
         Base/ResourceManager.cpp
         Base/GameMap/MapTile.h
@@ -120,6 +108,28 @@ add_executable(game1 main.cpp
         Src/Entities/ResourceFatory.cpp
         Src/Entities/Buildings/Concrete/StoneMiner.h
         Src/Entities/Buildings/Concrete/StoneMiner.cpp
+        Base/EntityManager.h
+        Base/EntityManager.cpp
+        Base/Entity.h
+        Base/ComponentContainer.h
+        Base/ComponentRegistry.h
+        Base/Entity/FunctionalEntity.h
+        Base/Transform/TransformComponent.h
+        Base/Transform/TransformSystem.h
+        Base/Transform/TransformSystem.cpp
+        Base/System.h
+        Base/Core/Utility.h
+        Base/Sprite/SpriteSystem.h
+        Base/Sprite/SpriteRenderProxy.h
+        Base/Sprite/SpriteSystem.cpp
+        Base/Entity/SpriteActor.h
+        Base/Entity/SpriteActor.cpp
+        Base/Sprite/SpriteComponent.h
+        Base/UIOverlay/OverlaySystem.h
+        Base/UIOverlay/OverlaySystem.cpp
+        Base/UIOverlay/OverlaySpriteComponent.h
+        Src/Entities/Buildings/BuildingSprites.h
+        Base/Sprite/SpriteMobility.h
 )
 
 

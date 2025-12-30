@@ -82,6 +82,7 @@ void PlayerController::onResumeGame( const GameResumed& event )
 // TODO switch to ECS to make this cleaner
 void PlayerController::onMouseMove( const sf::Vector2i& position )
 {
+   /*
    auto sharedPawn = buildingPawn.lock();
 
    if( !sharedPawn )
@@ -107,11 +108,12 @@ void PlayerController::onMouseMove( const sf::Vector2i& position )
          sharedPawn->setOverlayColor( RedOverlay );
    }
 
-   previousBuildingPlacingState = canBePlaced;
+   previousBuildingPlacingState = canBePlaced;*/
 }
 
 void PlayerController::onBuildingPlacingStart( const BuildingPlacingStarted& event )
 {
+   /*
    // TODO properly handle left click on UI even in this context
    activeContext = placingContext;
 
@@ -127,22 +129,24 @@ void PlayerController::onBuildingPlacingStart( const BuildingPlacingStarted& eve
    // Set overlay and placement status so we can work with it in onMouseMove
    previousBuildingPlacingState = false;
    building->setOverlayColor( RedOverlay );
-   buildingPawn = building;
+   buildingPawn = building;*/
 }
 
 void PlayerController::onBuildingPlacingCancel()
 {
+   /*
    auto sharedPawn = buildingPawn.lock();
 
    if( !sharedPawn )
       return;
 
    context->scene->deleteOverlayEntityById( sharedPawn->getId() );
-   buildingPawn.reset();
+   buildingPawn.reset();*/
 }
 
 void PlayerController::onBuildingPlaced( const sf::Vector2i& position )
 {
+   /*
    // TODO do this in main controller class
    // UI handled first
    if( context->uiSystem->onLeftClick( position ) )
@@ -159,6 +163,7 @@ void PlayerController::onBuildingPlaced( const sf::Vector2i& position )
 
    // TODO this shouldn't be done here. Switch to ECS
    movePawnFromOverlayToWorld( sharedPawn );
+   */
 }
 
 void PlayerController::updateCameraSpeedX( float x )
@@ -185,6 +190,7 @@ void PlayerController::updateCameraZoom( float zoom )
 
 void PlayerController::movePawnFromOverlayToWorld( const std::shared_ptr<Building>& building )
 {
+   /*
    context->scene->deleteOverlayEntityById( building->getId() );
    building->setSpawnCategory( SpawnCategory::WORLD );
    building->setMobility( Mobility::STATIC );
@@ -192,4 +198,5 @@ void PlayerController::movePawnFromOverlayToWorld( const std::shared_ptr<Buildin
    building->setOverlayColor( DefaultOverlay );
    buildingPawn.reset();
    activeContext = mainContext;
+   */
 }

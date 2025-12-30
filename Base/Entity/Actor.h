@@ -4,10 +4,16 @@
 
 #ifndef GAME1_ACTOR_H
 #define GAME1_ACTOR_H
-
-#include "SpacialEntity.h"
 #include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/Sprite.hpp>
+
+#include "FunctionalEntity.h"
+
+struct ActorParams
+{
+   sf::Vector2f position = { 0.f, 0.f };
+   float rotation = 0.f;
+   sf::Vector2f scale = { 1.f, 1.f };
+};
 
 /**
  * Base class for all entities that can be drawn on the screen
@@ -16,33 +22,14 @@
  * Provides necessary functionality for handling the sprite, spacial information, entity hierarchy, and ticking
  * @warning Override the implemented methods at your own risk or call them in the overridden methods.
  */
-class Actor : public SpacialEntity
+class Actor : public FunctionalEntity
 {
    public:
-      explicit Actor( SpawnCategory spawnCategory, Mobility mobility, sf::Vector2f position = { 0, 0 }, float rotation = 0,
-                      sf::Vector2f scale = { 1, 1 }, bool isVisible = true );
+      Actor( REQ_ARGS, const ActorParams& params = ActorParams() );
 
       void onStart( GameContext* context ) override;
 
       void tick( float deltaTime ) override;
-
-      [[nodiscard]] SpawnCategory getSpawnCategory() const override;
-
-      void setSpawnCategory( SpawnCategory newSpawnCategory ) override;
-
-      void centerPivot();
-
-      [[nodiscard]] sf::Vector2f getParentRelativePosition() const override;
-
-      const sf::Drawable& getDrawable() override;
-
-      virtual void setTexture( const sf::Texture& inTexture );
-
-      virtual void setSprite( const sf::Sprite& sprite );
-
-   protected:
-      SpawnCategory spawnCategory;
-      sf::Sprite sprite;
 };
 
 #endif //GAME1_ACTOR_H

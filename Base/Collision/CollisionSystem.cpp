@@ -2,11 +2,9 @@
 // Created by dominik on 13.10.25.
 //
 #include "CollisionSystem.h"
-#include "Collider.h"
-
+/*
 void CollisionSystem::registerCollider( const std::shared_ptr<Collider>& collider )
 {
-   collider->setIsVisibleEntity( isDebugged );
    colliders.push_back( collider );
 }
 
@@ -44,15 +42,4 @@ void CollisionSystem::update( float dt )
          }
       }
    }
-}
-
-void CollisionSystem::debugSwitch()
-{
-   for( auto& collider: colliders )
-   {
-      if( auto c = collider.lock() )
-         c->setIsVisibleEntity( !isDebugged );
-
-      isDebugged = !isDebugged;
-   }
-}
+}*/

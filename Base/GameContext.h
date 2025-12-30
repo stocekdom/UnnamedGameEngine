@@ -7,7 +7,6 @@
 
 #include <memory>
 #include "Scene.h"
-#include "Collision/CollisionSystem.h"
 #include "ResourceManager.h"
 #include "Input/InputSystem.h"
 #include "Event/EventSystem.h"
@@ -15,7 +14,10 @@
 #include "GameMap/GameMapSystem.h"
 #include "Data/ItemRegistry.h"
 #include "Data/PlayerInventoryComponent.h"
+#include "Sprite/SpriteSystem.h"
 #include "Time/TimeManager.h"
+#include "Transform/TransformSystem.h"
+#include "UIOverlay/OverlaySystem.h"
 
 /**
  * Simple context for global systems.
@@ -25,7 +27,10 @@ struct GameContext {
    // TODO use a player class instead once we have more functinality for it
    std::shared_ptr<PlayerInventoryComponent> player;
    std::shared_ptr<GameScene> scene;
-   std::shared_ptr<CollisionSystem> collisionSystem;
+   std::shared_ptr<TransformSystem> transformSystem;
+   std::shared_ptr<SpriteSystem> spriteSystem;
+   std::shared_ptr<OverlaySystem> overlaySystem;
+   //std::shared_ptr<CollisionSystem> collisionSystem;
    std::shared_ptr<ResourceManager> resourceManager;
    std::shared_ptr<InputSystem> inputSystem;
    std::shared_ptr<EventSystem> eventSystem;

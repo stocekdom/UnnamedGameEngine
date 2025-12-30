@@ -12,6 +12,7 @@
 class Collisions
 {
    public:
+      /*
       static bool pointRectangleCollisionHelper( const ColliderPoint* point, const ColliderRect* rect, CollisionInfo& info )
       {
          sf::Vector2f pointToRectLocalSpace = point->getPosition() - rect->getPosition();
@@ -45,7 +46,7 @@ class Collisions
          info.localPoint = { 0, 0 };
          info.worldPoint = worldPos;
          return true;
-      }
+      }*/
 };
 
 #endif //GAME1_COLLISIONHELPER_H

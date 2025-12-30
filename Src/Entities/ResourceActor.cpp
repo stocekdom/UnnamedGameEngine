@@ -4,23 +4,17 @@
 
 #include "ResourceActor.h"
 
-ResourceActor::ResourceActor( const sf::Vector2f& position, float rotation, const sf::Vector2f& scale, bool isVisible,
-                              unsigned int amount, Resources::Resource resource, Resources::ResourceSource source,
-                              float harvestTime, unsigned int harvestAmount )
-   : IsometricActor( SpawnCategory::WORLD, Mobility::STATIC, position, rotation, scale, 0, isVisible ),
+ResourceActor::ResourceActor( Entity id, GameScene* scene, Resources::Resource resource, Resources::ResourceSource source,
+                              float harvestTime, unsigned int harvestAmount, unsigned int amount, const ActorParams& params )
+   : SpriteActor( id, scene, std::string{ Resources::SOURCE_TEXTURE_ARRAY[ source ] }, params ),
      amount( amount ),
      resource( resource ),
      source( source ),
      harvestTime( harvestTime ),
      harvestAmount( harvestAmount )
 {
-}
-
-void ResourceActor::onStart( GameContext* context )
-{
-   sprite.setTexture( context->resourceManager->loadTexture( Resources::SOURCE_TEXTURE_ARRAY[ source ] ) );
-   IsometricActor::onStart( context );
-   sprite.setOrigin( sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height );
+   auto spriteComp = scene->getComponentRegistry().getComponent<SpriteComponent>( id );
+   spriteComp.setOrigin( { spriteComp.getLocalBounds().width / 2, spriteComp.getLocalBounds().height } );
 }
 
 unsigned int ResourceActor::getAmount() const

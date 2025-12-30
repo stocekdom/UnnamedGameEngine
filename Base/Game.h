@@ -22,6 +22,10 @@ class Game
    private:
       std::shared_ptr<Renderer> renderer;
       std::shared_ptr<GameContext> context;
+
+      void initSystems();
+
+      void updateSystems( float dt ) const;
 };
 
 #endif //GAME1_GAME_H

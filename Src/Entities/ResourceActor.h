@@ -4,17 +4,15 @@
 
 #ifndef GAME1_RESOURCEACTOR_H
 #define GAME1_RESOURCEACTOR_H
-#include "../GameItems.h"
-#include "../../Base/Entity/IsometricActor.h"
 
-class ResourceActor : public IsometricActor
+#include "../GameItems.h"
+#include "../../Base/Entity/SpriteActor.h"
+
+class ResourceActor : public SpriteActor
 {
    public:
-      ResourceActor( const sf::Vector2f& position, float rotation, const sf::Vector2f& scale, bool isVisible, unsigned int amount,
-                     Resources::Resource resource, Resources::ResourceSource source, float harvestTime,
-                     unsigned int harvestAmount = 1 );
-
-      void onStart( GameContext* context ) override;
+      ResourceActor( REQ_ARGS, Resources::Resource resource, Resources::ResourceSource source, float harvestTime,
+                     unsigned int harvestAmount = 1, unsigned int amount = 9999, const ActorParams& params = ActorParams() );
 
       unsigned int getAmount() const;
 

@@ -11,6 +11,6 @@
 class ResourceFactory
 {
    public:
-      static std::shared_ptr<ResourceActor> createResource( Resources::ResourceSource resource, const sf::Vector2f& position );
+      static std::shared_ptr<ResourceActor> createResource( GameScene* scene, Resources::ResourceSource resource, const sf::Vector2f& position );
 };
 #endif //GAME1_RESOURCEFACTORY_H

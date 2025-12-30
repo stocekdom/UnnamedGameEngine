@@ -5,70 +5,156 @@
 #ifndef GAME1_SCENE_H
 #define GAME1_SCENE_H
 
-#include <vector>
-#include <memory>
-#include <SFML/Graphics/View.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
+#include "ComponentRegistry.h"
+#include "EntityManager.h"
 #include "Observers/Observer.h"
 #include "Renderer.h"
-#include "Core/UUID.h"
+#include <SFML/Graphics/View.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <vector>
+#include <memory>
 
-class Entity;
 struct GameContext;
+class FunctionalEntity;
 
 class GameScene
 {
    public:
+      GameScene();
+
       ~GameScene() = default;
+
+      void init( GameContext* context );
 
       void onStart( sf::RenderWindow& window );
 
-      void addEntityToScene( const std::shared_ptr<Entity>& actor );
+      /**
+       * Creates a functional entity that ticks.
+       * Internally handles entity id and registration
+       * @tparam T The type of the created entity. Must be a subtype of FunctionalEntity
+       * @param args Arguments that get passed to the constructor of T
+       * @return Returns a reference to the created entity
+       * @note The scene only ticks N times a second in a deterministic loop
+       */
+      template<typename T, typename... Args>
+      std::shared_ptr<T> createTickableFunctionalEntity( Args&&... args );
 
-      void deleteEntityById( const UUID& id );
+      /**
+       * Creates a functional entity that ticks.
+       * Internally handles entity id and registration
+       * @tparam T The type of the created entity. Must be a subtype of FunctionalEntity
+       * @param args Arguments that get passed to the constructor of T
+       * @return Returns a reference to the created entity
+       * @note The scene only ticks N times a second in a deterministic loop
+       */
+      template<typename T, typename... Args>
+      std::shared_ptr<T> addFunctionalEntity( Args&&... args );
 
-      // TODO this isn't clean switch to ECS
-      void deleteOverlayEntityById( const UUID& id );
+      // Currently unnamed entities. Entity is only id
+      Entity createEntity() const;
 
-      [[nodiscard]] const std::vector<std::shared_ptr<Entity>>& getStaticEntities() const;
+      bool deleteEntity( Entity entity );
+
+      bool exists( Entity entity ) const;
 
       [[nodiscard]] const std::vector<std::shared_ptr<Observer>>& getObservers() const;
 
       void addObserver( const std::shared_ptr<Observer>& observer );
 
-      sf::Vector2f getWorldCoordinates( const sf::Vector2i& screenCoords ) const;
+      [[nodiscard]] sf::Vector2f getWorldCoordinates( const sf::Vector2i& screenCoords ) const;
 
       void updateFixed( float fixedDt );
 
-      void update( float deltaTime );
+      //void renderScene( sf::RenderTarget& target, const Renderer& renderer ) const;
 
-      void renderScene( sf::RenderTarget& target, const Renderer& renderer ) const;
+      template<typename TC>
+      bool addComponent( Entity entity, TC component );
+
+      template<typename TC, typename... Args>
+      bool addComponent( Entity entity, Args&&... args );
+
+      template<typename TC>
+      bool removeComponent( Entity entity );
 
       void moveCamera( const sf::Vector2f& delta ) const;
 
       void zoomCamera( float zoom ) const;
 
+      ComponentRegistry& getComponentRegistry();
+
    private:
+      GameContext* context_ = nullptr;
       // Window, view
       sf::RenderWindow* mainWindow = nullptr;
       std::shared_ptr<sf::View> mainView;
       // ========================================
+      // Registries
+      std::unique_ptr<EntityManager> entityManager;
+      std::unique_ptr<ComponentRegistry> componentRegistry;
+
+      // ============================================================
       // Entities
-      // Entities that can't be moved. Sorted in onStart method
-      std::vector<std::shared_ptr<Entity>> staticActors;
-      std::vector<std::shared_ptr<Entity>> movableActors;
-      // Special unordered container for entities which are drawn on top of everything else but are not part of the scene (overlays, temporary entities, editor only)
-      std::vector<std::shared_ptr<Entity>> overlayActors;
+      // Here we treat functional entities as components so we can reuse the ComponentContainer(packed array) for faster lookup and deletion
+      ComponentContainer<std::shared_ptr<FunctionalEntity>> tickableEntities;
+      ComponentContainer<std::shared_ptr<FunctionalEntity>> otherEntities;
+      //std::unordered_map<Entity, std::shared_ptr<FunctionalEntity>> tickableEntities;
+      //std::unordered_map<Entity, std::shared_ptr<FunctionalEntity>> otherEntities;
       // =======================================
       // Observers
       std::vector<std::shared_ptr<Observer>> observers;
-      // We need to be careful with the lifetime and when deleting entities.
-      // TODO isn't easy to delete certain entities from the scene. Need ids for entities.
-      // Helper container of non-owning pointers to actors that tick
-      std::vector<Entity*> tickableActors;
       bool onStartCalled = false;
 
-      void spawnWorldActor( const std::shared_ptr<Entity>& actor );
+      void callComponentAdded( Entity entity ) const;
+
+      void callComponentRemoved( Entity entity ) const;
 };
+
+// Some code duplication but it's minimal
+template<typename T, typename... Args>
+std::shared_ptr<T> GameScene::createTickableFunctionalEntity( Args&&... args )
+{
+   static_assert( std::is_base_of_v<FunctionalEntity, T>,
+                  "Cannot create functional entity. T must be a subtype of FunctionalEntity" );
+
+   auto newId = createEntity();
+   auto entity = std::make_shared<T>( newId, this, std::forward<Args>( args )... );
+   tickableEntities.addComponent( newId, entity );
+   return entity;
+}
+
+template<typename T, typename... Args>
+std::shared_ptr<T> GameScene::addFunctionalEntity( Args&&... args )
+{
+   static_assert( std::is_base_of_v<FunctionalEntity, T>,
+                  "Cannot create functional entity. T must be a subtype of FunctionalEntity" );
+
+   auto newId = createEntity();
+   auto entity = std::make_shared<T>( newId, this, std::forward<Args>( args )... );
+   otherEntities.addComponent( newId, entity );
+   return entity;
+}
+
+template<typename TC>
+bool GameScene::addComponent( Entity entity, TC component )
+{
+   auto res = componentRegistry->addComponent( entity, component );
+   callComponentAdded( entity );
+   return res;
+}
+
+template<typename TC, typename... Args>
+bool GameScene::addComponent( Entity entity, Args&&... args )
+{
+   auto res = componentRegistry->addComponent<TC>( entity, std::forward<Args>( args )... );
+   callComponentAdded( entity );
+   return res;
+}
+
+template<typename TC>
+bool GameScene::removeComponent( Entity entity )
+{
+   callComponentRemoved( entity );
+   return componentRegistry->removeComponent<TC>( entity );
+}
 
 #endif //GAME1_SCENE_H

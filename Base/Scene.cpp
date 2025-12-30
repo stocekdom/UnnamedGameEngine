@@ -1,10 +1,11 @@
 //
 // Created by dominik on 03.10.25.
 //
-#include "Scene.h"
-#include "Entity/Entity.h"
-#include "UI/UIElement.h"
 
+#include "Scene.h"
+#include "Entity/FunctionalEntity.h"
+
+/*
 void GameScene::addEntityToScene( const std::shared_ptr<Entity>& actor )
 {
    switch( actor->getSpawnCategory() )
@@ -48,30 +49,75 @@ void GameScene::deleteOverlayEntityById( const UUID& id )
          return;
       }
 }
+*/
+
+GameScene::GameScene() : entityManager( std::make_unique<EntityManager>() ),
+                         componentRegistry( std::make_unique<ComponentRegistry>() )
+{
+}
+
+void GameScene::init( GameContext* context )
+{
+   context_ = context;
+}
+
+void GameScene::onStart( sf::RenderWindow& window )
+{
+   // TODO make window smart pointer in the game class
+   mainWindow = &window;
+   mainView = std::make_shared<sf::View>( window.getDefaultView() );
+   onStartCalled = true;
+
+   for( auto& entity: tickableEntities )
+      entity->onStart( context_ );
+
+   for( auto& entity: otherEntities )
+      entity->onStart( context_ );
+}
 
 void GameScene::updateFixed( float fixedDt )
 {
-   for( auto& actor: tickableActors )
+   // ReSharper disable once CppUseElementsView
+   for( auto& entity: tickableEntities )
    {
-      actor->tickFixed( fixedDt );
+      entity->tick( fixedDt );
    }
 }
 
-void GameScene::update( float deltaTime )
+ComponentRegistry& GameScene::getComponentRegistry()
 {
-   for( const auto& actor: staticActors )
-      actor->tick( deltaTime );
-
-   for( const auto& actor: movableActors )
-      actor->tick( deltaTime );
-
-   for( const auto& actor: overlayActors )
-      actor->tick( deltaTime );
+   return *componentRegistry;
 }
 
 sf::Vector2f GameScene::getWorldCoordinates( const sf::Vector2i& screenCoords ) const
 {
    return mainWindow->mapPixelToCoords( screenCoords, *mainView );
+}
+
+Entity GameScene::createEntity() const
+{
+   return entityManager->createEntity();
+}
+
+bool GameScene::deleteEntity( Entity entity )
+{
+   // Only do operations when the entity was actually present and deleted. One branch can save potential high cost operations
+   if( entityManager->deleteEntity( entity ) )
+   {
+      callComponentRemoved( entity );
+      componentRegistry->onEntityDestroyed( entity );
+
+      otherEntities.removeComponent( entity );
+      tickableEntities.removeComponent( entity );
+      return true;
+   }
+
+   return false;
+}
+
+bool GameScene::exists( Entity entity ) const
+{
+   return entityManager->exists( entity ) || tickableEntities.hasComponent( entity ) || otherEntities.hasComponent( entity );
 }
 
 const std::vector<std::shared_ptr<Observer>>& GameScene::getObservers() const
@@ -84,27 +130,7 @@ void GameScene::addObserver( const std::shared_ptr<Observer>& observer )
    observers.push_back( observer );
 }
 
-void GameScene::onStart( sf::RenderWindow& window )
-{
-   // TODO make window smart pointer in the game class
-   mainWindow = &window;
-   mainView = std::make_shared<sf::View>( window.getDefaultView() );
-
-   // TODO simple Y sorting. Use AABB for better quality and precision
-   std::ranges::sort( staticActors,
-                      []( const std::shared_ptr<Entity>& a, const std::shared_ptr<Entity>& b ) {
-                         return a->getPosition().y < b->getPosition().y;
-                      }
-   );
-
-   onStartCalled = true;
-}
-
-const std::vector<std::shared_ptr<Entity>>& GameScene::getStaticEntities() const
-{
-   return staticActors;
-}
-
+/*
 void GameScene::renderScene( sf::RenderTarget& target, const Renderer& renderer ) const
 {
    // Draw entities
@@ -119,6 +145,7 @@ void GameScene::renderScene( sf::RenderTarget& target, const Renderer& renderer 
       if( actor->isVisible() )
          renderer.render( actor->getDrawable(), target );
 }
+*/
 
 void GameScene::moveCamera( const sf::Vector2f& delta ) const
 {
@@ -130,6 +157,7 @@ void GameScene::zoomCamera( float zoom ) const
    mainView->zoom( zoom );
 }
 
+/*
 void GameScene::spawnWorldActor( const std::shared_ptr<Entity>& actor )
 {
    switch( actor->getMobility() )
@@ -154,4 +182,19 @@ void GameScene::spawnWorldActor( const std::shared_ptr<Entity>& actor )
          movableActors.push_back( actor );
          break;
    }
+}
+*/
+
+void GameScene::callComponentAdded( Entity entity ) const
+{
+   context_->transformSystem->onComponentAdded( entity );
+   context_->spriteSystem->onComponentAdded( entity );
+   context_->overlaySystem->onComponentAdded( entity );
+}
+
+void GameScene::callComponentRemoved( Entity entity ) const
+{
+   context_->transformSystem->onBeforeComponentsDestroyed( entity );
+   context_->spriteSystem->onBeforeComponentsDestroyed( entity );
+   context_->overlaySystem->onBeforeComponentsDestroyed( entity );
 }

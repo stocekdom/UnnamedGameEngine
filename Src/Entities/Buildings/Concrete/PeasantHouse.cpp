@@ -4,17 +4,9 @@
 
 #include "PeasantHouse.h"
 
-PeasantHouse::PeasantHouse( SpawnCategory spawnCategory, const sf::Vector2f& position, float rotation, const sf::Vector2f& scale,
-                            float height, bool isVisible )
-   : Building( spawnCategory, position, rotation, scale, height, isVisible )
+PeasantHouse::PeasantHouse( Entity id, GameScene* scene, const ActorParams& params )
+   : Building( id, scene, params )
 {
-}
-
-void PeasantHouse::onStart( GameContext* context )
-{
-   // TODO add random variants
-   sprite.setTexture( context->resourceManager->loadTexture( "Assets/Buildings/house1.png" ) );
-   Building::onStart( context );
 }
 
 bool PeasantHouse::canBePlaced( const std::shared_ptr<MapTile>& tile )

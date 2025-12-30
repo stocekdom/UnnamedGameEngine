@@ -5,18 +5,13 @@
 #ifndef GAME1_BUILDING_H
 #define GAME1_BUILDING_H
 
-#include "../../../Base/Entity/IsometricActor.h"
+#include "../../../Base/Entity/SpriteActor.h"
 #include "../../../Base/GameMap/MapTile.h"
 
-class Building : public IsometricActor
+class Building : public Actor
 {
    public:
-      Building( SpawnCategory spawnCategory, const sf::Vector2f& position, float rotation, const sf::Vector2f& scale,
-                float height, bool isVisible );
-
-      void onStart( GameContext* context ) override;
-
-      void setOverlayColor( const sf::Color& color );
+      Building( REQ_ARGS, const ActorParams& params );
 
       // TODO add a whole context instead of just on tile
       /**

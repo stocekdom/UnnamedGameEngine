@@ -19,9 +19,12 @@ Game::Game()
    renderer = std::make_shared<Renderer>();
    context->player = std::make_shared<PlayerInventoryComponent>();
    context->resourceManager = std::make_shared<ResourceManager>();
+   context->spriteSystem = std::make_shared<SpriteSystem>();
+   context->overlaySystem = std::make_shared<OverlaySystem>();
+   context->transformSystem = std::make_shared<TransformSystem>();
    context->inputSystem = std::make_shared<InputSystem>();
    context->eventSystem = std::make_shared<EventSystem>();
-   context->collisionSystem = std::make_shared<CollisionSystem>();
+   //context->collisionSystem = std::make_shared<CollisionSystem>();
    context->scene = std::make_shared<GameScene>();
    context->gameMapSystem = std::make_shared<GameMapSystem>();
    context->uiSystem = std::make_shared<UISystem>();
@@ -38,8 +41,9 @@ void Game::start()
    constexpr float FIXED_DT = 1.0f / 128.0f;
    float accumulator = 0.f;
 
-   context->inputSystem->registerController( std::make_unique<PlayerController>( context ) );
+   initSystems();
 
+   // TODO add level classes and load them
    {
       auto uiUpperBlock = std::make_shared<ResourceBar>( sf::Vector2f{ WINDOW_WIDTH, 80 }, sf::Color( 100, 10, 10, 155 ),
                                                          sf::Vector2f{ 0.f, 0.f } );
@@ -73,11 +77,16 @@ void Game::start()
    LOG_INFO( "Game map system started" )
    context->uiSystem->onStart( window, context.get() );
    LOG_INFO( "UI system started" );
-   context->scene->onStart( window );
-   LOG_INFO( "Scene started" );
    context->player->onStart( context.get() );
    LOG_INFO( "Player class started" );
+   context->transformSystem->onStart();
+   LOG_INFO( "Transform system started" );
+   context->spriteSystem->onStart();
+   LOG_INFO( "Sprite system started" );
+   context->scene->onStart( window );
+   LOG_INFO( "Scene started" );
    LOG_INFO( "Game starting" );
+   LOG_INFO( "============================================================" );
 
    // TODO temporary
    context->player->addItem( "res_wood", 20 );
@@ -98,19 +107,45 @@ void Game::start()
 
       while( accumulator >= FIXED_DT )
       {
-         context->collisionSystem->update( FIXED_DT );
-         context->timeManager->update( FIXED_DT );
-         context->scene->updateFixed( FIXED_DT );
+         updateSystems( FIXED_DT );
          accumulator -= FIXED_DT;
       }
 
       context->inputSystem->update( frameTime );
-      context->scene->update( frameTime );
       window.clear();
-      context->scene->renderScene( window, *renderer );
-      context->uiSystem->renderUI( window, *renderer );
+      // Rendering
+      context->spriteSystem->render( window, *renderer );
+      context->uiSystem->render( window, *renderer );
       window.display();
    }
 
    LOG_INFO( "Game ending!" );
+}
+
+void Game::initSystems()
+{
+   LOG_INFO( "============================================================" );
+   LOG_INFO( "Initializing systems" );
+   context->scene->init( context.get() );
+   LOG_INFO( "Scene initialized" );
+   context->transformSystem->init( context.get() );
+   LOG_INFO( "Transform system initialized" );
+   context->spriteSystem->init( context.get() );
+   LOG_INFO( "Sprite system initialized" );
+   context->overlaySystem->init( context.get() );
+   LOG_INFO( "Overlay system initialized" );
+   context->inputSystem->registerController( std::make_unique<PlayerController>( context ) );
+   LOG_INFO( "PlayerController registered" );
+   LOG_INFO( "All systems initialized" );
+   LOG_INFO( "============================================================" );
+
+}
+
+void Game::updateSystems( float dt ) const
+{
+   // IMPORTANT always update the transform system first
+   context->transformSystem->update( dt );
+   context->timeManager->update( dt );
+   context->scene->updateFixed( dt );
+   context->spriteSystem->update( dt );
 }

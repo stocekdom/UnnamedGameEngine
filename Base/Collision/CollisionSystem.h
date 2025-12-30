@@ -7,9 +7,10 @@
 
 #include <vector>
 #include <memory>
-
+/*
 class Collider;
 
+// TODO rework with components
 class CollisionSystem
 {
    public:
@@ -19,11 +20,9 @@ class CollisionSystem
 
       void update( float dt );
 
-      void debugSwitch();
-
    private:
       bool isDebugged = false;
       std::vector<std::weak_ptr<Collider>> colliders;
 };
-
+*/
 #endif //GAME1_COLLISIONSYSTEM_H
