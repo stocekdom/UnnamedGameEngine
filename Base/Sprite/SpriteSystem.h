@@ -5,7 +5,7 @@
 #ifndef GAME1_SPRITESYSTEM_H
 #define GAME1_SPRITESYSTEM_H
 
-#include "../System.h"
+#include "../ComponentSystem.h"
 #include "../Renderer.h"
 #include "../ComponentContainer.h"
 #include "SpriteComponent.h"
@@ -15,7 +15,7 @@
 struct TransformComponent;
 
 // TODO handle sprite visibility
-class SpriteSystem : public System
+class SpriteSystem : public ComponentSystem
 {
    public:
       explicit SpriteSystem() = default;

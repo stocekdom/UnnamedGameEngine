@@ -1,21 +1,22 @@
 //
 // Created by dominik on 15.11.25.
 //
+
 #include "PlayerController.h"
 #include "../../Base/Core/Math.h"
 #include "../../Base/GameMap/MapTile.h"
 #include "../../Base/Input/ContextFactory.h"
 #include "../Entities/Buildings/BuildingFactory.h"
+#include "../Entities/Buildings/BuildingSprites.h"
 
 // We initialize everything in the constructor since systems are already created at this point, and we don't need onStart
-PlayerController::PlayerController( const std::shared_ptr<GameContext>& context ) : cameraSpeed( 0.f, 0.f ),
-                                                                                    context( context.get() )
+PlayerController::PlayerController( GameContext* context ) : Controller( context ), cameraSpeed( 0.f, 0.f )
 {
    context->eventSystem->subscribe<GamePaused>( [this]( const GamePaused& event ) { onPauseGame( event ); } );
    context->eventSystem->subscribe<GameResumed>( [this]( const GameResumed& event ) { onResumeGame( event ); } );
    context->eventSystem->subscribe<BuildingPlacingStarted>(
       [this]( const BuildingPlacingStarted& event ) { onBuildingPlacingStart( event ); } );
-   menuContext = ContextFactory::createMenuContext();
+   menuContext = ContextFactory::createPauseContext();
    mainContext = ContextFactory::createGameContext();
    placingContext = ContextFactory::createBuildingPlacingContext();
    activeContext = mainContext;
@@ -46,7 +47,7 @@ PlayerController::PlayerController( const std::shared_ptr<GameContext>& context 
 void PlayerController::tick( float dt )
 {
    if( cameraSpeed.x != 0.f || cameraSpeed.y != 0.f )
-      context->scene->moveCamera( cameraSpeed * CAMERA_SPEED * dt );
+      gameContext->scene->moveCamera( cameraSpeed * CAMERA_SPEED * dt );
 
    if( targetZoom != currentZoom )
    {
@@ -59,111 +60,116 @@ void PlayerController::tick( float dt )
       else
          currentZoom = std::min( targetZoom, currentZoom + change );
 
-      context->scene->zoomCamera( currentZoom / prevZoom );
+      gameContext->scene->zoomCamera( currentZoom / prevZoom );
    }
 }
 
 void PlayerController::onLeftClick( const ActionData& event ) const
 {
    // ReSharper disable once CppExpressionWithoutSideEffects
-   context->uiSystem->onLeftClick( event.position );
+   gameContext->uiSystem->onLeftClick( event.position );
 }
 
+// TODO currently pausing doesn't fully pause the game but only shows the menu and switches contexts. Add actual gameplay pausing
 void PlayerController::onPauseGame( const GamePaused& event )
 {
+   beforePauseContext = activeContext;
    activeContext = menuContext;
 }
 
 void PlayerController::onResumeGame( const GameResumed& event )
 {
-   activeContext = mainContext;
+   activeContext = beforePauseContext;
 }
 
 // TODO switch to ECS to make this cleaner
 void PlayerController::onMouseMove( const sf::Vector2i& position )
 {
-   /*
-   auto sharedPawn = buildingPawn.lock();
-
-   if( !sharedPawn )
-      return;
-
-   auto snapResult = context->gameMapSystem->snapToMapTile( position );
-   // Offset from the tile center to be closer to the bottom left corner of the ile
+   // Snap to tile
+   auto snapResult = gameContext->gameMapSystem->snapToMapTile( position );
+   // Offset from the tile center to be closer to the bottom left corner of the tile
    snapResult.position.y += Math::IsometricConstants::BUILDING_TILE_CENTER_Y_OFFSET;
-   sharedPawn->setPosition( snapResult.position );
+   auto& pawnTransform = gameContext->scene->getComponentRegistry().getComponent<TransformComponent>( buildingPawn->getEntityId() );
+   pawnTransform.setPosition( snapResult.position );
 
    auto sharedTile = snapResult.tile.lock();
 
    if( !sharedTile )
-      return;
+   {
+      // Make sure to set the right color if we previously had a valid position, and now the tile is invalid
+      if( previousBuildingPlacingState )
+      {
+         previousBuildingPlacingState = false;
+         gameContext->scene->getComponentRegistry().getComponent<OverlaySpriteComponent>( buildingPawn->getEntityId() ).
+               sprite.setColor( RedOverlay );
+      }
 
-   auto canBePlaced = sharedPawn->canBePlaced( sharedTile );
+      return;
+   }
+
+   auto canBePlaced = buildingPawn->canBePlaced( sharedTile );
 
    if( canBePlaced != previousBuildingPlacingState )
    {
+      auto& overlayComp = gameContext->scene->getComponentRegistry().getComponent<OverlaySpriteComponent>(
+         buildingPawn->getEntityId() );
+
       if( canBePlaced )
-         sharedPawn->setOverlayColor( GreenOverlay );
+         overlayComp.sprite.setColor( GreenOverlay );
       else
-         sharedPawn->setOverlayColor( RedOverlay );
+         overlayComp.sprite.setColor( RedOverlay );
    }
 
-   previousBuildingPlacingState = canBePlaced;*/
+   previousBuildingPlacingState = canBePlaced;
 }
 
 void PlayerController::onBuildingPlacingStart( const BuildingPlacingStarted& event )
 {
-   /*
    // TODO properly handle left click on UI even in this context
    activeContext = placingContext;
 
-   // Delete previous pawn if we click on UI without placing the previous one
-   if( auto prevPawn = buildingPawn.lock() )
-      context->scene->deleteOverlayEntityById( prevPawn->getId() );
+   // Delete the previous pawn if we click on the button without placing the previous one
+   // Optimization: If we click on the same building type, do nothing to avoid creating an entity of the same type
+   if( buildingPawn )
+   {
+      if( buildingPawn->getType() == event.type )
+         return;
 
-   auto building = BuildingFactory::createBuilding( event.type, event.position );
-   // TODO temporary hack to make the ghost house movable
-   building->setMobility( Mobility::MOVABLE );
-   building->onStart( context );
+      gameContext->scene->deleteEntity( buildingPawn->getEntityId() );
+   }
 
+   // Add an overlay house. This is the ghost house that follows the mouse. Overlay component is included from the factory
+   buildingPawn = BuildingFactory::createBuilding( gameContext->scene.get(), event.type, event.position );
+
+   auto& overlay = gameContext->scene->getComponentRegistry().getComponent<OverlaySpriteComponent>( buildingPawn->getEntityId() );
    // Set overlay and placement status so we can work with it in onMouseMove
    previousBuildingPlacingState = false;
-   building->setOverlayColor( RedOverlay );
-   buildingPawn = building;*/
+   overlay.sprite.setColor( RedOverlay );
+   // Direct origin manipulation, since overlays can be moved during runtime unlike static sprites, and we also have direct access to the sprite
+   overlay.sprite.setOrigin( overlay.sprite.getLocalBounds().width / 2, overlay.sprite.getLocalBounds().height );
 }
 
 void PlayerController::onBuildingPlacingCancel()
 {
-   /*
-   auto sharedPawn = buildingPawn.lock();
-
-   if( !sharedPawn )
-      return;
-
-   context->scene->deleteOverlayEntityById( sharedPawn->getId() );
-   buildingPawn.reset();*/
+   gameContext->scene->deleteEntity( buildingPawn->getEntityId() );
+   buildingPawn = nullptr;
+   activeContext = mainContext;
 }
 
 void PlayerController::onBuildingPlaced( const sf::Vector2i& position )
 {
-   /*
-   // TODO do this in main controller class
-   // UI handled first
-   if( context->uiSystem->onLeftClick( position ) )
-      return;
-
-   auto sharedPawn = buildingPawn.lock();
-
-   if( !sharedPawn )
-      return;
-
    // The position of the click should be enough, since in mouse move, we're snapping the house to the map tile
-   if( !context->gameMapSystem->placeBuilding( position, sharedPawn ) )
+   if( !gameContext->gameMapSystem->placeBuilding( position, buildingPawn ) )
       return;
 
-   // TODO this shouldn't be done here. Switch to ECS
-   movePawnFromOverlayToWorld( sharedPawn );
-   */
+   gameContext->scene->removeComponent<OverlaySpriteComponent>( buildingPawn->getEntityId() );
+   gameContext->scene->addComponent<SpriteComponent>( buildingPawn->getEntityId(),
+                                                  std::string{ BuildingSprites::buildingSprites[ buildingPawn->getType() ] },
+                                                  SpriteMobility::STATIC, sf::Vector2f{ 0.5f, 1.f } );
+
+   // The house transform should be at the location of the last mouse move, so we don't need to update it here, unless there are position inconsistencies when moving and placing
+   buildingPawn = nullptr;
+   activeContext = mainContext;
 }
 
 void PlayerController::updateCameraSpeedX( float x )
@@ -186,17 +192,4 @@ void PlayerController::updateCameraZoom( float zoom )
       targetZoom *= ( 1.f + ZOOM_STEP ); // Zoom out
 
    targetZoom = std::clamp( targetZoom, MIN_ZOOM, MAX_ZOOM );
-}
-
-void PlayerController::movePawnFromOverlayToWorld( const std::shared_ptr<Building>& building )
-{
-   /*
-   context->scene->deleteOverlayEntityById( building->getId() );
-   building->setSpawnCategory( SpawnCategory::WORLD );
-   building->setMobility( Mobility::STATIC );
-   context->scene->addEntityToScene( building );
-   building->setOverlayColor( DefaultOverlay );
-   buildingPawn.reset();
-   activeContext = mainContext;
-   */
 }

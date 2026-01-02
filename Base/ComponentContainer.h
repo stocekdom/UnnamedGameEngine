@@ -97,7 +97,7 @@ bool ComponentContainer<TC>::removeComponent( const Entity entity )
 {
    if( !entityToIndex.contains( entity ) )
    {
-      LOG_INFO( "Cannot remove component of entity: " + std::to_string( entity ) + ". Component doesn't exist" );
+      LOG_INFO( "Cannot remove component " + std::string( typeid( TC ).name() ) + " of entity: " + std::to_string( entity ) + ". Component doesn't exist" );
       return false;
    }
 

@@ -17,10 +17,10 @@ std::shared_ptr<InputContext> ContextFactory::createGameContext()
    return context;
 }
 
-std::shared_ptr<InputContext> ContextFactory::createMenuContext()
+std::shared_ptr<InputContext> ContextFactory::createPauseContext()
 {
+   // Empty context when the game is paused. Only UI is handled by UIController
    auto context = std::make_shared<InputContext>();
-   context->mapButtonAction( sf::Mouse::Button::Left, GameAction::LEFT_CLICK );
    return context;
 }
 
@@ -30,5 +30,12 @@ std::shared_ptr<InputContext> ContextFactory::createBuildingPlacingContext()
    // Remap from game context
    context->mapButtonAction( sf::Mouse::Button::Left, GameAction::PLACE_BUILDING );
    context->mapMouseMove( GameAction::MOUSE_MOVE );
+   return context;
+}
+
+std::shared_ptr<InputContext> ContextFactory::createUIControllerContext()
+{
+   auto context = std::make_shared<InputContext>();
+   context->mapButtonAction( sf::Mouse::Button::Left, GameAction::LEFT_CLICK );
    return context;
 }

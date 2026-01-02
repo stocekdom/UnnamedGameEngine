@@ -6,13 +6,13 @@
 #define GAME1_OVERLAYSYSTEM_H
 
 #include "../Renderer.h"
-#include "../System.h"
+#include "../ComponentSystem.h"
 #include "../ComponentContainer.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 
 #include "OverlaySpriteComponent.h"
 
-class OverlaySystem : public System
+class OverlaySystem : public ComponentSystem
 {
    public:
       OverlaySystem();

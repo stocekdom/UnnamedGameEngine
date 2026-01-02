@@ -39,7 +39,6 @@ add_executable(game1 main.cpp
         Base/Input/InputSystem.h
         Base/Input/InputSystem.cpp
         Base/Input/Controller.cpp
-        Base/Input/InputActions.h
         Src/Controllers/PlayerController.h
         Src/Controllers/PlayerController.cpp
         Base/Input/Clickable.h
@@ -117,7 +116,7 @@ add_executable(game1 main.cpp
         Base/Transform/TransformComponent.h
         Base/Transform/TransformSystem.h
         Base/Transform/TransformSystem.cpp
-        Base/System.h
+        Base/ComponentSystem.h
         Base/Core/Utility.h
         Base/Sprite/SpriteSystem.h
         Base/Sprite/SpriteRenderProxy.h
@@ -130,6 +129,9 @@ add_executable(game1 main.cpp
         Base/UIOverlay/OverlaySpriteComponent.h
         Src/Entities/Buildings/BuildingSprites.h
         Base/Sprite/SpriteMobility.h
+        Base/System.h
+        Base/Input/UIController.h
+        Base/Input/UIController.cpp
 )
 
 

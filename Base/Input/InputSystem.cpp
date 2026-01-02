@@ -7,12 +7,31 @@
 
 void InputSystem::handleInput( const sf::Event& event ) const
 {
+   // Always handle UI first
+   if( uiController->handleInput( event ) )
+      return;
+
    for( auto& controller: controllers )
       controller->handleInput( event );
 }
 
+void InputSystem::setUIController( std::unique_ptr<Controller> controller )
+{
+   uiController = std::move( controller );
+}
+
+void InputSystem::init( GameContext* context )
+{
+}
+
+void InputSystem::onStart()
+{
+}
+
 void InputSystem::update( float dt )
 {
+   uiController->tick( dt );
+
    for( auto& controller: controllers )
       controller->tick( dt );
 }

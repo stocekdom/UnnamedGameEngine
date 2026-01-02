@@ -3,7 +3,11 @@
 //
 #include "Controller.h"
 
-void Controller::handleInput( const sf::Event& event )
+Controller::Controller( GameContext* context ) : gameContext( context )
+{
+}
+
+bool Controller::handleInput( const sf::Event& event )
 {
    // Initialization before switch to avoid compiler warning.
    GameAction action;
@@ -19,59 +23,48 @@ void Controller::handleInput( const sf::Event& event )
 
          action = activeContext->getAction( { InputEventKey::Type::KeyboardPress, event.key.code } );
          keyStates[ event.key.code ] = true;
-
-         if( actions.contains( action ) )
-            actions[ action ]( { 1.f } );
-
-         break;
+         return useAction( action, { 1.f } );
 
       case sf::Event::KeyReleased:
          keyStates[ event.key.code ] = false;
          action = activeContext->getAction( { InputEventKey::Type::KeyboardRelease, event.key.code } );
-
-         if( actions.contains( action ) )
-            actions[ action ]( { 0.f } );
-
-         break;
+         return useAction( action, { 0.f } );
 
       case sf::Event::MouseButtonPressed:
          if( buttonStates[ event.mouseButton.button ] )
             break;
 
+         buttonStates[ event.mouseButton.button ] = true;
          action = activeContext->getAction( { InputEventKey::Type::MouseButtonPress, event.mouseButton.button } );
-         keyStates[ event.mouseButton.button ] = true;
-
-         if( actions.contains( action ) )
-            actions[ action ]( { 1.f, { event.mouseButton.x, event.mouseButton.y } } );
-
-         break;
+         return useAction( action, { 1.f, { event.mouseButton.x, event.mouseButton.y } } );
 
       case sf::Event::MouseButtonReleased:
          buttonStates[ event.mouseButton.button ] = false;
          action = activeContext->getAction( { InputEventKey::Type::MouseButtonRelease, event.mouseButton.button } );
-
-         if( actions.contains( action ) )
-            actions[ action ]( { 0.f, { event.mouseButton.x, event.mouseButton.y } } );
-
-         break;
+         return useAction( action, { 0.f, { event.mouseButton.x, event.mouseButton.y } } );
 
       case sf::Event::MouseMoved:
          action = activeContext->getAction( { InputEventKey::Type::MouseMove } );
-
-         if( actions.contains( action ) )
-            actions[ action ]( { 0.f, { event.mouseMove.x, event.mouseMove.y } } );
-
-         break;
+         return useAction( action, { 0.f, { event.mouseMove.x, event.mouseMove.y } } );
 
       case sf::Event::MouseWheelScrolled:
          action = activeContext->getAction( { InputEventKey::Type::MouseWheel } );
-
-         if( actions.contains( action ) )
-            actions[ action ]( { event.mouseWheelScroll.delta } );
-
-         break;
+         return useAction( action, { event.mouseWheelScroll.delta } );
 
       default:
          break;
    }
+
+   return false;
+}
+
+bool Controller::useAction( GameAction action, const ActionData& data )
+{
+   if( actions.contains( action ) )
+   {
+      actions[ action ]( data );
+      return true;
+   }
+
+   return false;
 }

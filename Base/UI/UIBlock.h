@@ -15,6 +15,7 @@ class UIBlock : public UIElement
                         const sf::Vector2f& position = { 0.f, 0.f },
                         float rotation = 0, bool isVisible = true );
 
+      // TODO make this block click if it's in rectangle bounds but no children were clicked
       bool onClick( const sf::Vector2f& position ) override;
 
       void draw( sf::RenderTarget& target, const Renderer& renderer ) override;

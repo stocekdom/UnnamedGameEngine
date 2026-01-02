@@ -13,6 +13,8 @@
 #include "Logging/Logger.h"
 #include <SFML/Graphics.hpp>
 
+#include "Input/UIController.h"
+
 Game::Game()
 {
    context = std::make_shared<GameContext>();
@@ -138,7 +140,11 @@ void Game::initSystems() const
    LOG_INFO( "Sprite system initialized" );
    context->overlaySystem->init( context.get() );
    LOG_INFO( "Overlay system initialized" );
-   context->inputSystem->registerController( std::make_unique<PlayerController>( context ) );
+   context->inputSystem->init( context.get() );
+   LOG_INFO( "Input system initialized" );
+   context->inputSystem->setUIController( std::make_unique<UIController>( context.get() ) );
+   LOG_INFO( "UIController registered" );
+   context->inputSystem->registerController( std::make_unique<PlayerController>( context.get() ) );
    LOG_INFO( "PlayerController registered" );
    LOG_INFO( "All systems initialized" );
    LOG_INFO( "============================================================" );

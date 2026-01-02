@@ -5,21 +5,27 @@
 #ifndef GAME1_INPUTSYSTEM_H
 #define GAME1_INPUTSYSTEM_H
 
+#include "../System.h"
+#include <SFML/Window/Event.hpp>
 #include <vector>
 #include <memory>
-#include <SFML/Window/Event.hpp>
-#include "Controller.h"
 
-class InputSystem
+class Controller;
+
+class InputSystem : public System
 {
    public:
       explicit InputSystem() = default;
 
-      virtual ~InputSystem() = default;
+      void init( GameContext* context ) override;
 
-      void update( float dt );
+      void onStart() override;
+
+      void update( float dt ) override;
 
       void handleInput( const sf::Event& event ) const;
+
+      void setUIController( std::unique_ptr<Controller> controller );
 
       void registerController( std::unique_ptr<Controller> controller );
 
@@ -28,6 +34,12 @@ class InputSystem
    private:
       // TODO chain of responsibility pattern in the future
       std::vector<std::unique_ptr<Controller>> controllers;
+      /**
+       * A controller called to handle input before any other controllers.
+       * Ensures a proper UI response without propagating input to the other gameplay controllers
+       * Example: If a player clicks an object behind some UI, the UI is clicked and the object is not
+       */
+      std::unique_ptr<Controller> uiController;
 };
 
 #endif //GAME1_INPUTSYSTEM_H

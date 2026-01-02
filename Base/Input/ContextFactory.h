@@ -13,8 +13,10 @@ class ContextFactory
    public:
       static std::shared_ptr<InputContext> createGameContext();
 
-      static std::shared_ptr<InputContext> createMenuContext();
+      static std::shared_ptr<InputContext> createPauseContext();
 
       static std::shared_ptr<InputContext> createBuildingPlacingContext();
+
+      static std::shared_ptr<InputContext> createUIControllerContext();
 };
 #endif //GAME1_CONTEXTFACTORY_H

@@ -7,9 +7,9 @@
 
 #include "../ComponentContainer.h"
 #include "TransformComponent.h"
-#include "../System.h"
+#include "../ComponentSystem.h"
 
-class TransformSystem : public System
+class TransformSystem : public ComponentSystem
 {
    public:
       TransformSystem();
