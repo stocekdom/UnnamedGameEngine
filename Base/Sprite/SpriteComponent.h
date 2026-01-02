@@ -15,7 +15,9 @@ struct SpriteComponent
 {
    public:
       // Here the constructor is defined so that the derived classes can properly initialize the path, and we can also use parameter pack to initialize components (Args&&...)
-      explicit SpriteComponent( std::string path, SpriteMobility mobility ) : texturePath( std::move( path ) ), mobility( mobility )
+      explicit SpriteComponent( std::string path, SpriteMobility mobility,
+                                const sf::Vector2f& origin = { 0.f, 0.f } )
+         : texturePath( std::move( path ) ), origin( origin ), mobility( mobility )
       {
       }
 
@@ -70,6 +72,11 @@ struct SpriteComponent
        */
       sf::FloatRect globalBounds;
       sf::FloatRect localBounds;
+      /**
+       * Origin of the sprite, represented as a percentage of the sprite's dimensions.
+       * For example, (0.5f, 0.5f) means the origin is in the middle of the sprite.
+       * This is done because the sprite texture might not be loaded yet and we can't know its dimensions.
+       */
       sf::Vector2f origin = { 0.f, 0.f };
       SpriteMobility mobility;
       bool originDirty = true;

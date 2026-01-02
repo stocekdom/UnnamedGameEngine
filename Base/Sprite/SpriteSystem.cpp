@@ -45,13 +45,13 @@ void SpriteSystem::onStart()
    staticSprites.reserve( pendingStaticSprites.size() );
 
    // Sort the statics before the game begins
-   for( int i = 0; i < pendingStaticSprites.size(); ++i )
+   for( auto& pendingStaticSprite: pendingStaticSprites )
    {
       auto& transform = gameContext->scene->getComponentRegistry().getComponent<TransformComponent>(
-         pendingStaticSprites[ i ].owner );
-      setSpriteTransform( pendingStaticSprites[ i ], transform );
+         pendingStaticSprite.owner );
+      setSpriteTransform( pendingStaticSprite, transform );
 
-      staticSprites.push_back( std::move( pendingStaticSprites[ i ] ) );
+      staticSprites.push_back( std::move( pendingStaticSprite ) );
    }
 
    pendingStaticSprites.clear();
@@ -102,6 +102,9 @@ SpriteRenderProxy SpriteSystem::makeRenderProxy( Entity entity, SpriteComponent&
    renderProxy.sprite.setTexture( gameContext->resourceManager->loadTexture( spriteComponent.texturePath ) );
    spriteComponent.globalBounds = renderProxy.sprite.getGlobalBounds();
    spriteComponent.localBounds = renderProxy.sprite.getLocalBounds();
+   // Set the origin, which is represented as a percentage of the bounding rectangle
+   renderProxy.sprite.setOrigin( spriteComponent.localBounds.width * spriteComponent.origin.x,
+                                 spriteComponent.localBounds.height * spriteComponent.origin.y );
 
    return renderProxy;
 }
