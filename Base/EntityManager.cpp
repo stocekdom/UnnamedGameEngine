@@ -31,12 +31,15 @@ Entity EntityManager::createEntity()
    }
 
    ++livingEntitiesCount;
+   LOG_DEBUG( "Made entity with id: " + std::to_string( id ) );
    return id;
 }
 
 bool EntityManager::deleteEntity( const Entity entity )
 {
-   if( entity >= lastCreatedEntityId )
+   // TODO allow stream operator or use args in the macro
+   LOG_DEBUG( "Deleting entity with id: " + std::to_string( entity ) + " Last created id: " + std::to_string( lastCreatedEntityId ) );
+   if( entity > lastCreatedEntityId )
    {
       LOG_INFO( "Deletion of invalid entity id: " + std::to_string( entity ) );
       return false;
