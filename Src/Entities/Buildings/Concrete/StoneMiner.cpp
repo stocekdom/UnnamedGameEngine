@@ -39,3 +39,8 @@ void StoneMiner::onPlaced( const std::shared_ptr<MapTile>& tile )
       context_->player->addItem( Resources::ID_ARRAY[ Resources::Resource::ITEM_ROCKS ], r->harvest() );
    } );*/
 }
+
+BuildingType StoneMiner::getType()
+{
+   return BuildingType::STONE_MINER;
+}

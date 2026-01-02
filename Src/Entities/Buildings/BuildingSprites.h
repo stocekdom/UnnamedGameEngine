@@ -11,7 +11,9 @@
 
 namespace BuildingSprites
 {
-   inline constexpr std::array<std::string_view, BuildingType::COUNT> buildingSprites = { "Assets/house1.png", "Assets/stoneMiner.png" };
+   inline constexpr std::array<std::string_view, BuildingType::COUNT> buildingSprites = {
+      "Assets/Buildings/house1.png", "Assets/Buildings/stoneMiner.png"
+   };
 }
 
 #endif //GAME1_BUILDINGSPRITES_H

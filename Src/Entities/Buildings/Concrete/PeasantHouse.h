@@ -14,6 +14,8 @@ class PeasantHouse : public Building
       explicit PeasantHouse( REQ_ARGS, const ActorParams& params );
 
       bool canBePlaced( const std::shared_ptr<MapTile>& tile ) override;
+
+      BuildingType getType() override;
 };
 
 #endif //GAME1_PEASANTHOUSE_H

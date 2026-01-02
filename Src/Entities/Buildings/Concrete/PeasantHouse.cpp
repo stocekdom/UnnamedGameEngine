@@ -14,3 +14,8 @@ bool PeasantHouse::canBePlaced( const std::shared_ptr<MapTile>& tile )
    // Houses can't override resources and be placed on tiles with a resource
    return Building::canBePlaced( tile ) && tile->getResourceType() == Resources::ITEM_NONE;
 }
+
+BuildingType PeasantHouse::getType()
+{
+   return BuildingType::PEASANT_HOUSE;
+}
