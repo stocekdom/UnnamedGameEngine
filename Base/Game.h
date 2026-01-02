@@ -23,7 +23,7 @@ class Game
       std::shared_ptr<Renderer> renderer;
       std::shared_ptr<GameContext> context;
 
-      void initSystems();
+      void initSystems() const;
 
       void updateSystems( float dt ) const;
 };

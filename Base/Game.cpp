@@ -83,6 +83,8 @@ void Game::start()
    LOG_INFO( "Transform system started" );
    context->spriteSystem->onStart();
    LOG_INFO( "Sprite system started" );
+   context->overlaySystem->onStart();
+   LOG_INFO( "Overlay system started" );
    context->scene->onStart( window );
    LOG_INFO( "Scene started" );
    LOG_INFO( "Game starting" );
@@ -113,16 +115,18 @@ void Game::start()
 
       context->inputSystem->update( frameTime );
       window.clear();
-      // Rendering
+      // Rendering -------------------------------------------------
       context->spriteSystem->render( window, *renderer );
+      context->overlaySystem->render( window, *renderer );
       context->uiSystem->render( window, *renderer );
+      // -----------------------------------------------------------
       window.display();
    }
 
    LOG_INFO( "Game ending!" );
 }
 
-void Game::initSystems()
+void Game::initSystems() const
 {
    LOG_INFO( "============================================================" );
    LOG_INFO( "Initializing systems" );
@@ -148,4 +152,5 @@ void Game::updateSystems( float dt ) const
    context->timeManager->update( dt );
    context->scene->updateFixed( dt );
    context->spriteSystem->update( dt );
+   context->overlaySystem->update( dt );
 }
