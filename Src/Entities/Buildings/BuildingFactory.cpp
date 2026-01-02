@@ -33,5 +33,5 @@ std::shared_ptr<Building> BuildingFactory::createBuilding( GameScene* scene, Bui
 void BuildingFactory::addComponent( GameScene* scene, Entity entity, BuildingType type )
 {
    scene->addComponent<OverlaySpriteComponent>( entity, entity,
-                                                std::string{ BuildingSprites::buildingSprites[ BuildingType::PEASANT_HOUSE ] } );
+                                                std::string{ BuildingSprites::buildingSprites[ type ] } );
 }
