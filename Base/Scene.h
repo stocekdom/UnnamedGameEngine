@@ -107,31 +107,21 @@ class GameScene
       void callComponentAdded( Entity entity ) const;
 
       void callComponentRemoved( Entity entity ) const;
+
+      template<typename T, typename... Args>
+      std::shared_ptr<T> createFunctionalEntityImpl( ComponentContainer<std::shared_ptr<FunctionalEntity>>& c, Args&&... args );
 };
 
-// Some code duplication but it's minimal
 template<typename T, typename... Args>
 std::shared_ptr<T> GameScene::createTickableFunctionalEntity( Args&&... args )
 {
-   static_assert( std::is_base_of_v<FunctionalEntity, T>,
-                  "Cannot create functional entity. T must be a subtype of FunctionalEntity" );
-
-   auto newId = createEntity();
-   auto entity = std::make_shared<T>( newId, this, std::forward<Args>( args )... );
-   tickableEntities.addComponent( newId, entity );
-   return entity;
+   return createFunctionalEntityImpl<T>( tickableEntities, std::forward<Args>( args )... );
 }
 
 template<typename T, typename... Args>
 std::shared_ptr<T> GameScene::addFunctionalEntity( Args&&... args )
 {
-   static_assert( std::is_base_of_v<FunctionalEntity, T>,
-                  "Cannot create functional entity. T must be a subtype of FunctionalEntity" );
-
-   auto newId = createEntity();
-   auto entity = std::make_shared<T>( newId, this, std::forward<Args>( args )... );
-   otherEntities.addComponent( newId, entity );
-   return entity;
+   return createFunctionalEntityImpl<T>( otherEntities, std::forward<Args>( args )... );
 }
 
 template<typename TC>
@@ -155,6 +145,33 @@ bool GameScene::removeComponent( Entity entity )
 {
    callComponentRemoved( entity );
    return componentRegistry->removeComponent<TC>( entity );
+}
+
+template<typename T, typename... Args>
+std::shared_ptr<T> GameScene::createFunctionalEntityImpl( ComponentContainer<std::shared_ptr<FunctionalEntity>>& c,
+                                                          Args&&... args )
+{
+   static_assert( std::is_base_of_v<FunctionalEntity, T>,
+                  "Cannot create functional entity. T must be a subtype of FunctionalEntity" );
+
+   auto newId = createEntity();
+   auto entity = std::make_shared<T>( newId, this, std::forward<Args>( args )... );
+
+   if( !c.addComponent( newId, entity ) )
+   {
+      LOG_WARNING(
+         "Couldn't add functional entity " + std::string( typeid( T ).name() ) + "with id: " + std::to_string( newId ) +
+         " to container" );
+      return nullptr;
+   }
+
+   LOG_DEBUG( "Adding functional entity " + std::string( typeid( T ).name() ) + " with id: " + std::to_string( newId ) )
+
+   // Start the entity if the game is already running
+   if( onStartCalled )
+      entity->onStart( context_ );
+
+   return entity;
 }
 
 #endif //GAME1_SCENE_H

@@ -107,6 +107,7 @@ bool GameScene::deleteEntity( Entity entity )
       callComponentRemoved( entity );
       componentRegistry->onEntityDestroyed( entity );
 
+      // TODO add check contains to avoid deleting from both if only one has the entity?
       otherEntities.removeComponent( entity );
       tickableEntities.removeComponent( entity );
       return true;
