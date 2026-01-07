@@ -13,9 +13,13 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <vector>
 #include <memory>
+#include <concepts>
 
 struct GameContext;
 class FunctionalEntity;
+
+template<typename T>
+concept IsFunctionalEntity = std::derived_from<T, FunctionalEntity>;
 
 class GameScene
 {
@@ -36,19 +40,18 @@ class GameScene
        * @return Returns a reference to the created entity
        * @note The scene only ticks N times a second in a deterministic loop
        */
-      template<typename T, typename... Args>
+      template<IsFunctionalEntity T, typename... Args>
       std::shared_ptr<T> createTickableFunctionalEntity( Args&&... args );
 
       /**
-       * Creates a functional entity that ticks.
+       * Creates a functional entity that doesn't tick.
        * Internally handles entity id and registration
        * @tparam T The type of the created entity. Must be a subtype of FunctionalEntity
        * @param args Arguments that get passed to the constructor of T
        * @return Returns a reference to the created entity
-       * @note The scene only ticks N times a second in a deterministic loop
        */
-      template<typename T, typename... Args>
-      std::shared_ptr<T> addFunctionalEntity( Args&&... args );
+      template<IsFunctionalEntity T, typename... Args>
+      std::shared_ptr<T> createFunctionalEntity( Args&&... args );
 
       // Currently unnamed entities. Entity is only id
       Entity createEntity() const;
@@ -108,18 +111,18 @@ class GameScene
 
       void callComponentRemoved( Entity entity ) const;
 
-      template<typename T, typename... Args>
+      template<IsFunctionalEntity T, typename... Args>
       std::shared_ptr<T> createFunctionalEntityImpl( ComponentContainer<std::shared_ptr<FunctionalEntity>>& c, Args&&... args );
 };
 
-template<typename T, typename... Args>
+template<IsFunctionalEntity T, typename... Args>
 std::shared_ptr<T> GameScene::createTickableFunctionalEntity( Args&&... args )
 {
    return createFunctionalEntityImpl<T>( tickableEntities, std::forward<Args>( args )... );
 }
 
-template<typename T, typename... Args>
-std::shared_ptr<T> GameScene::addFunctionalEntity( Args&&... args )
+template<IsFunctionalEntity T, typename... Args>
+std::shared_ptr<T> GameScene::createFunctionalEntity( Args&&... args )
 {
    return createFunctionalEntityImpl<T>( otherEntities, std::forward<Args>( args )... );
 }
@@ -147,13 +150,10 @@ bool GameScene::removeComponent( Entity entity )
    return componentRegistry->removeComponent<TC>( entity );
 }
 
-template<typename T, typename... Args>
+template<IsFunctionalEntity T, typename... Args>
 std::shared_ptr<T> GameScene::createFunctionalEntityImpl( ComponentContainer<std::shared_ptr<FunctionalEntity>>& c,
                                                           Args&&... args )
 {
-   static_assert( std::is_base_of_v<FunctionalEntity, T>,
-                  "Cannot create functional entity. T must be a subtype of FunctionalEntity" );
-
    auto newId = createEntity();
    auto entity = std::make_shared<T>( newId, this, std::forward<Args>( args )... );
 

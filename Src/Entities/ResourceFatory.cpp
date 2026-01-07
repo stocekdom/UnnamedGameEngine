@@ -12,16 +12,16 @@ std::shared_ptr<ResourceActor> ResourceFactory::createResource( GameScene* scene
       case Resources::ResourceSource::BERRY_BUSH:
          // TODO Add random amount in range
 
-         return scene->addFunctionalEntity<ResourceActor>( Resources::Resource::ITEM_BERRIES,
+         return scene->createFunctionalEntity<ResourceActor>( Resources::Resource::ITEM_BERRIES,
                                                            Resources::ResourceSource::BERRY_BUSH, 2000, 1, 9999,
                                                            ActorParams( position ) );
 
       case Resources::ResourceSource::STONES:
-         return scene->addFunctionalEntity<ResourceActor>( Resources::Resource::ITEM_ROCKS, Resources::ResourceSource::STONES,
+         return scene->createFunctionalEntity<ResourceActor>( Resources::Resource::ITEM_ROCKS, Resources::ResourceSource::STONES,
                                                            4000, 5, 9999, ActorParams( position ) );
 
       case Resources::ResourceSource::TREE:
-         return scene->addFunctionalEntity<ResourceActor>( Resources::Resource::ITEM_WOOD, Resources::ResourceSource::TREE, 1000,
+         return scene->createFunctionalEntity<ResourceActor>( Resources::Resource::ITEM_WOOD, Resources::ResourceSource::TREE, 1000,
                                                            10, 9999, ActorParams( position ) );
 
       default:

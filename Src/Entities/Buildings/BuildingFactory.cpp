@@ -13,13 +13,13 @@ std::shared_ptr<Building> BuildingFactory::createBuilding( GameScene* scene, Bui
    {
       case BuildingType::PEASANT_HOUSE:
       {
-         auto b = scene->addFunctionalEntity<PeasantHouse>( ActorParams{ position } );
+         auto b = scene->createFunctionalEntity<PeasantHouse>( ActorParams{ position } );
          addComponent( scene, b->getEntityId(), type );
          return b;
       }
       case BuildingType::STONE_MINER:
       {
-         auto b = scene->addFunctionalEntity<StoneMiner>( ActorParams{ position } );
+         auto b = scene->createFunctionalEntity<StoneMiner>( ActorParams{ position } );
          addComponent( scene, b->getEntityId(), type );
          return b;
       }

@@ -25,7 +25,7 @@ void GameMap::init( GameContext* context )
          float screenY = mapStart.y + static_cast<float>( y ) * ( Math::IsometricConstants::SPRITE_HEIGHT / 2 ) +
                          static_cast<float>( x ) * ( Math::IsometricConstants::SPRITE_HEIGHT / 2 );
 
-         auto tileTmp = context->scene->addFunctionalEntity<MapTile>( "Assets/grass1.png",
+         auto tileTmp = context->scene->createFunctionalEntity<MapTile>( "Assets/grass1.png",
                                                                       ActorParams{ sf::Vector2f{ screenX, screenY } } );
          /*
          // Temporary for testing. Done like this so the weakptr from shared_ptr to resource doesnt expire immediately
