@@ -2,14 +2,11 @@
 // Created by dominik on 03.10.25.
 //
 #include "Game.h"
-#include "GameMap/GameMap.h"
 #include "../Src/Controllers/PlayerController.h"
 #include "../Src/UI/ResourceBar.h"
-#include "Data/PlayerInventoryComponent.h"
 #include "UI/UIRoot.h"
 #include "../Src/Entities/Buildings/BuildingPlacementButton.h"
 #include "../Src/Entities/Buildings/BuildingFactory.h"
-#include "../Src/GameItemRegistry.h"
 #include "Logging/Logger.h"
 #include <SFML/Graphics.hpp>
 
@@ -19,19 +16,6 @@ Game::Game()
 {
    context = std::make_shared<GameContext>();
    renderer = std::make_shared<Renderer>();
-   context->player = std::make_shared<PlayerInventoryComponent>();
-   context->resourceManager = std::make_shared<ResourceManager>();
-   context->spriteSystem = std::make_shared<SpriteSystem>();
-   context->overlaySystem = std::make_shared<OverlaySystem>();
-   context->transformSystem = std::make_shared<TransformSystem>();
-   context->inputSystem = std::make_shared<InputSystem>();
-   context->eventSystem = std::make_shared<EventSystem>();
-   //context->collisionSystem = std::make_shared<CollisionSystem>();
-   context->scene = std::make_shared<GameScene>();
-   context->gameMapSystem = std::make_shared<GameMapSystem>();
-   context->uiSystem = std::make_shared<UISystem>();
-   context->itemRegistry = std::make_shared<GameItemRegistry>();
-   context->timeManager = std::make_shared<TimeManager>();
 }
 
 void Game::start()
