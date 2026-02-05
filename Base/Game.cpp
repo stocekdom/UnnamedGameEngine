@@ -23,6 +23,7 @@ void Game::start()
    constexpr int WINDOW_WIDTH = 1920;
    constexpr int WINDOW_HEIGHT = 1080;
    sf::RenderWindow window( sf::VideoMode( WINDOW_WIDTH, WINDOW_HEIGHT ), "Game" );
+   auto uiView = std::make_unique<sf::View>( window.getDefaultView() );
    sf::Clock clock;
    constexpr float FIXED_DT = 1.0f / 128.0f;
    float accumulator = 0.f;
@@ -104,8 +105,12 @@ void Game::start()
       context->inputSystem->update( frameTime );
       window.clear();
       // Rendering -------------------------------------------------
+      // Set the main scene view
+      window.setView( context->scene->getSceneView() );
       context->spriteSystem->render( window, *renderer );
       context->overlaySystem->render( window, *renderer );
+      // Set the UI view
+      window.setView( *uiView );
       context->uiSystem->render( window, *renderer );
       // -----------------------------------------------------------
       window.display();

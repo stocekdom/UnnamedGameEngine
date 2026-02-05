@@ -83,13 +83,15 @@ class GameScene
 
       void zoomCamera( float zoom ) const;
 
+      sf::View& getSceneView() const;
+
       ComponentRegistry& getComponentRegistry();
 
    private:
       GameContext* context_ = nullptr;
       // Window, view
       sf::RenderWindow* mainWindow = nullptr;
-      std::shared_ptr<sf::View> mainView;
+      std::unique_ptr<sf::View> mainView;
       // ========================================
       // Registries
       std::unique_ptr<EntityManager> entityManager;
@@ -155,7 +157,7 @@ std::shared_ptr<T> GameScene::createFunctionalEntityImpl( ComponentContainer<std
                                                           Args&&... args )
 {
    auto newId = createEntity();
-   auto entity = std::make_shared<T>( newId, this, std::forward<Args>( args )... );
+   auto entity = std::make_shared<T>( newId, context_, std::forward<Args>( args )... );
 
    if( !c.addComponent( newId, entity ) )
    {

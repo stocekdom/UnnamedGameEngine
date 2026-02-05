@@ -65,7 +65,7 @@ void GameScene::onStart( sf::RenderWindow& window )
 {
    // TODO make window smart pointer in the game class
    mainWindow = &window;
-   mainView = std::make_shared<sf::View>( window.getDefaultView() );
+   mainView = std::make_unique<sf::View>( window.getDefaultView() );
    onStartCalled = true;
 
    for( auto& entity: tickableEntities )
@@ -156,6 +156,14 @@ void GameScene::moveCamera( const sf::Vector2f& delta ) const
 void GameScene::zoomCamera( float zoom ) const
 {
    mainView->zoom( zoom );
+}
+
+sf::View& GameScene::getSceneView() const
+{
+   if( !mainView )
+      LOG_ERROR( "Main view of the scene not initialized!" );
+
+   return *mainView;
 }
 
 /*

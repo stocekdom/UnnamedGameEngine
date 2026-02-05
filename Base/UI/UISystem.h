@@ -27,7 +27,6 @@ class UISystem
       void addUiRootComponent( const std::shared_ptr<UIElement>& root );
 
    private:
-      std::shared_ptr<sf::View> uiView;
       std::shared_ptr<UIElement> uiRoot;
 };
 #endif //GAME1_UISYSTEM_H
