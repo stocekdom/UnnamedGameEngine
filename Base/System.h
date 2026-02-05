@@ -7,6 +7,8 @@
 
 struct GameContext;
 
+// TODO add a safeguard that checks if the system was initialized
+
 class System
 {
    public:
@@ -26,6 +28,8 @@ class System
       virtual void onStart() = 0;
 
       virtual void update( float dt ) = 0;
+
+   private:
 };
 
 #endif //GAME1_SYSTEM_H

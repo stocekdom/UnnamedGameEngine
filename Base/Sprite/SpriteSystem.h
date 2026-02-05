@@ -18,8 +18,6 @@ struct TransformComponent;
 class SpriteSystem : public ComponentSystem
 {
    public:
-      explicit SpriteSystem() = default;
-
       void init( GameContext* context ) override;
 
       void update( float dt ) override;

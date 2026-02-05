@@ -12,8 +12,6 @@
 class TransformSystem : public ComponentSystem
 {
    public:
-      TransformSystem();
-
       void init( GameContext* context ) override;
 
       void update( float dt ) override;
@@ -27,8 +25,8 @@ class TransformSystem : public ComponentSystem
       void onBeforeComponentsDestroyed( Entity entity ) override;
 
    private:
-      ComponentContainer<TransformComponent>* transformComponentContainer;
-      bool needsSorting;
+      ComponentContainer<TransformComponent>* transformComponentContainer = nullptr;
+      bool needsSorting = false;
 
       void resolveDirtyTransform( TransformComponent& transform );
 

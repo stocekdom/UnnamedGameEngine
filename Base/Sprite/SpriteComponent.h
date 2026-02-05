@@ -5,11 +5,10 @@
 #ifndef GAME1_SPRITECOMPONENT_H
 #define GAME1_SPRITECOMPONENT_H
 
+#include "SpriteMobility.h"
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <string>
-
-#include "SpriteMobility.h"
 
 struct SpriteComponent
 {

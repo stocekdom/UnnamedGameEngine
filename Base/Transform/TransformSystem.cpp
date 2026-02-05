@@ -6,10 +6,6 @@
 #include "../Core/Math.h"
 #include "../GameContext.h"
 
-TransformSystem::TransformSystem() : transformComponentContainer( nullptr ), needsSorting( false )
-{
-}
-
 void TransformSystem::init( GameContext* context )
 {
    context->scene->getComponentRegistry().registerComponentType<TransformComponent>();
