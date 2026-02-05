@@ -11,6 +11,11 @@
 
 namespace BuildingSprites
 {
+   class BuildingSpritesManager
+   {
+      public:
+         static std::string getBuildingTexture( BuildingType type )
+   };
    inline constexpr std::array<std::string_view, BuildingType::COUNT> buildingSprites = {
       "Assets/Buildings/house1.png", "Assets/Buildings/stoneMiner.png"
    };

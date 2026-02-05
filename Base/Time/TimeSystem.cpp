@@ -2,23 +2,23 @@
 // Created by dominik on 09.12.25.
 //
 
-#include "TimeManager.h"
+#include "TimesSystem.h"
 
-TimerHandle TimeManager::makeTimer( float duration, Callback callback )
+TimerHandle TimesSystem::makeTimer( float duration, Callback callback )
 {
-   const auto timer = std::make_shared<Timer>( duration, std::move( callback ) );
+   const auto timer = std::make_shared<TimerComponent>( duration, std::move( callback ) );
    timers.push_back( timer );
    return TimerHandle( timer );
 }
 
-TimerHandle TimeManager::makeRepeatingTimer( float duration, Callback callback )
+TimerHandle TimesSystem::makeRepeatingTimer( float duration, Callback callback )
 {
-   const auto timer = std::make_shared<Timer>( duration, std::move( callback ), true );
+   const auto timer = std::make_shared<TimerComponent>( duration, std::move( callback ), true );
    timers.push_back( timer );
    return TimerHandle( timer );
 }
 
-void TimeManager::update( float dt )
+void TimesSystem::update( float dt )
 {
    for( int i = 0; i < timers.size(); ++i )
    {

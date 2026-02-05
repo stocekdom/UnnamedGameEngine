@@ -2,8 +2,8 @@
 // Created by dominik on 21.12.25.
 //
 
-#ifndef GAME1_COMPONENT_SYSTEM_H
-#define GAME1_COMPONENT_SYSTEM_H
+#ifndef GAME1_COMPONENTSYSTEM_H
+#define GAME1_COMPONENTSYSTEM_H
 
 #include "Entity.h"
 #include "System.h"
@@ -31,4 +31,4 @@ class ComponentSystem : public System
       // Add after component destroyed cleanup if necessary
       //virtual void onEntityDestroyed( Entity entity ) = 0;
 };
-#endif //GAME1_COMPONENT_SYSTEM_H
+#endif //GAME1_COMPONENTSYSTEM_H

@@ -8,7 +8,7 @@
 #include "TimerHandle.h"
 #include <vector>
 
-class TimeManager
+class TimesSystem
 {
    using Callback = std::function<void()>;
 
@@ -32,6 +32,6 @@ class TimeManager
       void update( float dt );
 
    private:
-      std::vector<std::shared_ptr<Timer>> timers;
+      std::vector<std::shared_ptr<TimerComponent>> timers;
 };
 #endif //GAME1_TIMEMANAGER_H

@@ -48,6 +48,7 @@ class ComponentContainer : public IComponentContainer
       template<typename Compare>
       void sort( Compare comp );
 
+      size_t size() const { return components.size(); }
       // Expose iterators ===========================================
 
       auto begin() { return components.begin(); }
@@ -65,13 +66,13 @@ class ComponentContainer : public IComponentContainer
       std::unordered_map<Entity, size_t> entityToIndex;
       std::unordered_map<size_t, Entity> indexToEntity;
 
-      bool addComponentIndexHandler( Entity id );
+      bool tryAddComponent( Entity id );
 };
 
 template<typename TC>
 bool ComponentContainer<TC>::addComponent( const Entity id, TC component )
 {
-   auto res = addComponentIndexHandler( id );
+   auto res = tryAddComponent( id );
 
    if( res )
       components.push_back( std::move( component ) );
@@ -84,7 +85,7 @@ template<typename... Args>
 bool ComponentContainer<TC>::addComponent( const Entity id, Args&&... args )
 {
    // TODO no strong exception quarantee
-   auto res = addComponentIndexHandler( id );
+   auto res = tryAddComponent( id );
 
    if( res )
       components.emplace_back( std::forward<Args>( args )... );
@@ -97,7 +98,9 @@ bool ComponentContainer<TC>::removeComponent( const Entity entity )
 {
    if( !entityToIndex.contains( entity ) )
    {
-      LOG_INFO( "Cannot remove component " + std::string( typeid( TC ).name() ) + " of entity: " + std::to_string( entity ) + ". Component doesn't exist" );
+      LOG_INFO(
+         "Cannot remove component " + std::string( typeid( TC ).name() ) + " of entity: " + std::to_string( entity ) +
+         ". Component doesn't exist" );
       return false;
    }
 
@@ -177,7 +180,7 @@ void ComponentContainer<TC>::sort( Compare comp )
 }
 
 template<typename TC>
-bool ComponentContainer<TC>::addComponentIndexHandler( Entity id )
+bool ComponentContainer<TC>::tryAddComponent( Entity id )
 {
    if( entityToIndex.contains( id ) )
    {

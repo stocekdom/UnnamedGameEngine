@@ -57,7 +57,6 @@ bool ComponentRegistry::registerComponentType()
 {
    std::type_index id = std::type_index( typeid( TC ) );
 
-   auto t = registry.contains( id );
    if( registry.contains( id ) )
    {
       LOG_WARNING( "Component type " + std::string( typeid( TC ).name() ) + " is already registered" );
