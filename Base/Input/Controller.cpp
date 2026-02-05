@@ -12,7 +12,6 @@ bool Controller::handleInput( const sf::Event& event )
    // Initialization before switch to avoid compiler warning.
    GameAction action;
 
-   // TODO add an exception for mouse clicks and always pass clicks to UI first before using the action
    // TODO lot of repeated code in keys and buttons.
    switch( event.type )
    {

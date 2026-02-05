@@ -4,16 +4,16 @@
 
 #include "ResourceActor.h"
 
-ResourceActor::ResourceActor( Entity id, GameScene* scene, Resources::Resource resource, Resources::ResourceSource source,
+ResourceActor::ResourceActor( Entity id, GameContext* context, Resources::Resource resource, Resources::ResourceSource source,
                               float harvestTime, unsigned int harvestAmount, unsigned int amount, const ActorParams& params )
-   : SpriteActor( id, scene, std::string{ Resources::SOURCE_TEXTURE_ARRAY[ source ] }, params ),
+   : SpriteActor( id, context, Resources::ResourceManager::getResourceSourceTexture( source ), params ),
      amount( amount ),
      resource( resource ),
      source( source ),
      harvestTime( harvestTime ),
      harvestAmount( harvestAmount )
 {
-   auto spriteComp = scene->getComponentRegistry().getComponent<SpriteComponent>( id );
+   auto spriteComp = context->scene->getComponentRegistry().getComponent<SpriteComponent>( id );
    spriteComp.setOrigin( { spriteComp.getLocalBounds().width / 2, spriteComp.getLocalBounds().height } );
 }
 

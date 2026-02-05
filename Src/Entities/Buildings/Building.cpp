@@ -5,8 +5,8 @@
 #include "Building.h"
 #include "../../../Base/GameMap/MapTile.h"
 
-Building::Building( Entity id, GameScene* scene, const ActorParams& params )
-   : Actor( id, scene, params )
+Building::Building( Entity id, GameContext* context, const ActorParams& params )
+   : Actor( id, context, params )
 {
 }
 

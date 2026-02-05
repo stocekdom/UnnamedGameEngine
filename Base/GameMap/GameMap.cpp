@@ -2,9 +2,10 @@
 // Created by dominik on 14.11.25.
 //
 
-#include "../Scene.h"
 #include "GameMap.h"
+#include "../GameContext.h"
 #include "MapTile.h"
+#include "../../Src/Entities/ResourceFactory.h"
 #include "../Core/Math.h"
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
@@ -26,7 +27,14 @@ void GameMap::init( GameContext* context )
                          static_cast<float>( x ) * ( Math::IsometricConstants::SPRITE_HEIGHT / 2 );
 
          auto tileTmp = context->scene->createFunctionalEntity<MapTile>( "Assets/grass1.png",
-                                                                      ActorParams{ sf::Vector2f{ screenX, screenY } } );
+                                                                         ActorParams{ sf::Vector2f{ screenX, screenY } } );
+         if( ( x + y * mapWidth ) % 9 == 0 )
+         {
+            auto res = ResourceFactory::createResource( context->scene.get(),
+                                                        Resources::ResourceSource::STONES,
+                                                        { screenX, screenY } );
+            tileTmp->setResource( res );
+         }
          /*
          // Temporary for testing. Done like this so the weakptr from shared_ptr to resource doesnt expire immediately
          if( ( x + y * mapWidth ) % 9 == 0 )

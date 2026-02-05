@@ -39,9 +39,9 @@ void Game::start()
                                                                 sf::Vector2f{ WINDOW_WIDTH - 60.f, 40.f } );
 
       // TODO add a separate component for building buttons
-      auto buildingButton = std::make_shared<BuildingPlacementButton<BuildingType::PEASANT_HOUSE>>( "Assets/Icons/houseIcon.png",
+      auto buildingButton = std::make_shared<BuildingPlacementButton<Buildings::BuildingType::PEASANT_HOUSE>>( "Assets/Icons/houseIcon.png",
          sf::Vector2f{ 60.f, 50.f } );
-      auto minerButton = std::make_shared<BuildingPlacementButton<BuildingType::STONE_MINER>>( "Assets/Icons/stoneMinerIco.png",
+      auto minerButton = std::make_shared<BuildingPlacementButton<Buildings::BuildingType::STONE_MINER>>( "Assets/Icons/stoneMinerIco.png",
          sf::Vector2f{ 134.f, 50.f } );
 
       auto placeholderMenu = std::make_shared<UIButton<GameResumed>>( "Assets/Icons/menu.png",
@@ -65,6 +65,8 @@ void Game::start()
    LOG_INFO( "UI system started" );
    context->player->onStart( context.get() );
    LOG_INFO( "Player class started" );
+   context->timeManager->onStart();
+   LOG_INFO( "Time manager started" );
    context->transformSystem->onStart();
    LOG_INFO( "Transform system started" );
    context->spriteSystem->onStart();
@@ -130,6 +132,8 @@ void Game::initSystems() const
    LOG_INFO( "UIController registered" );
    context->inputSystem->registerController( std::make_unique<PlayerController>( context.get() ) );
    LOG_INFO( "PlayerController registered" );
+   context->timeManager->init( context.get() );
+   LOG_INFO( "Time manager initialized" );
    LOG_INFO( "All systems initialized" );
    LOG_INFO( "============================================================" );
 

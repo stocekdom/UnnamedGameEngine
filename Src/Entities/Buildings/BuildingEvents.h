@@ -5,11 +5,11 @@
 #ifndef GAME1_BUILDINGEVENTS_H
 #define GAME1_BUILDINGEVENTS_H
 
-#include "BuildingType.h"
+#include "Buildings.h"
 
 struct BuildingPlacingStarted
 {
-   BuildingType type = BuildingType::NONE;
+   Buildings::BuildingType type = Buildings::BuildingType::NO_BUILDING;
    sf::Vector2f position;
 };
 

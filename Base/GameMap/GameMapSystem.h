@@ -5,12 +5,12 @@
 #ifndef GAME1_GAMEMAPSYSTEM_H
 #define GAME1_GAMEMAPSYSTEM_H
 
-#include <memory>
+#include "GameMap.h"
 #include <SFML/System/Vector2.hpp>
+#include <memory>
 
 struct GameContext;
 class MapTile;
-class GameMap;
 class GameScene;
 class Building;
 

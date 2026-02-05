@@ -5,9 +5,8 @@
 #ifndef GAME1_GAMEACTION_H
 #define GAME1_GAMEACTION_H
 
-enum class GameAction
+enum GameAction
 {
-   NONE,
    CAMERA_MOVE_LEFT,
    CAMERA_MOVE_RIGHT,
    CAMERA_MOVE_UP,
@@ -17,6 +16,7 @@ enum class GameAction
    MOUSE_MOVE,
    PLACE_BUILDING,
    PLACEMENT_CANCEL,
+   NO_ACTION,
 };
 
 struct ActionData

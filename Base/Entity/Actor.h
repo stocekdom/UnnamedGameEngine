@@ -4,9 +4,9 @@
 
 #ifndef GAME1_ACTOR_H
 #define GAME1_ACTOR_H
-#include <SFML/System/Vector2.hpp>
 
 #include "FunctionalEntity.h"
+#include <SFML/System/Vector2.hpp>
 
 struct ActorParams
 {

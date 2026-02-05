@@ -2,36 +2,33 @@
 // Created by dominik on 09.12.25.
 //
 
-#ifndef GAME1_TIMEMANAGER_H
-#define GAME1_TIMEMANAGER_H
+#ifndef GAME1_TIMESYSTEM_H
+#define GAME1_TIMESYSTEM_H
 
-#include "TimerHandle.h"
-#include <vector>
+#include "../ComponentSystem.h"
+#include "TimerComponent.h"
+#include "../ComponentContainer.h"
 
-class TimesSystem
+class TimeSystem : public ComponentSystem
 {
    using Callback = std::function<void()>;
 
    public:
-      /**
-       * Creates a onefold timer
-       * @param duration Duration of the timer in seconds
-       * @param callback A callback that is called when the timer finishes
-       * @return A handle for the timer
-       */
-      TimerHandle makeTimer( float duration, Callback callback );
+      void init( GameContext* context ) override;
 
-      /**
-       * Creates a timer that is repeated
-       * @param duration Duration of the timer in seconds
-       * @param callback A callback that is called every time the timer finishes
-       * @return A handle for the timer
-       */
-      TimerHandle makeRepeatingTimer( float duration, Callback callback );
+      void onStart() override;
 
-      void update( float dt );
+      void onBeforeComponentsDestroyed( Entity entity ) override;
+
+      void onComponentAdded( Entity entity ) override;
+
+      void update( float dt ) override;
 
    private:
-      std::vector<std::shared_ptr<TimerComponent>> timers;
+      ComponentContainer<TimerComponent>* timersContainer = nullptr;
+      GameContext* context_ = nullptr;
+      bool started = false;
+
+      static void updateTimer( float dt, TimerComponent& timer );
 };
-#endif //GAME1_TIMEMANAGER_H
+#endif //GAME1_TIMESYSTEM_H

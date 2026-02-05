@@ -28,6 +28,15 @@ namespace Utility
 
       return false;
    }
+
+   template<typename T>
+   concept IsEnum = std::is_enum_v<T>;
+
+   template<IsEnum E>
+   constexpr auto enumToIndex( E e ) noexcept
+   {
+      return static_cast<std::underlying_type_t<E>>( e );
+   }
 }
 
 #endif //GAME1_UTILITY_H

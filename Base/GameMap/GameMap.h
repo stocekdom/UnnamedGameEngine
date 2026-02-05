@@ -6,11 +6,13 @@
 #define GAME1_GAMEMAP_H
 
 #include <SFML/System/Vector2.hpp>
-#include <cstddef>
-#include "MapTile.h"
-//#include "../Input/Clickable.h"
+#include <memory>
+#include <vector>
 
-class GameMap : /*public Clickable, */public std::enable_shared_from_this<GameMap>
+struct GameContext;
+class MapTile;
+
+class GameMap
 {
    public:
       GameMap( size_t mapHeight, size_t mapWidth, const sf::Vector2f& mapStart );
@@ -19,7 +21,7 @@ class GameMap : /*public Clickable, */public std::enable_shared_from_this<GameMa
 
       //bool onClick( const sf::Vector2f& location ) override;
 
-      sf::Vector2f snapToMapTile( const sf::Vector2f& mousePosition ) const;
+      [[nodiscard]] sf::Vector2f snapToMapTile( const sf::Vector2f& mousePosition ) const;
 
       std::weak_ptr<MapTile> getMapTile( const sf::Vector2f& mousePosition );
 

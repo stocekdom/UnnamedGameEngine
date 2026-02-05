@@ -9,8 +9,8 @@
 // TODO handle pausing if resource is depleted
 // TODO add timer component
 
-StoneMiner::StoneMiner( Entity id, GameScene* scene, const ActorParams& params )
-   : Building( id, scene, params ), context_( nullptr )
+StoneMiner::StoneMiner( Entity id, GameContext* context, const ActorParams& params )
+   : Building( id, context, params )
 {
 }
 
@@ -34,13 +34,18 @@ void StoneMiner::onPlaced( const std::shared_ptr<MapTile>& tile )
       LOG_ERROR( "Stone mine placed with invalid tile resource" )
       return;
    }
-/*
-   harvestTimer = context_->timeManager->makeRepeatingTimer( r->getHarvestTime(), [this, r] {
-      context_->player->addItem( Resources::ID_ARRAY[ Resources::Resource::ITEM_ROCKS ], r->harvest() );
-   } );*/
+
+   //                                                          time duration,     callback,                           isRepeating
+   context_->scene->addComponent<TimerComponent>( entity, r->getHarvestTime(), [this]() { harvestResource(); }, true );
 }
 
-BuildingType StoneMiner::getType()
+Buildings::BuildingType StoneMiner::getType()
 {
-   return BuildingType::STONE_MINER;
+   return Buildings::BuildingType::STONE_MINER;
+}
+
+void StoneMiner::harvestResource() const
+{
+   if( auto r = resource.lock() )
+      context_->player->addItem( Resources::ResourceManager::getResourceId( Resources::Resource::ITEM_ROCKS ), r->harvest() );
 }

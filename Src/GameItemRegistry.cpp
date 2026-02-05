@@ -6,23 +6,27 @@
 
 GameItemRegistry::GameItemRegistry()
 {
-   definitions.emplace( Resources::ID_ARRAY[ Resources::ITEM_ROCKS ], ItemDefinition{
-                           std::string{ Resources::ID_ARRAY[ Resources::ITEM_ROCKS ] }, "Rocks", "Rocks",
-                           std::string{ Resources::TEXTURE_ARRAY[ Resources::ITEM_ROCKS ] }, ItemCategory::RESOURCE, 9999
+   definitions.emplace( Resources::ResourceManager::getResourceId( Resources::Resource::ITEM_ROCKS ), ItemDefinition{
+                           Resources::ResourceManager::getResourceId( Resources::Resource::ITEM_ROCKS ), "Rocks", "Rocks",
+                           Resources::ResourceManager::getResourceIcon( Resources::Resource::ITEM_ROCKS ), ItemCategory::RESOURCE,
+                           9999
                         } );
-   definitions.emplace( Resources::ID_ARRAY[ Resources::ITEM_BERRIES ],
+   definitions.emplace( Resources::ResourceManager::getResourceId( Resources::Resource::ITEM_BERRIES ),
                         ItemDefinition{
-                           std::string{ Resources::ID_ARRAY[ Resources::ITEM_BERRIES ] }, "Berries", "Berries",
-                           std::string{ Resources::TEXTURE_ARRAY[ Resources::ITEM_BERRIES ] }, ItemCategory::RESOURCE, 9999
+                           Resources::ResourceManager::getResourceId( Resources::Resource::ITEM_BERRIES ), "Berries", "Berries",
+                           Resources::ResourceManager::getResourceIcon( Resources::Resource::ITEM_BERRIES ),
+                           ItemCategory::RESOURCE, 9999
                         } );
-   definitions.emplace( Resources::ID_ARRAY[ Resources::ITEM_STONE ],
+   definitions.emplace( Resources::ResourceManager::getResourceId( Resources::Resource::ITEM_STONE ),
                         ItemDefinition{
-                           std::string{ Resources::ID_ARRAY[ Resources::ITEM_STONE ] }, "Stone", "Stone",
-                           std::string{ Resources::TEXTURE_ARRAY[ Resources::ITEM_STONE ] }, ItemCategory::RESOURCE, 9999
+                           Resources::ResourceManager::getResourceId( Resources::Resource::ITEM_STONE ), "Stone", "Stone",
+                           Resources::ResourceManager::getResourceIcon( Resources::Resource::ITEM_STONE ), ItemCategory::RESOURCE,
+                           9999
                         } );
-   definitions.emplace( Resources::ID_ARRAY[ Resources::ITEM_WOOD ],
+   definitions.emplace( Resources::ResourceManager::getResourceId( Resources::Resource::ITEM_WOOD ),
                         ItemDefinition{
-                           std::string{ Resources::ID_ARRAY[ Resources::ITEM_WOOD ] }, "Wood", "Wood",
-                           std::string{ Resources::TEXTURE_ARRAY[ Resources::ITEM_WOOD ] }, ItemCategory::RESOURCE, 9999
+                           Resources::ResourceManager::getResourceId( Resources::Resource::ITEM_WOOD ), "Wood", "Wood",
+                           Resources::ResourceManager::getResourceIcon( Resources::Resource::ITEM_WOOD ), ItemCategory::RESOURCE,
+                           9999
                         } );
 }

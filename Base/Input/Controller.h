@@ -6,10 +6,11 @@
 #define GAME1_CONTROLLER_H
 
 #include "InputContext.h"
-#include "../GameContext.h"
 #include <SFML/Window/Event.hpp>
 #include <functional>
 #include <memory>
+
+struct GameContext;
 
 /**
  * Basic controller providing a way to map keyboard and mouse events to functions with support for different contexts.

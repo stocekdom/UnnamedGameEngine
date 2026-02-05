@@ -6,9 +6,9 @@
 
 #include "../Sprite/SpriteComponent.h"
 
-SpriteActor::SpriteActor( Entity id, GameScene* scene, const std::string& texturePath, const ActorParams& params,
+SpriteActor::SpriteActor( Entity id, GameContext* context, const std::string& texturePath, const ActorParams& params,
                           SpriteMobility mobility )
-   : Actor( id, scene, params )
+   : Actor( id, context, params )
 {
-   scene->addComponent<SpriteComponent>( id, texturePath, mobility );
+   context->scene->addComponent<SpriteComponent>( id, texturePath, mobility );
 }

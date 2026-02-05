@@ -5,7 +5,7 @@
 #ifndef GAME1_BUILDING_H
 #define GAME1_BUILDING_H
 
-#include "BuildingType.h"
+#include "Buildings.h"
 #include "../../../Base/GameMap/MapTile.h"
 
 class Building : public Actor
@@ -27,7 +27,7 @@ class Building : public Actor
        */
       virtual void onPlaced( const std::shared_ptr<MapTile>& tile );
 
-      virtual BuildingType getType() = 0;
+      virtual Buildings::BuildingType getType() = 0;
 };
 
 #endif //GAME1_BUILDING_H

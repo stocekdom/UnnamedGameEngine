@@ -6,12 +6,12 @@
 #include "../Sprite/SpriteComponent.h"
 #include "../Transform/TransformComponent.h"
 
-MapTile::MapTile( Entity id, GameScene* scene, const std::string& texturePath, const ActorParams& params )
-   : SpriteActor( id, scene, texturePath, params )
+MapTile::MapTile( Entity id, GameContext* context, const std::string& texturePath, const ActorParams& params )
+   : SpriteActor( id, context, texturePath, params )
 {
    // TODO add getComponent to scene?
-   auto& spriteComponent = scene->getComponentRegistry().getComponent<SpriteComponent>( id );
-   auto& transformComponent = scene->getComponentRegistry().getComponent<TransformComponent>( id );
+   auto& spriteComponent = context->scene->getComponentRegistry().getComponent<SpriteComponent>( id );
+   auto& transformComponent = context->scene->getComponentRegistry().getComponent<TransformComponent>( id );
 
    // Calculate scale based on tile width so all tiles have the same size.
    // We use width because all isometric tiles can be blocks and height tells us nothing about the tile.
@@ -31,7 +31,7 @@ Resources::Resource MapTile::getResourceType() const
    if( auto r = resource.lock() )
       return r->getResource();
 
-   return Resources::ITEM_NONE;
+   return Resources::Resource::ITEM_NONE;
 }
 
 std::weak_ptr<ResourceActor> MapTile::getResource() const

@@ -2,34 +2,61 @@
 // Created by dominik on 09.12.25.
 //
 
-#include "TimesSystem.h"
+#include "TimeSystem.h"
+#include "../GameContext.h"
 
-TimerHandle TimesSystem::makeTimer( float duration, Callback callback )
+void TimeSystem::init( GameContext* context )
 {
-   const auto timer = std::make_shared<TimerComponent>( duration, std::move( callback ) );
-   timers.push_back( timer );
-   return TimerHandle( timer );
+   context_ = context;
+   context->scene->getComponentRegistry().registerComponentType<TimerComponent>();
+   timersContainer = context->scene->getComponentRegistry().getComponentContainer<TimerComponent>();
 }
 
-TimerHandle TimesSystem::makeRepeatingTimer( float duration, Callback callback )
+void TimeSystem::onStart()
 {
-   const auto timer = std::make_shared<TimerComponent>( duration, std::move( callback ), true );
-   timers.push_back( timer );
-   return TimerHandle( timer );
+   for( auto& timer: *timersContainer )
+      timer.reset();
 }
 
-void TimesSystem::update( float dt )
+void TimeSystem::onBeforeComponentsDestroyed( Entity entity )
 {
-   for( int i = 0; i < timers.size(); ++i )
-   {
-      timers[ i ]->update( dt );
+}
 
-      // Remove timers that finished or we stopped by TimerHandle
+void TimeSystem::onComponentAdded( Entity entity )
+{
+}
+
+void TimeSystem::update( float dt )
+{
+   for( auto& timer: *timersContainer )
+      updateTimer( dt, timer );
+
+   // Remove inactive timers? They can be reset.
+   /*
+      // Remove timers that finished, or we stopped by TimerHandle
       if( timers[ i ]->isActive == false )
       {
          // Swap and pop - O(1)
          std::swap( timers[ i ], timers.back() );
          timers.pop_back();
-      }
+      }*/
+}
+
+void TimeSystem::updateTimer( float dt, TimerComponent& timer )
+{
+   if( !timer.isActive || timer.isPaused )
+      return;
+
+   timer.timeAccumulator += dt;
+
+   if( timer.timeAccumulator >= timer.timerDuration )
+   {
+      // Execute the callback when the timer finishes
+      timer.callback();
+
+      if( timer.isRepeated )
+         timer.timeAccumulator = 0.f; // Or acc - dur?? try
+      else
+         timer.isActive = false;
    }
 }

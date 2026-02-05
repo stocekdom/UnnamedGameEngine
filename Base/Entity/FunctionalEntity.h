@@ -9,7 +9,7 @@
 #include "../GameContext.h"
 #include <memory>
 
-#define REQ_ARGS Entity id, GameScene* scene
+#define REQ_ARGS Entity id, GameContext* context
 /**
  * Main entity used for game objects with custom behavior that doesn't fit into components
  * This way we can have a hybrid ECS approach, and we don't have to make many components and systems for every small functionality.
@@ -19,7 +19,7 @@ class FunctionalEntity : public std::enable_shared_from_this<FunctionalEntity>
    public:
       FunctionalEntity() = delete;
 
-      explicit FunctionalEntity( Entity id, GameScene* scene ) : entity( id ), scene_( scene )
+      explicit FunctionalEntity( REQ_ARGS ) : entity( id ), context_( context )
       {
       }
 
@@ -36,6 +36,6 @@ class FunctionalEntity : public std::enable_shared_from_this<FunctionalEntity>
 
    protected:
       Entity entity = INVALID_ENTITY;
-      GameScene* scene_ = nullptr;
+      GameContext* context_ = nullptr;
 };
 #endif //GAME1_FUNCTIONALENTITY_H

@@ -17,14 +17,12 @@ class StoneMiner : public Building
 
       void onPlaced( const std::shared_ptr<MapTile>& tile ) override;
 
-      BuildingType getType() override;
+      Buildings::BuildingType getType() override;
 
    private:
-      GameContext* context_;
-      TimerHandle harvestTimer;
       std::weak_ptr<ResourceActor> resource;
 
-      //void harvestResource();
+      void harvestResource() const;
 };
 
 #endif //GAME1_STONEMINER_H

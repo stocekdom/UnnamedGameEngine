@@ -6,7 +6,6 @@
 #define GAME1_MAPTILE_H
 
 #include "../../Src/Entities/ResourceActor.h"
-#include "../Entity/SpriteActor.h"
 
 class Building;
 

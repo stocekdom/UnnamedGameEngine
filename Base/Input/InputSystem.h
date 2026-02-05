@@ -6,11 +6,9 @@
 #define GAME1_INPUTSYSTEM_H
 
 #include "../System.h"
-#include <SFML/Window/Event.hpp>
+#include "Controller.h"
 #include <vector>
 #include <memory>
-
-class Controller;
 
 class InputSystem : public System
 {

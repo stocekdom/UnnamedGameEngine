@@ -15,7 +15,7 @@ class PeasantHouse : public Building
 
       bool canBePlaced( const std::shared_ptr<MapTile>& tile ) override;
 
-      BuildingType getType() override;
+      Buildings::BuildingType getType() override;
 };
 
 #endif //GAME1_PEASANTHOUSE_H

@@ -3,21 +3,22 @@
 //
 #include "BuildingFactory.h"
 
-#include "BuildingSprites.h"
+#include "Buildings.h"
 #include "Concrete/PeasantHouse.h"
 #include "Concrete/StoneMiner.h"
 
-std::shared_ptr<Building> BuildingFactory::createBuilding( GameScene* scene, BuildingType type, const sf::Vector2f& position )
+std::shared_ptr<Building> BuildingFactory::createBuilding( GameScene* scene, Buildings::BuildingType type,
+                                                           const sf::Vector2f& position )
 {
    switch( type )
    {
-      case BuildingType::PEASANT_HOUSE:
+      case Buildings::BuildingType::PEASANT_HOUSE:
       {
          auto b = scene->createFunctionalEntity<PeasantHouse>( ActorParams{ position } );
          addComponent( scene, b->getEntityId(), type );
          return b;
       }
-      case BuildingType::STONE_MINER:
+      case Buildings::BuildingType::STONE_MINER:
       {
          auto b = scene->createFunctionalEntity<StoneMiner>( ActorParams{ position } );
          addComponent( scene, b->getEntityId(), type );
@@ -30,8 +31,7 @@ std::shared_ptr<Building> BuildingFactory::createBuilding( GameScene* scene, Bui
    return nullptr;
 }
 
-void BuildingFactory::addComponent( GameScene* scene, Entity entity, BuildingType type )
+void BuildingFactory::addComponent( GameScene* scene, Entity entity, Buildings::BuildingType type )
 {
-   scene->addComponent<OverlaySpriteComponent>( entity, entity,
-                                                std::string{ BuildingSprites::buildingSprites[ type ] } );
+   scene->addComponent<OverlaySpriteComponent>( entity, entity, Buildings::BuildingSpritesManager::getBuildingTexture( type ) );
 }

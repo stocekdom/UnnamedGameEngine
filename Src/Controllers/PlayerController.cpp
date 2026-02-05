@@ -7,7 +7,7 @@
 #include "../../Base/GameMap/MapTile.h"
 #include "../../Base/Input/ContextFactory.h"
 #include "../Entities/Buildings/BuildingFactory.h"
-#include "../Entities/Buildings/BuildingSprites.h"
+#include "../Entities/Buildings/Buildings.h"
 
 // We initialize everything in the constructor since systems are already created at this point, and we don't need onStart
 PlayerController::PlayerController( GameContext* context ) : Controller( context ), cameraSpeed( 0.f, 0.f )
@@ -89,7 +89,8 @@ void PlayerController::onMouseMove( const sf::Vector2i& position )
    auto snapResult = gameContext->gameMapSystem->snapToMapTile( position );
    // Offset from the tile center to be closer to the bottom left corner of the tile
    snapResult.position.y += Math::IsometricConstants::BUILDING_TILE_CENTER_Y_OFFSET;
-   auto& pawnTransform = gameContext->scene->getComponentRegistry().getComponent<TransformComponent>( buildingPawn->getEntityId() );
+   auto& pawnTransform = gameContext->scene->getComponentRegistry().getComponent<TransformComponent>(
+      buildingPawn->getEntityId() );
    pawnTransform.setPosition( snapResult.position );
 
    auto sharedTile = snapResult.tile.lock();
@@ -164,8 +165,9 @@ void PlayerController::onBuildingPlaced( const sf::Vector2i& position )
 
    gameContext->scene->removeComponent<OverlaySpriteComponent>( buildingPawn->getEntityId() );
    gameContext->scene->addComponent<SpriteComponent>( buildingPawn->getEntityId(),
-                                                  std::string{ BuildingSprites::buildingSprites[ buildingPawn->getType() ] },
-                                                  SpriteMobility::STATIC, sf::Vector2f{ 0.5f, 1.f } );
+                                                      Buildings::BuildingSpritesManager::getBuildingTexture(
+                                                         buildingPawn->getType() ), SpriteMobility::STATIC,
+                                                      sf::Vector2f{ 0.5f, 1.f } );
 
    // The house transform should be at the location of the last mouse move, so we don't need to update it here, unless there are position inconsistencies when moving and placing
    buildingPawn = nullptr;

@@ -8,7 +8,7 @@
 #include "BuildingEvents.h"
 #include "../../../Base/UI/UIButton.h"
 
-template<BuildingType T>
+template<Buildings::BuildingType T>
 class BuildingPlacementButton : public UIButton<BuildingPlacingStarted>
 {
    public:
@@ -19,14 +19,14 @@ class BuildingPlacementButton : public UIButton<BuildingPlacingStarted>
       bool onClick( const sf::Vector2f& position ) override;
 };
 
-template<BuildingType T>
+template<Buildings::BuildingType T>
 BuildingPlacementButton<T>::BuildingPlacementButton( const std::string& texturePath, const sf::Vector2f& position, float rotation,
                                                      const sf::Vector2f& scale, bool isVisible )
    : UIButton( texturePath, position, rotation, scale, isVisible )
 {
 }
 
-template<BuildingType T>
+template<Buildings::BuildingType T>
 bool BuildingPlacementButton<T>::onClick( const sf::Vector2f& position )
 {
    if( buttonSprite.getGlobalBounds().contains( position ) )

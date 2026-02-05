@@ -3,6 +3,7 @@
 //
 
 #include "UIController.h"
+#include "../GameContext.h"
 
 UIController::UIController( GameContext* context ) : Controller( context )
 {

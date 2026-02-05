@@ -7,7 +7,7 @@ GameAction InputContext::getAction( const InputEventKey& inputEvent )
 {
    auto action = actionsMap.find( inputEvent );
 
-   return action == actionsMap.end() ? GameAction::NONE : action->second;
+   return action == actionsMap.end() ? GameAction::NO_ACTION : action->second;
 }
 
 void InputContext::mapKeyAction( sf::Keyboard::Key key, GameAction gameAction )

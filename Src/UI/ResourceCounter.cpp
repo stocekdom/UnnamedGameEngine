@@ -13,8 +13,15 @@ ResourceCounter::ResourceCounter( std::string resourceId, float iconSize, const 
 void ResourceCounter::onStart( GameContext* context )
 {
    auto resourceDef = context->itemRegistry->getDefinition( resourceId );
-   icon.setTexture( context->resourceManager->loadTexture( resourceDef->texturePath ) );
 
+   if( !resourceDef )
+   {
+      LOG_WARNING( "Resource definition for resource id: " + resourceId + " not found!" );
+   }
+   else
+   {
+      icon.setTexture( context->resourceManager->loadTexture( resourceDef->texturePath ) );
+   }
    // Update scale based on icon size so icons can be unified
    auto scale = size / icon.getLocalBounds().width;
    icon.setPosition( getPosition() );
@@ -27,9 +34,8 @@ void ResourceCounter::onStart( GameContext* context )
 
    // TODO text isn't automatically centered, implement own extension of sfml text
    // Add a text component and add it as a child. Position is size / 2 + 4 since the icon is centered, and we add 4 pixels of space
-   auto text = std::make_shared<UIElementText>( Fonts::mainFont, "0", 18, sf::Color::White,
-                                                sf::Vector2f{ -12.f, size / 2 - 5.f } );
-   textComponent = std::move( text );
+   textComponent = std::make_shared<UIElementText>( Fonts::mainFont, "0", 18, sf::Color::White,
+                                                    sf::Vector2f{ -12.f, size / 2 - 5.f } );
    addChild( textComponent );
 
    // Base class onStart which call onStart of children

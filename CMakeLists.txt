@@ -60,7 +60,6 @@ add_executable(game1 main.cpp
         Base/Core/Math.cpp
         Base/Core/UUID.h
         Base/Core/UUID.cpp
-        Src/Entities/Buildings/BuildingType.h
         Src/Entities/Buildings/BuildingFactory.h
         Src/Entities/Buildings/Building.h
         Src/Entities/Buildings/BuildingFactory.cpp
@@ -93,12 +92,9 @@ add_executable(game1 main.cpp
         Base/Data/PlayerInventoryComponent.cpp
         Src/GameItemRegistry.h
         Src/GameItemRegistry.cpp
-        Base/Time/TimerHandle.h
-        Base/Time/Timer.h
-        Base/Time/TimeManager.h
-        Base/Time/Timer.cpp
-        Base/Time/TimerHandle.cpp
-        Base/Time/TimeManager.cpp
+        Base/Time/TimerComponent.h
+        Base/Time/TimeSystem.h
+        Base/Time/TimeSystem.cpp
         Base/Logging/Logger.h
         Base/Logging/Logger.cpp
         Src/Entities/ResourceActor.h
@@ -127,7 +123,7 @@ add_executable(game1 main.cpp
         Base/UIOverlay/OverlaySystem.h
         Base/UIOverlay/OverlaySystem.cpp
         Base/UIOverlay/OverlaySpriteComponent.h
-        Src/Entities/Buildings/BuildingSprites.h
+        Src/Entities/Buildings/Buildings.h
         Base/Sprite/SpriteMobility.h
         Base/System.h
         Base/Input/UIController.h
