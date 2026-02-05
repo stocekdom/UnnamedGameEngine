@@ -8,15 +8,12 @@
 #include "../Renderer.h"
 #include "../ComponentSystem.h"
 #include "../ComponentContainer.h"
-#include <SFML/Graphics/RenderTarget.hpp>
-
 #include "OverlaySpriteComponent.h"
+#include <SFML/Graphics/RenderTarget.hpp>
 
 class OverlaySystem : public ComponentSystem
 {
    public:
-      OverlaySystem();
-
       void init( GameContext* context ) override;
 
       void onStart() override;
@@ -30,8 +27,8 @@ class OverlaySystem : public ComponentSystem
       void onComponentAdded( Entity entity ) override;
 
    private:
-      ComponentContainer<OverlaySpriteComponent>* overlaysContainer;
-      GameContext* context_;
+      ComponentContainer<OverlaySpriteComponent>* overlaysContainer = nullptr;
+      GameContext* context_ = nullptr;
 
       void refreshSprites() const;
 

@@ -12,7 +12,6 @@ UISystem::UISystem()
 
 void UISystem::onStart( sf::RenderWindow& window, GameContext* context )
 {
-   uiView = std::make_shared<sf::View>( window.getDefaultView() );
    uiRoot->onStart( context );
 }
 

@@ -5,10 +5,6 @@
 #include "OverlaySystem.h"
 #include "../GameContext.h"
 
-OverlaySystem::OverlaySystem() : overlaysContainer( nullptr ), context_( nullptr )
-{
-}
-
 void OverlaySystem::init( GameContext* context )
 {
    context_ = context;

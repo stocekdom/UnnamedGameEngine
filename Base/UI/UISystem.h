@@ -22,7 +22,7 @@ class UISystem
 
       void render( sf::RenderTarget& target, const Renderer& renderer ) const;
 
-      bool onLeftClick( const sf::Vector2i& position ) const;
+      [[nodiscard]] bool onLeftClick( const sf::Vector2i& position ) const;
 
       void addUiRootComponent( const std::shared_ptr<UIElement>& root );
 
