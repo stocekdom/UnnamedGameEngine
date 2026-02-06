@@ -10,6 +10,7 @@
 #include "Logging/Logger.h"
 #include <SFML/Graphics.hpp>
 
+#include "../Src/MainGamePlayer.h"
 #include "Input/UIController.h"
 
 Game::Game()
@@ -60,6 +61,9 @@ void Game::start()
       context->uiSystem->addUiRootComponent( uiRoot );
    }
 
+   auto player = context->scene->createFunctionalEntity<MainGamePlayer>();
+   context->playerEntity = player->getEntityId();
+   LOG_INFO( "Player entity created" );
    context->gameMapSystem->generateMap( 6, 6, sf::Vector2f{ WINDOW_WIDTH / 2 - 128, 0 } );
    LOG_INFO( "Game map generated" );
    context->gameMapSystem->onStart( context.get() );
@@ -68,6 +72,8 @@ void Game::start()
    LOG_INFO( "UI system started" );
    context->inputSystem->onStart();
    LOG_INFO( "Input system started" );
+   context->inventorySystem->onStart();
+   LOG_INFO( "Inventory system started" );
    context->timeManager->onStart();
    LOG_INFO( "Time manager started" );
    context->transformSystem->onStart();
@@ -84,7 +90,8 @@ void Game::start()
    LOG_INFO( "============================================================" );
 
    // TODO temporary
-   context->player->addItem( "res_wood", 20 );
+   context->inventorySystem->addItem( player->getEntityId(), "res_wood", 20 );
+
    // Main loop
    while( window.isOpen() )
    {
@@ -135,6 +142,8 @@ void Game::initSystems() const
    LOG_INFO( "Sprite system initialized" );
    context->overlaySystem->init( context.get() );
    LOG_INFO( "Overlay system initialized" );
+   context->inventorySystem->init( context.get() );
+   LOG_INFO( "Inventory system initialized" );
    context->inputSystem->init( context.get() );
    LOG_INFO( "Input system initialized" );
    context->inputSystem->setUIController( std::make_unique<UIController>( context.get() ) );

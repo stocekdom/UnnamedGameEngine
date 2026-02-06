@@ -76,17 +76,4 @@ bool UIButton<EventType>::onClick( const sf::Vector2f& position )
    return UIElement::onClick( position );
 }
 
-// TODO quick specialization for testing. Remove later
-template<>
-inline bool UIButton<PlayerInventoryItemAdded>::onClick(const sf::Vector2f& position)
-{
-   if( buttonSprite.getGlobalBounds().contains( position ) )
-   {
-      gameContext->eventSystem->publish<PlayerInventoryItemAdded>( PlayerInventoryItemAdded{ "res_wood", 5, 105 } );
-      return true;
-   }
-
-   return UIElement::onClick( position );
-}
-
 #endif //GAME1_UIBUTTON_H

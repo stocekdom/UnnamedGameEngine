@@ -47,5 +47,7 @@ Buildings::BuildingType StoneMiner::getType()
 void StoneMiner::harvestResource() const
 {
    if( auto r = resource.lock() )
-      context_->player->addItem( Resources::ResourceManager::getResourceId( Resources::Resource::ITEM_ROCKS ), r->harvest() );
+      context_->inventorySystem->addItem( context_->playerEntity,
+                                          Resources::ResourceManager::getResourceId( Resources::Resource::ITEM_ROCKS ),
+                                          r->harvest() );
 }

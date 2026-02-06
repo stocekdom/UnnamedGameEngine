@@ -15,6 +15,7 @@
  * Base class for all UI elements with lightweight spacial information.
  * Doesn't provide any component that will get drawn. It's up to the derived classes to implement how they will get drawn.
  * This class isn't abstract and can be used for empty UI elements.
+ * Isn't part of the ECS. UI is currently a separate codebase and uses its own code and forms a tree instead of continuous storage similar to Unreal Engine
  */
 class UIElement : public Clickable, public std::enable_shared_from_this<UIElement>
 {

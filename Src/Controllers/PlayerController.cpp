@@ -66,7 +66,6 @@ void PlayerController::tick( float dt )
 
 void PlayerController::onLeftClick( const ActionData& event ) const
 {
-   // ReSharper disable once CppExpressionWithoutSideEffects
    gameContext->uiSystem->onLeftClick( event.position );
 }
 

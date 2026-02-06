@@ -18,12 +18,17 @@ class ItemInstance
 
       [[nodiscard]] unsigned int getAmount() const;
 
-      void addAmount( unsigned int amount );
+      /**
+       * Adds the given amount from the item.
+       * @param amount Amount to add.
+       * @return Returns the amount of the item after add operation
+       */
+      unsigned int addAmount( unsigned int amount );
 
       /**
        * Removes the given amount from the item.
        * @param amount Amount to remove.
-       * @return Returns the amount that was removed. If the amount is greater than the amount of the item, the amount of the item is returned.
+       * @return Returns the amount that was removed. If the amount is greater than the amount of the item, the amount of the item is returned and the remaining amount is 0.
        */
       unsigned int removeAmount( unsigned int amount );
 

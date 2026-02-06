@@ -5,18 +5,19 @@
 #ifndef GAME1_PLAYER_H
 #define GAME1_PLAYER_H
 
-#include <memory>
-#include "Data/PlayerInventoryComponent.h"
+#include "Entity/FunctionalEntity.h"
 
-class Player
+class Player : public FunctionalEntity
 {
    public:
-      virtual ~Player() = default;
+      Player( Entity id, GameContext* context )
+         : FunctionalEntity( id, context )
+      {
+      }
 
-      virtual void onStart( GameContext* context ) = 0;
+      void onStart( GameContext* context ) override {}
 
-   private:
-      std::unique_ptr<PlayerInventoryComponent> inventory;
+      void tick( float deltaTime ) override {}
 };
 
 #endif //GAME1_PLAYER_H

@@ -26,6 +26,8 @@ class UISystem
 
       void addUiRootComponent( const std::shared_ptr<UIElement>& root );
 
+      void attachToRoot( const std::shared_ptr<UIElement>& uiElement );
+
    private:
       std::shared_ptr<UIElement> uiRoot;
 };

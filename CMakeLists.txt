@@ -78,7 +78,6 @@ add_executable(game1 main.cpp
         Base/Data/ItemRegistry.cpp
         Base/Data/ItemInstance.h
         Base/Data/InventoryComponent.h
-        Base/Data/InventoryComponent.cpp
         Base/Data/ItemInstance.cpp
         Base/Player.h
         Src/GameItems.h
@@ -87,9 +86,7 @@ add_executable(game1 main.cpp
         Src/UI/Fonts.h
         Src/UI/ResourceCounter.cpp
         Src/UI/ResourceBar.cpp
-        Base/Data/PlayerInventoryComponent.h
         Base/Data/ItemEvents.h
-        Base/Data/PlayerInventoryComponent.cpp
         Src/GameItemRegistry.h
         Src/GameItemRegistry.cpp
         Base/Time/TimerComponent.h
@@ -128,9 +125,12 @@ add_executable(game1 main.cpp
         Base/System.h
         Base/Input/UIController.h
         Base/Input/UIController.cpp
+        Base/Data/InventorySystem.h
+        Base/Data/InventorySystem.cpp
         Base/Tags/TagSystem.h
         Base/Tags/Tags.h
         Base/Tags/TagSystem.cpp
+        Src/MainGamePlayer.h
 )
 
 

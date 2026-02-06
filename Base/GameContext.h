@@ -10,10 +10,10 @@
 #include "ResourceManager.h"
 #include "../Src/GameItemRegistry.h"
 #include "Input/InputSystem.h"
+#include "Data/InventorySystem.h"
 #include "Event/EventSystem.h"
 #include "UI/UISystem.h"
 #include "GameMap/GameMapSystem.h"
-#include "Data/PlayerInventoryComponent.h"
 #include "Sprite/SpriteSystem.h"
 #include "Tags/TagSystem.h"
 #include "Time/TimeSystem.h"
@@ -27,7 +27,7 @@
 struct GameContext
 {
    GameContext()
-      : player( std::make_shared<PlayerInventoryComponent>() ),
+      : playerEntity( 0 ),
         scene( std::make_shared<GameScene>() ),
         transformSystem( std::make_shared<TransformSystem>() ),
         spriteSystem( std::make_shared<SpriteSystem>() ),
@@ -39,12 +39,13 @@ struct GameContext
         uiSystem( std::make_shared<UISystem>() ),
         itemRegistry( std::make_shared<GameItemRegistry>() ),
         timeManager( std::make_shared<TimeSystem>() ),
+        inventorySystem( std::make_shared<InventorySystem>() ),
         tagSystem( std::make_shared<TagSystem>() )
    {
    }
 
-   // TODO use a player class instead once we have more functinality for it
-   const std::shared_ptr<PlayerInventoryComponent> player;
+   // TODO add a game state to store player and other data.
+   Entity playerEntity;
    const std::shared_ptr<GameScene> scene;
    const std::shared_ptr<TransformSystem> transformSystem;
    const std::shared_ptr<SpriteSystem> spriteSystem;
@@ -57,6 +58,7 @@ struct GameContext
    const std::shared_ptr<UISystem> uiSystem;
    const std::shared_ptr<ItemRegistry> itemRegistry;
    const std::shared_ptr<TimeSystem> timeManager;
+   const std::shared_ptr<InventorySystem> inventorySystem;
    const std::shared_ptr<TagSystem> tagSystem;
 };
 

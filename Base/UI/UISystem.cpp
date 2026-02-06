@@ -29,3 +29,8 @@ void UISystem::addUiRootComponent( const std::shared_ptr<UIElement>& root )
 {
    uiRoot = root;
 }
+
+void UISystem::attachToRoot( const std::shared_ptr<UIElement>& uiElement )
+{
+   //TODO
+}

@@ -28,9 +28,10 @@ unsigned int ItemInstance::getAmount() const
    return itemAmount;
 }
 
-void ItemInstance::addAmount( unsigned int amount )
+unsigned int ItemInstance::addAmount( unsigned int amount )
 {
    this->itemAmount += amount;
+   return this->itemAmount;
 }
 
 unsigned int ItemInstance::removeAmount( unsigned int amount )
