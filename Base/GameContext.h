@@ -15,6 +15,7 @@
 #include "GameMap/GameMapSystem.h"
 #include "Data/PlayerInventoryComponent.h"
 #include "Sprite/SpriteSystem.h"
+#include "Tags/TagSystem.h"
 #include "Time/TimeSystem.h"
 #include "Transform/TransformSystem.h"
 #include "UIOverlay/OverlaySystem.h"
@@ -37,7 +38,8 @@ struct GameContext
         gameMapSystem( std::make_shared<GameMapSystem>() ),
         uiSystem( std::make_shared<UISystem>() ),
         itemRegistry( std::make_shared<GameItemRegistry>() ),
-        timeManager( std::make_shared<TimeSystem>() )
+        timeManager( std::make_shared<TimeSystem>() ),
+        tagSystem( std::make_shared<TagSystem>() )
    {
    }
 
@@ -55,6 +57,7 @@ struct GameContext
    const std::shared_ptr<UISystem> uiSystem;
    const std::shared_ptr<ItemRegistry> itemRegistry;
    const std::shared_ptr<TimeSystem> timeManager;
+   const std::shared_ptr<TagSystem> tagSystem;
 };
 
 #endif //GAME1_GAMECONTEXT_H

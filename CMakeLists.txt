@@ -128,6 +128,9 @@ add_executable(game1 main.cpp
         Base/System.h
         Base/Input/UIController.h
         Base/Input/UIController.cpp
+        Base/Tags/TagSystem.h
+        Base/Tags/Tags.h
+        Base/Tags/TagSystem.cpp
 )
 
 
