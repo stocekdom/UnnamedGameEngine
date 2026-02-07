@@ -14,7 +14,7 @@
  * Main entity used for game objects with custom behavior that doesn't fit into components
  * This way we can have a hybrid ECS approach, and we don't have to make many components and systems for every small functionality.
  */
-class FunctionalEntity : public std::enable_shared_from_this<FunctionalEntity>
+class FunctionalEntity
 {
    public:
       FunctionalEntity() = delete;
@@ -35,7 +35,7 @@ class FunctionalEntity : public std::enable_shared_from_this<FunctionalEntity>
       }
 
    protected:
-      Entity entity = INVALID_ENTITY;
       GameContext* context_ = nullptr;
+      Entity entity = INVALID_ENTITY;
 };
 #endif //GAME1_FUNCTIONALENTITY_H

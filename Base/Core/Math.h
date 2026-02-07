@@ -22,7 +22,7 @@ namespace Math
       // The width of the original square in the world grid
       const static constexpr float WORLD_TILE_WIDTH = SPRITE_WIDTH / 4;
       // Offset from the tile center where the building's pivot should be, assuming the building's pivot is correctly placed at the bottom center point
-      const static constexpr float BUILDING_TILE_CENTER_Y_OFFSET = ( SPRITE_HEIGHT / 2 ) * 0.8f;
+      const static constexpr float BUILDING_TILE_CENTER_Y_OFFSET = ( SPRITE_HEIGHT / 2 ) * 0.9f;
    }
 
    inline sf::Vector2f normalize( const sf::Vector2f& vector )
