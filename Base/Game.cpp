@@ -64,9 +64,9 @@ void Game::start()
    auto player = context->scene->createFunctionalEntity<MainGamePlayer>();
    context->playerEntity = player->getEntityId();
    LOG_INFO( "Player entity created" );
-   context->gameMapSystem->generateMap( 6, 6, sf::Vector2f{ WINDOW_WIDTH / 2 - 128, 0 } );
+   context->gameMapSystem->generateMap( 64, 64, sf::Vector2f{ WINDOW_WIDTH / 2 - 128, 0 } );
    LOG_INFO( "Game map generated" );
-   context->gameMapSystem->onStart( context.get() );
+   context->gameMapSystem->onStart();
    LOG_INFO( "Game map system started" )
    context->uiSystem->onStart( window, context.get() );
    LOG_INFO( "UI system started" );
@@ -146,6 +146,8 @@ void Game::initSystems() const
    LOG_INFO( "Inventory system initialized" );
    context->inputSystem->init( context.get() );
    LOG_INFO( "Input system initialized" );
+   context->gameMapSystem->init( context.get() );
+   LOG_INFO( "Game map system initialized" );
    context->inputSystem->setUIController( std::make_unique<UIController>( context.get() ) );
    LOG_INFO( "UIController registered" );
    context->inputSystem->registerController( std::make_unique<PlayerController>( context.get() ) );

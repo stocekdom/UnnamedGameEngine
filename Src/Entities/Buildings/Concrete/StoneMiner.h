@@ -5,10 +5,11 @@
 #ifndef GAME1_STONEMINER_H
 #define GAME1_STONEMINER_H
 #include "../Building.h"
+#include "../LandBuilding.h"
 #include "../../ResourceActor.h"
 
 // TODO generalize into house, producer, etc.. so we dont have a class for each specific building
-class StoneMiner : public Building
+class StoneMiner : public LandBuilding
 {
    public:
       explicit StoneMiner( REQ_ARGS, const ActorParams& params );

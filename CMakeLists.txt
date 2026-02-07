@@ -131,6 +131,10 @@ add_executable(game1 main.cpp
         Base/Tags/Tags.h
         Base/Tags/TagSystem.cpp
         Src/MainGamePlayer.h
+        Base/GameMap/MapGenerator.h
+        Base/GameMap/MapGenerator.cpp
+        Base/GameMap/TileTypes.h
+        Src/Entities/Buildings/LandBuilding.h
 )
 
 

@@ -10,29 +10,34 @@
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
 
-GameMap::GameMap( size_t mapHeight, size_t mapWidth, const sf::Vector2f& mapStart )
-   : mapWidth( mapWidth ), mapHeight( mapHeight ), mapStart( mapStart )
+GameMap::GameMap( int mapHeight, int mapWidth, const sf::Vector2f& mapStart, size_t seed )
+   : mapWidth( mapWidth ), mapHeight( mapHeight ), mapStart( mapStart ), seed( seed ), generator( seed )
 {
 }
 
-void GameMap::init( GameContext* context )
+void GameMap::generate( GameContext* context )
 {
-   for( size_t x = 0; x < mapWidth; ++x )
+   auto enumMap = generator.generateMap( mapWidth, mapHeight );
+
+   for( int x = 0; x < mapWidth; ++x )
    {
-      for( size_t y = 0; y < mapHeight; ++y )
+      for( int y = 0; y < mapHeight; ++y )
       {
          float screenX = mapStart.x + static_cast<float>( x ) * ( Math::IsometricConstants::SPRITE_WIDTH / 2 ) -
                          static_cast<float>( y ) * ( Math::IsometricConstants::SPRITE_WIDTH / 2 );
          float screenY = mapStart.y + static_cast<float>( y ) * ( Math::IsometricConstants::SPRITE_HEIGHT / 2 ) +
                          static_cast<float>( x ) * ( Math::IsometricConstants::SPRITE_HEIGHT / 2 );
 
-         auto tileTmp = context->scene->createFunctionalEntity<MapTile>( "Assets/grass1.png",
-                                                                         ActorParams{ sf::Vector2f{ screenX, screenY } } );
-         if( ( x + y * mapWidth ) % 9 == 0 )
+         // TODO move asset paths to another class
+         auto tileTmp = context->scene->createFunctionalEntity<MapTile>(
+            enumMap[ x + y * mapWidth ] == Tile::Water ? "Assets/water.png" : "Assets/grass.png",
+            enumMap[ x + y * mapWidth ], ActorParams{ sf::Vector2f{ screenX, screenY } } );
+
+         if( ( x + y * mapWidth ) % 9 == 0 && enumMap[ x + y * mapWidth ] == Tile::Land )
          {
-            auto res = ResourceFactory::createResource( context->scene.get(),
-                                                        Resources::ResourceSource::STONES,
-                                                        { screenX, screenY } );
+            // Here we add 0.05f since the resource has the same coords as the tile and we don't want clipping due to float errors
+            auto res = ResourceFactory::createResource( context->scene.get(), Resources::ResourceSource::STONES,
+                                                        { screenX, screenY + 0.05f } );
             tileTmp->setResource( res );
          }
          /*

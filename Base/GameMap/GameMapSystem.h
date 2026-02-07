@@ -9,6 +9,8 @@
 #include <SFML/System/Vector2.hpp>
 #include <memory>
 
+#include "../System.h"
+
 struct GameContext;
 class MapTile;
 class GameScene;
@@ -23,10 +25,15 @@ struct SnapToTileResult
 
 // TODO make the map system generic and let the user specify gamemap class, so we dont have to modify base classes for more funcionalitydd
 // TODO inherit from system and get the map size from game state
-class GameMapSystem
+class GameMapSystem : public System
 {
    public:
-      void onStart( GameContext* context );
+
+      void init( GameContext* context ) override;
+
+      void onStart() override;
+
+      void update( float dt ) override;
 
       void generateMap( size_t mapHeight, size_t mapWidth, const sf::Vector2f& mapStart, size_t seed = 0 );
 
@@ -53,7 +60,7 @@ class GameMapSystem
    private:
       std::unique_ptr<GameMap> map{};
       // Raw pointer to avoid overhead since all systems are managed by Game class which outlives this object.
-      GameScene* scene = nullptr;
+      GameContext* context_ = nullptr;
 };
 
 #endif //GAME1_GAMEMAPSYSTEM_H

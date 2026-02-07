@@ -5,10 +5,10 @@
 #ifndef GAME1_PEASANTHOUSE_H
 #define GAME1_PEASANTHOUSE_H
 
-#include "../Building.h"
+#include "../LandBuilding.h"
 
 // TODO add house logic
-class PeasantHouse : public Building
+class PeasantHouse : public LandBuilding
 {
    public:
       explicit PeasantHouse( REQ_ARGS, const ActorParams& params );

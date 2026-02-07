@@ -6,25 +6,31 @@
 #include "../../Src/Entities/Buildings/Building.h"
 #include "../Logging/Logger.h"
 
-void GameMapSystem::onStart( GameContext* context )
+void GameMapSystem::init( GameContext* context )
 {
-   if( map )
-      map->init( context );
-   else
-      LOG_WARNING( "Map it not initialized!" );
+   context_ = context;
+}
 
-   scene = context->scene.get();
+void GameMapSystem::onStart()
+{
+   if( !map )
+      LOG_WARNING( "Map it not generated and cannot be initialized!" );
+}
+
+void GameMapSystem::update( float dt )
+{
 }
 
 void GameMapSystem::generateMap( size_t mapHeight, size_t mapWidth, const sf::Vector2f& mapStart, size_t seed )
 {
    // TODO make procedural map generation
-   map = std::make_unique<GameMap>( mapHeight, mapWidth, mapStart );
+   map = std::make_unique<GameMap>( mapHeight, mapWidth, mapStart, seed );
+   map->generate( context_ );
 }
 
 SnapToTileResult GameMapSystem::snapToMapTile( const sf::Vector2i& mousePosition ) const
 {
-   auto pos = map->snapToMapTile( scene->getWorldCoordinates( mousePosition ) );
+   auto pos = map->snapToMapTile( context_->scene->getWorldCoordinates( mousePosition ) );
    auto tile = map->getMapTile( pos );
 
    return { pos, tile };
@@ -32,12 +38,12 @@ SnapToTileResult GameMapSystem::snapToMapTile( const sf::Vector2i& mousePosition
 
 std::weak_ptr<MapTile> GameMapSystem::getMapTile( const sf::Vector2i& mousePosition ) const
 {
-   return map->getMapTile( scene->getWorldCoordinates( mousePosition ) );
+   return map->getMapTile( context_->scene->getWorldCoordinates( mousePosition ) );
 }
 
 bool GameMapSystem::placeBuilding( const sf::Vector2i& position, const std::shared_ptr<Building>& building ) const
 {
-   auto tile = map->getMapTile( scene->getWorldCoordinates( position ) ).lock();
+   auto tile = map->getMapTile( context_->scene->getWorldCoordinates( position ) ).lock();
 
    if( !tile )
       return false;

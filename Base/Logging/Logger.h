@@ -11,7 +11,7 @@
 #define LOG_ERROR( message ) logging::Logger::log( logging::LogLevel::ERROR, message );
 #define LOG_WARNING( message ) logging::Logger::log( logging::LogLevel::WARNING, message );
 #define LOG_INFO( message ) logging::Logger::log( logging::LogLevel::INFO, message );
-#define LOG_DEBUG( message ) logging::Logger::log( logging::LogLevel::DEBUG, message );
+#define LOG_DEBUG( message ) /*logging::Logger::log( logging::LogLevel::DEBUG, message );*/
 
 #define RUNTIME_ERROR throw std::runtime_error( "Application runtime error" );
 

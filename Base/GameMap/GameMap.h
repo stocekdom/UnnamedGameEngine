@@ -5,19 +5,19 @@
 #ifndef GAME1_GAMEMAP_H
 #define GAME1_GAMEMAP_H
 
+#include "MapGenerator.h"
 #include <SFML/System/Vector2.hpp>
 #include <memory>
 #include <vector>
 
 struct GameContext;
-class MapTile;
 
 class GameMap
 {
    public:
-      GameMap( size_t mapHeight, size_t mapWidth, const sf::Vector2f& mapStart );
+      GameMap( int mapHeight, int mapWidth, const sf::Vector2f& mapStart, size_t seed = 0 );
 
-      void init( GameContext* context );
+      void generate( GameContext* context );
 
       //bool onClick( const sf::Vector2f& location ) override;
 
@@ -26,14 +26,17 @@ class GameMap
       std::weak_ptr<MapTile> getMapTile( const sf::Vector2f& mousePosition );
 
    private:
-      size_t mapWidth;
-      size_t mapHeight;
+      int mapWidth;
+      int mapHeight;
       sf::Vector2f mapStart;
+      size_t seed;
+      // Currently hardcoded. In the future add DI
+      MapGenerator generator;
       std::vector<std::weak_ptr<MapTile>> gameMap;
 
-      sf::Vector2i getTileIndex( const sf::Vector2f& position ) const;
+      [[nodiscard]] sf::Vector2i getTileIndex( const sf::Vector2f& position ) const;
 
-      sf::Vector2f getScreenCoords( const sf::Vector2i& tile ) const;
+      [[nodiscard]] sf::Vector2f getScreenCoords( const sf::Vector2i& tile ) const;
 };
 
 #endif //GAME1_GAMEMAP_H

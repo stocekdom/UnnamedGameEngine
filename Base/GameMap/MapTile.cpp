@@ -1,13 +1,12 @@
 //
 // Created by dominik on 14.11.25.
 //
+
 #include "MapTile.h"
 #include "../Core/Math.h"
-#include "../Sprite/SpriteComponent.h"
-#include "../Transform/TransformComponent.h"
 
-MapTile::MapTile( Entity id, GameContext* context, const std::string& texturePath, const ActorParams& params )
-   : SpriteActor( id, context, texturePath, params )
+MapTile::MapTile( Entity id, GameContext* context, const std::string& texturePath, Tile type, const ActorParams& params )
+   : SpriteActor( id, context, texturePath, params ), type( type )
 {
    // TODO add getComponent to scene?
    auto& spriteComponent = context->scene->getComponentRegistry().getComponent<SpriteComponent>( id );
@@ -48,4 +47,9 @@ void MapTile::setResource( const std::shared_ptr<ResourceActor>& newResource )
 {
    resource = newResource;
    // Add as child???
+}
+
+Tile MapTile::getType() const
+{
+   return type;
 }

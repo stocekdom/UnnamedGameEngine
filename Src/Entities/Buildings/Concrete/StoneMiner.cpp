@@ -4,19 +4,20 @@
 
 #include "StoneMiner.h"
 
+#include "../LandBuilding.h"
 #include "../../../../Base/Logging/Logger.h"
 
 // TODO handle pausing if resource is depleted
 // TODO add timer component
 
 StoneMiner::StoneMiner( Entity id, GameContext* context, const ActorParams& params )
-   : Building( id, context, params )
+   : LandBuilding( id, context, params )
 {
 }
 
 bool StoneMiner::canBePlaced( const std::shared_ptr<MapTile>& tile )
 {
-   if( Building::canBePlaced( tile ) )
+   if( LandBuilding::canBePlaced( tile ) )
       return tile->getResourceType() == Resources::Resource::ITEM_ROCKS;
 
    return false;
