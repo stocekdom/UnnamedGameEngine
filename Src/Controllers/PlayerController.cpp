@@ -47,7 +47,7 @@ PlayerController::PlayerController( GameContext* context ) : Controller( context
 void PlayerController::tick( float dt )
 {
    if( cameraSpeed.x != 0.f || cameraSpeed.y != 0.f )
-      gameContext->scene->moveCamera( cameraSpeed * CAMERA_SPEED * dt );
+      gameContext->scene->moveCamera( cameraSpeed * getCameraZoomSpeedMultiplier() * CAMERA_SPEED * dt );
 
    if( targetZoom != currentZoom )
    {
@@ -193,4 +193,9 @@ void PlayerController::updateCameraZoom( float zoom )
       targetZoom *= ( 1.f + ZOOM_STEP ); // Zoom out
 
    targetZoom = std::clamp( targetZoom, MIN_ZOOM, MAX_ZOOM );
+}
+
+float PlayerController::getCameraZoomSpeedMultiplier() const
+{
+   return std::max( 1.0f, currentZoom );
 }
