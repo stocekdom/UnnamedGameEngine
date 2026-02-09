@@ -30,6 +30,8 @@ class SpriteSystem : public ComponentSystem
 
       void onComponentAdded( Entity entity ) override;
 
+      void setSpriteColor( Entity entity, sf::Color color );
+
    private:
       GameContext* gameContext = nullptr;
       // Component containers

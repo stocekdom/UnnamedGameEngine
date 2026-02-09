@@ -95,6 +95,18 @@ void SpriteSystem::onComponentAdded( Entity entity )
    // Movables go directly to the right array since they are updated every frame
 }
 
+// TODO rework for faster search
+void SpriteSystem::setSpriteColor( Entity entity, sf::Color color )
+{
+   for( auto& sprite: staticSprites )
+      if( sprite.owner == entity )
+         sprite.sprite.setColor( color );
+
+   for( auto& sprite: movableSprites )
+      if( sprite.owner == entity )
+         sprite.sprite.setColor( color );
+}
+
 SpriteRenderProxy SpriteSystem::makeRenderProxy( Entity entity, SpriteComponent& spriteComponent ) const
 {
    SpriteRenderProxy renderProxy;
