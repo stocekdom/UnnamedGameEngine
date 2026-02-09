@@ -30,10 +30,10 @@ void GameMap::generate( GameContext* context )
 
          // TODO move asset paths to another class
          auto tileTmp = context->scene->createFunctionalEntity<MapTile>(
-            enumMap[ x + y * mapWidth ] == Tile::Water ? "Assets/water.png" : "Assets/grass.png",
-            enumMap[ x + y * mapWidth ], ActorParams{ sf::Vector2f{ screenX, screenY } } );
+            enumMap[ Math::coordsToIndex( x, y, mapWidth ) ].type == TileType::Water ? "Assets/water.png" : "Assets/grass.png",
+            enumMap[ Math::coordsToIndex( x, y, mapWidth ) ], ActorParams{ sf::Vector2f{ screenX, screenY } } );
 
-         if( ( x + y * mapWidth ) % 9 == 0 && enumMap[ x + y * mapWidth ] == Tile::Land )
+         if( ( x + y * mapWidth ) % 9 == 0 && enumMap[ Math::coordsToIndex( x, y, mapWidth ) ].type == TileType::Land )
          {
             // Here we add 0.05f since the resource has the same coords as the tile and we don't want clipping due to float errors
             auto res = ResourceFactory::createResource( context->scene.get(), Resources::ResourceSource::STONES,
@@ -98,7 +98,7 @@ std::weak_ptr<MapTile> GameMap::getMapTile( const sf::Vector2f& mousePosition )
    if( tile.x < 0 || tile.y < 0 || tile.x >= mapWidth || tile.y >= mapHeight )
       return {};
 
-   return gameMap[ tile.x * mapWidth + tile.y ];
+   return gameMap[ Math::coordsToIndex( tile.x, tile.y, mapWidth ) ];
 }
 
 sf::Vector2i GameMap::getTileIndex( const sf::Vector2f& position ) const

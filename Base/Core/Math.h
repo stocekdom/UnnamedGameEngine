@@ -48,6 +48,19 @@ namespace Math
       return sf::Vector2f{ 2 * worldCoords.x - 2 * worldCoords.y, worldCoords.x + worldCoords.y };
    }
 
+   /**
+    * Returns a index of a game map based on coordinates. The map works as a matrix, and the X is a row index. The tiles are numbered by rows
+    * @note Indexing a map is different from indexing screen coordinates, where the row is a Y coordinate
+    * @param x Row index
+    * @param y Column index
+    * @param width Map width
+    * @return The 1D array index
+    */
+   inline int coordsToIndex( int x, int y, int width )
+   {
+      return y + x * width;
+   }
+
    sf::Vector2f parentRelativeToWorldPosition( const sf::Vector2f& parentPosition,
                                                float parentRotation,
                                                const sf::Vector2f& parentScale,

@@ -5,8 +5,8 @@
 #include "MapTile.h"
 #include "../Core/Math.h"
 
-MapTile::MapTile( Entity id, GameContext* context, const std::string& texturePath, Tile type, const ActorParams& params )
-   : SpriteActor( id, context, texturePath, params ), type( type )
+MapTile::MapTile( Entity id, GameContext* context, const std::string& texturePath, Tile tile, const ActorParams& params )
+   : SpriteActor( id, context, texturePath, params ), tile( tile )
 {
    // TODO add getComponent to scene?
    auto& spriteComponent = context->scene->getComponentRegistry().getComponent<SpriteComponent>( id );
@@ -49,7 +49,7 @@ void MapTile::setResource( const std::shared_ptr<ResourceActor>& newResource )
    // Add as child???
 }
 
-Tile MapTile::getType() const
+TileType MapTile::getType() const
 {
-   return type;
+   return tile.type;
 }

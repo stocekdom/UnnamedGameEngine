@@ -13,7 +13,9 @@ class Building;
 class MapTile : public SpriteActor
 {
    public:
-      MapTile( REQ_ARGS, const std::string& texturePath, Tile type, const ActorParams& params = ActorParams() );
+      MapTile( REQ_ARGS, const std::string& texturePath, Tile tile, const ActorParams& params = ActorParams() );
+
+      void onStart( GameContext* context ) override;
 
       [[nodiscard]] bool isOccupied() const;
 
@@ -25,10 +27,10 @@ class MapTile : public SpriteActor
 
       void setResource( const std::shared_ptr<ResourceActor>& newResource );
 
-      [[nodiscard]] Tile getType() const;
+      [[nodiscard]] TileType getType() const;
 
    protected:
-      Tile type;
+      Tile tile;
       std::weak_ptr<ResourceActor> resource;
       std::weak_ptr<Building> building;
 };

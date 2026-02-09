@@ -16,7 +16,7 @@ class LandBuilding : public Building
 
       bool canBePlaced( const std::shared_ptr<MapTile>& tile ) override
       {
-         return Building::canBePlaced( tile ) && tile->getType() == Tile::Land;
+         return Building::canBePlaced( tile ) && tile->getType() == TileType::Land;
       }
 };
 #endif //GAME1_LANDBUILDING_H
