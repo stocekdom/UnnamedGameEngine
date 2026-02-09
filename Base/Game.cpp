@@ -84,13 +84,16 @@ void Game::start()
    LOG_INFO( "Overlay system started" );
    context->tagSystem->onStart();
    LOG_INFO( "Tag system started" );
+   // TODO do in a loop of user systems
+   context->constructionSystem->onStart();
+   LOG_INFO( "Construction system started" );
    context->scene->onStart( window );
    LOG_INFO( "Scene started" );
    LOG_INFO( "Game starting" );
    LOG_INFO( "============================================================" );
 
    // TODO temporary
-   context->inventorySystem->addItem( player->getEntityId(), "res_wood", 20 );
+   context->inventorySystem->addItem( player->getEntityId(), "res_wood", 5 );
 
    // Main loop
    while( window.isOpen() )
@@ -156,6 +159,8 @@ void Game::initSystems() const
    LOG_INFO( "Time manager initialized" );
    context->tagSystem->init( context.get() );
    LOG_INFO( "Tag system initialized" );
+   context->constructionSystem->init( context.get() );
+   LOG_INFO( "Construction system initialized" );
    LOG_INFO( "All systems initialized" );
    LOG_INFO( "============================================================" );
 }

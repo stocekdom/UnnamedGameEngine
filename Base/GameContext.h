@@ -9,6 +9,7 @@
 #include "Scene.h"
 #include "ResourceManager.h"
 #include "../Src/GameItemRegistry.h"
+#include "../Src/Entities/Buildings/ConstructionSystem.h"
 #include "Input/InputSystem.h"
 #include "Data/InventorySystem.h"
 #include "Event/EventSystem.h"
@@ -40,7 +41,8 @@ struct GameContext
         itemRegistry( std::make_shared<GameItemRegistry>() ),
         timeManager( std::make_shared<TimeSystem>() ),
         inventorySystem( std::make_shared<InventorySystem>() ),
-        tagSystem( std::make_shared<TagSystem>() )
+        tagSystem( std::make_shared<TagSystem>() ),
+        constructionSystem( std::make_shared<ConstructionSystem>() )
    {
    }
 
@@ -60,6 +62,8 @@ struct GameContext
    const std::shared_ptr<TimeSystem> timeManager;
    const std::shared_ptr<InventorySystem> inventorySystem;
    const std::shared_ptr<TagSystem> tagSystem;
+   // User defined system. TODO add this in game level instead of hardcoded in context
+   const std::shared_ptr<ConstructionSystem> constructionSystem;
 };
 
 #endif //GAME1_GAMECONTEXT_H

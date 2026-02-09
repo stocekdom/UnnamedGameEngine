@@ -14,7 +14,7 @@ ResourceBar::ResourceBar( const sf::Vector2f& extents, const sf::Color& fillColo
 
 void ResourceBar::onStart( GameContext* context )
 {
-   for( int i = 0; i < Utility::enumToIndex( Resources::Resource::ITEM_COUNT ); ++i )
+   for( int i = 0; i < Util::enumToIndex( Resources::Resource::ITEM_COUNT ); ++i )
    {
       // Left padding + (padding between counters * index) + half of the counter's width to get the center * ( index + 1 )
       float buttonX = X_PADDING + ( COUNTER_WIDTH / 2 ) +

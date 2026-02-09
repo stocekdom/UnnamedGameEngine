@@ -6,7 +6,7 @@
 #define GAME1_UTILITY_H
 #include <vector>
 
-namespace Utility
+namespace Util
 {
    /**
     * Performs a swap and pop technique on a vector to remove a matching element in O(1)

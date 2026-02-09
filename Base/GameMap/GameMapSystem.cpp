@@ -40,20 +40,3 @@ std::weak_ptr<MapTile> GameMapSystem::getMapTile( const sf::Vector2i& mousePosit
 {
    return map->getMapTile( context_->scene->getWorldCoordinates( mousePosition ) );
 }
-
-bool GameMapSystem::placeBuilding( const sf::Vector2i& position, const std::shared_ptr<Building>& building ) const
-{
-   auto tile = map->getMapTile( context_->scene->getWorldCoordinates( position ) ).lock();
-
-   if( !tile )
-      return false;
-
-   if( building->canBePlaced( tile ) )
-   {
-      tile->setBuilding( building );
-      building->onPlaced( tile );
-      return true;
-   }
-
-   return false;
-}

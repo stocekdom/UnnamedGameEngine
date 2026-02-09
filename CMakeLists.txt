@@ -110,7 +110,7 @@ add_executable(game1 main.cpp
         Base/Transform/TransformSystem.h
         Base/Transform/TransformSystem.cpp
         Base/ComponentSystem.h
-        Base/Core/Utility.h
+        Base/Core/Util.h
         Base/Sprite/SpriteSystem.h
         Base/Sprite/SpriteRenderProxy.h
         Base/Sprite/SpriteSystem.cpp
@@ -135,6 +135,8 @@ add_executable(game1 main.cpp
         Base/GameMap/MapGenerator.cpp
         Base/GameMap/TileTypes.h
         Src/Entities/Buildings/LandBuilding.h
+        Src/Entities/Buildings/ConstructionSystem.h
+        Src/Entities/Buildings/ConstructionSystem.cpp
 )
 
 

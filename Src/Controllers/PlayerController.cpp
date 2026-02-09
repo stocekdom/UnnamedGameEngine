@@ -7,7 +7,6 @@
 #include "../../Base/GameMap/MapTile.h"
 #include "../../Base/Input/ContextFactory.h"
 #include "../Entities/Buildings/BuildingFactory.h"
-#include "../Entities/Buildings/Buildings.h"
 
 // We initialize everything in the constructor since systems are already created at this point, and we don't need onStart
 PlayerController::PlayerController( GameContext* context ) : Controller( context ), cameraSpeed( 0.f, 0.f )
@@ -66,7 +65,6 @@ void PlayerController::tick( float dt )
 
 void PlayerController::onLeftClick( const ActionData& event ) const
 {
-   gameContext->uiSystem->onLeftClick( event.position );
 }
 
 // TODO currently pausing doesn't fully pause the game but only shows the menu and switches contexts. Add actual gameplay pausing
@@ -81,7 +79,6 @@ void PlayerController::onResumeGame( const GameResumed& event )
    activeContext = beforePauseContext;
 }
 
-// TODO switch to ECS to make this cleaner
 void PlayerController::onMouseMove( const sf::Vector2i& position )
 {
    // Snap to tile
@@ -97,35 +94,16 @@ void PlayerController::onMouseMove( const sf::Vector2i& position )
    if( !sharedTile )
    {
       // Make sure to set the right color if we previously had a valid position, and now the tile is invalid
-      if( previousBuildingPlacingState )
-      {
-         previousBuildingPlacingState = false;
-         gameContext->scene->getComponentRegistry().getComponent<OverlaySpriteComponent>( buildingPawn->getEntityId() ).
-               sprite.setColor( RedOverlay );
-      }
-
+      updatePawnPlacingState( false );
       return;
    }
 
-   auto canBePlaced = buildingPawn->canBePlaced( sharedTile );
-
-   if( canBePlaced != previousBuildingPlacingState )
-   {
-      auto& overlayComp = gameContext->scene->getComponentRegistry().getComponent<OverlaySpriteComponent>(
-         buildingPawn->getEntityId() );
-
-      if( canBePlaced )
-         overlayComp.sprite.setColor( GreenOverlay );
-      else
-         overlayComp.sprite.setColor( RedOverlay );
-   }
-
-   previousBuildingPlacingState = canBePlaced;
+   auto canBePlaced = gameContext->constructionSystem->canConstruct( buildingPawn, sharedTile );
+   updatePawnPlacingState( canBePlaced );
 }
 
 void PlayerController::onBuildingPlacingStart( const BuildingPlacingStarted& event )
 {
-   // TODO properly handle left click on UI even in this context
    activeContext = placingContext;
 
    // Delete the previous pawn if we click on the button without placing the previous one
@@ -158,15 +136,14 @@ void PlayerController::onBuildingPlacingCancel()
 
 void PlayerController::onBuildingPlaced( const sf::Vector2i& position )
 {
-   // The position of the click should be enough, since in mouse move, we're snapping the house to the map tile
-   if( !gameContext->gameMapSystem->placeBuilding( position, buildingPawn ) )
+   // The position of the click should be enough, since in mouse move, we're snapping the house to the map tile and the pawn stays in that position
+   auto tile = gameContext->gameMapSystem->getMapTile( position ).lock();
+
+   if( !tile )
       return;
 
-   gameContext->scene->removeComponent<OverlaySpriteComponent>( buildingPawn->getEntityId() );
-   gameContext->scene->addComponent<SpriteComponent>( buildingPawn->getEntityId(),
-                                                      Buildings::BuildingSpritesManager::getBuildingTexture(
-                                                         buildingPawn->getType() ), SpriteMobility::STATIC,
-                                                      sf::Vector2f{ 0.5f, 1.f } );
+   if( !gameContext->constructionSystem->tryConstruct( buildingPawn, tile ) )
+      return;
 
    // The house transform should be at the location of the last mouse move, so we don't need to update it here, unless there are position inconsistencies when moving and placing
    buildingPawn = nullptr;
@@ -198,4 +175,20 @@ void PlayerController::updateCameraZoom( float zoom )
 float PlayerController::getCameraZoomSpeedMultiplier() const
 {
    return std::max( 1.0f, currentZoom );
+}
+
+void PlayerController::updatePawnPlacingState( bool newState )
+{
+   if( newState != previousBuildingPlacingState )
+   {
+      auto& overlayComp = gameContext->scene->getComponentRegistry().getComponent<OverlaySpriteComponent>(
+         buildingPawn->getEntityId() );
+
+      if( newState )
+         overlayComp.sprite.setColor( GreenOverlay );
+      else
+         overlayComp.sprite.setColor( RedOverlay );
+   }
+
+   previousBuildingPlacingState = newState;
 }

@@ -73,6 +73,8 @@ class PlayerController : public Controller
       std::shared_ptr<Building> buildingPawn = nullptr;
 
       float getCameraZoomSpeedMultiplier() const;
+
+      void updatePawnPlacingState( bool newState );
 };
 
 #endif //GAME1_PLAYERCONTROLLER_H

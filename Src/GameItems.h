@@ -9,7 +9,7 @@
 #include <string>
 #include <array>
 
-#include "../Base/Core/Utility.h"
+#include "../Base/Core/Util.h"
 
 // TODO might need to break up to individual files once we have a lot of items
 /**
@@ -52,34 +52,34 @@ namespace Resources
          {
             if( resource > Resource::ITEM_COUNT ) [[unlikely]]
                return "";
-            return std::string{ ID_ARRAY[ Utility::enumToIndex( resource ) ] };
+            return std::string{ ID_ARRAY[ Util::enumToIndex( resource ) ] };
          }
 
          static std::string getResourceIcon( Resource resource )
          {
             if( resource > Resource::ITEM_COUNT ) [[unlikely]]
                return "";
-            return std::string{ TEXTURE_ARRAY[ Utility::enumToIndex( resource ) ] };
+            return std::string{ TEXTURE_ARRAY[ Util::enumToIndex( resource ) ] };
          }
 
          static std::string getResourceSourceTexture( ResourceSource source )
          {
             if( source > ResourceSource::SOURCE_COUNT ) [[unlikely]]
                return "";
-            return std::string{ SOURCE_TEXTURE_ARRAY[ Utility::enumToIndex( source ) ] };
+            return std::string{ SOURCE_TEXTURE_ARRAY[ Util::enumToIndex( source ) ] };
          }
 
       private:
          // TODO use std::span for variants
          // Centralized place storing string id's of resources. Use with Resource enum
-         static constexpr std::array<std::string_view, Utility::enumToIndex( Resource::ITEM_COUNT )> ID_ARRAY = {
+         static constexpr std::array<std::string_view, Util::enumToIndex( Resource::ITEM_COUNT )> ID_ARRAY = {
             "res_wood", "res_berries", "res_rocks", "res_stone"
          };
-         static constexpr std::array<std::string_view, Utility::enumToIndex( Resource::ITEM_COUNT )> TEXTURE_ARRAY = {
+         static constexpr std::array<std::string_view, Util::enumToIndex( Resource::ITEM_COUNT )> TEXTURE_ARRAY = {
             "Assets/Icons/woodIco.png", "Assets/Icons/berriesIco.png", "Assets/Icons/rocksIco.png", "Assets/Icons/stoneIco.png"
          };
          // Array of assets for resource sources. Use with ResourceSource enum
-         static constexpr std::array<std::string_view, Utility::enumToIndex( ResourceSource::SOURCE_COUNT )> SOURCE_TEXTURE_ARRAY
+         static constexpr std::array<std::string_view, Util::enumToIndex( ResourceSource::SOURCE_COUNT )> SOURCE_TEXTURE_ARRAY
                = {
                   "Assets/Resources/trees.png", "Assets/Resources/berry1.png", "Assets/Resources/rocks.png"
                };

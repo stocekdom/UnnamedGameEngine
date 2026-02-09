@@ -49,14 +49,6 @@ class GameMapSystem : public System
        */
       [[nodiscard]] std::weak_ptr<MapTile> getMapTile( const sf::Vector2i& mousePosition ) const;
 
-      /**
-       * Places a building on the map.
-       * @param position Position in the screen space of the tile to place the building on.
-       * @param building Pointer to the building to place.
-       * @return Bool indicating whether the building was placed successfully or if the tile was already occupied or the position was out of bounds.
-       */
-      [[nodiscard]] bool placeBuilding( const sf::Vector2i& position, const std::shared_ptr<Building>& building ) const;
-
    private:
       std::unique_ptr<GameMap> map{};
       // Raw pointer to avoid overhead since all systems are managed by Game class which outlives this object.
