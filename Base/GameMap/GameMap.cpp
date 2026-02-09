@@ -18,6 +18,7 @@ GameMap::GameMap( int mapHeight, int mapWidth, const sf::Vector2f& mapStart, siz
 void GameMap::generate( GameContext* context )
 {
    auto enumMap = generator.generateMap( mapWidth, mapHeight );
+   generator.generateRegions( enumMap, mapWidth, mapHeight );
 
    for( int x = 0; x < mapWidth; ++x )
    {

@@ -209,3 +209,145 @@ int MapGenerator::countNeighborsOfType( const std::vector<Tile>& map, const Chun
 
    return count;
 }
+
+std::vector<std::vector<int>> MapGenerator::getAndPruneLandBlobs( std::vector<Tile>& map ) const
+{
+   std::vector<std::vector<int>> blobs;
+   blobs.reserve( continents * 8 );
+   const int offsets[ 4 ] = { -1, +1, -width, +width };
+
+   std::vector<std::uint8_t> visited( map.size(), 0 );
+   std::queue<int> q;
+
+   for( int start = 0; start < map.size(); ++start )
+   {
+      if( visited[ start ] )
+         continue;
+
+      if( map[ start ].type != TileType::Land )
+      {
+         visited[ start ] = 1;
+         continue;
+      }
+
+      // New component (blob)
+      // BFS
+      std::vector<int> blob;
+      q.push( start );
+      visited[ start ] = 1;
+
+      while( !q.empty() )
+      {
+         const int idx = q.front();
+         q.pop();
+         blob.push_back( idx );
+
+         for( const int offset: offsets )
+         {
+            int neighbor = idx + offset;
+            // The check can probably be done with only the neighbor. This is just to be safe
+            const int x = neighbor / width; // row
+            const int y = neighbor % width; // col
+
+            if( x < 0 || x >= height || y < 0 || y >= width )
+               continue;
+
+            if( visited[ neighbor ] )
+               continue;
+
+            visited[ neighbor ] = 1;
+
+            if( map[ neighbor ].type == TileType::Land )
+               q.push( neighbor );
+         }
+      }
+
+      // Keep only land components and optionally prune tiny islands
+      if( blob.size() >= minBlobSize )
+         blobs.push_back( std::move( blob ) );
+      else
+         for( const auto& idx: blob )
+            map[ idx ].type = TileType::Water;
+   }
+
+   return blobs;
+}
+
+void MapGenerator::mergeSmallRegions( std::vector<Tile>& map, std::vector<Region>& regions ) const
+{
+   for( auto& region: regions )
+   {
+      if( region.tiles.size() < minRegionSize )
+      {
+         auto smallestNeighbor = getSmallestRegionNeighbor( map, regions, region.id );
+
+         for( auto tile: region.tiles )
+         {
+            map[ tile ].regionId = smallestNeighbor;
+            regions[ smallestNeighbor - 1 ].tiles.push_back( tile );
+         }
+
+         region.tiles.clear();
+         region.invalid = true;
+      }
+   }
+}
+
+unsigned int MapGenerator::getSmallestRegionNeighbor( const std::vector<Tile>& map, const std::vector<Region>& regions,
+                                                      unsigned int regionIndex ) const
+{
+   unsigned int smallestNeighbor = 0;
+   size_t smallestVolume = std::numeric_limits<size_t>::max();
+   const int offsets[ 4 ] = { -1, +1, -width, +width };
+
+   for( auto tile: regions[ regionIndex - 1 ].tiles )
+   {
+      for( auto offset: offsets )
+      {
+         int neighbor = tile + offset;
+         if( neighbor < 0 || neighbor >= map.size() )
+            continue;
+
+         // Check for a different region and if the region is smaller than the smallest one yet
+         if( map[ neighbor ].regionId != regionIndex && map[ neighbor ].regionId != 0 &&
+             regions[ map[ neighbor ].regionId - 1 ].tiles.size() < smallestVolume )
+         {
+            smallestNeighbor = map[ neighbor ].regionId;
+            smallestVolume = regions[ map[ neighbor ].regionId - 1 ].tiles.size();
+         }
+      }
+   }
+
+   return smallestNeighbor;
+}
+
+std::vector<int> MapGenerator::samplePointsAndRegions( std::vector<int>& blob, int amount )
+{
+   std::vector<int> samples;
+   samples.reserve( amount );
+   std::ranges::shuffle( blob, rng );
+
+   for( int i = 0; i < blob.size() && samples.size() <= amount; ++i )
+   {
+      bool tooClose = false;
+      int x = blob[ i ] / width;
+      int y = blob[ i ] % width;
+
+      for( const auto& sample: samples )
+      {
+         int sampleX = sample / width;
+         int sampleY = sample % width;
+
+         if( std::hypot( x - sampleX, y - sampleY ) <= minSeedDistance )
+         {
+            tooClose = true;
+            break;
+         }
+      }
+
+      if( !tooClose )
+         samples.push_back( blob[ i ] );
+   }
+
+   return samples;
+}

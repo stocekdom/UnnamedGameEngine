@@ -26,6 +26,15 @@ class MapGenerator
        */
       std::vector<Tile> generateMap( int mapWidth, int mapHeight );
 
+      /**
+       * Generates regions for an existing map. Modifies the existing map by adding region index to the tile and returns a list of regions
+       * @param map Existing game map
+       * @param mapWidth Map width
+       * @param mapHeight Map height
+       * @return A list of all generated regions
+       */
+      std::vector<Region> generateRegions( std::vector<Tile>& map, int mapWidth, int mapHeight );
+
    private:
       std::mt19937 rng;
       std::uniform_real_distribution<float> floatDist;
@@ -47,6 +56,9 @@ class MapGenerator
       static constexpr int waterEdge = 1;
       // Sets the distance from chunk edge where land use edgeLandProbability
       static constexpr int sparseLands = 3;
+      static constexpr int minRegionSize = 16;
+      static constexpr int minBlobSize = minRegionSize;
+      static constexpr int minSeedDistance = 8;
 
       using Chunk = sf::IntRect;
 
