@@ -1,9 +1,7 @@
 //
 // Created by dominik on 06.02.26.
 //
-
 #include "InventorySystem.h"
-
 #include "ItemEvents.h"
 #include "../GameContext.h"
 #include "../Tags/Tags.h"
@@ -42,7 +40,7 @@ bool InventorySystem::addItem( Entity entityId, const std::string& itemId, unsig
    if( !def || !inventoryContainer->hasComponent( entityId ) )
       return false;
 
-   auto component = inventoryContainer->getComponent( entityId );
+   auto& component = inventoryContainer->getComponent( entityId );
 
    // TODO switch to unordered_map if performance is an issue
    for( auto& item: component.inventory )
