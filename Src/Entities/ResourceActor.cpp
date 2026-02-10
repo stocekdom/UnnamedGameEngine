@@ -13,7 +13,7 @@ ResourceActor::ResourceActor( Entity id, GameContext* context, Resources::Resour
      harvestTime( harvestTime ),
      harvestAmount( harvestAmount )
 {
-   auto spriteComp = context->scene->getComponentRegistry().getComponent<SpriteComponent>( id );
+   auto& spriteComp = context->scene->getComponentRegistry().getComponent<SpriteComponent>( id );
    spriteComp.setOrigin( { spriteComp.getLocalBounds().width / 2, spriteComp.getLocalBounds().height } );
 }
 

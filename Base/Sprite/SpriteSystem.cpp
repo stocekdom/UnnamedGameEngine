@@ -59,6 +59,8 @@ void SpriteSystem::onStart()
    std::ranges::sort( staticSprites, []( const SpriteRenderProxy& a, const SpriteRenderProxy& b ) {
       return a.sortKey < b.sortKey;
    } );
+
+   refreshSprites( staticSprites );
 }
 
 void SpriteSystem::render( sf::RenderTarget& target, const Renderer& renderer ) const
