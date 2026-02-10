@@ -5,42 +5,43 @@
 #ifndef GAME1_MAPGENERATOR_H
 #define GAME1_MAPGENERATOR_H
 
-#include <queue>
-
 #include "TileTypes.h"
 #include <SFML/Graphics/Rect.hpp>
+#include <memory>
 #include <random>
 
 class MapTile;
+struct GameContext;
 
 class MapGenerator
 {
    public:
-      MapGenerator( size_t seed );
+      MapGenerator();
 
       /**
        * Generates the map as an enum of tiles. Doesn't add anything to the scene, nor does it generate a map of entity classes
        * @param mapWidth Map width
        * @param mapHeight Map height
+       * @param rng RNG generator to use
        * @return Vector of tiles representing the map. Size is width * height
        */
-      std::vector<Tile> generateMap( int mapWidth, int mapHeight );
+      std::vector<Tile> generateMap( int mapWidth, int mapHeight, std::mt19937& rng );
 
       /**
        * Generates regions for an existing map. Modifies the existing map by adding region index to the tile and returns a list of regions
        * @param map Existing game map
        * @param mapWidth Map width
        * @param mapHeight Map height
+       * @param rng RNG generator to use
        * @return A list of all generated regions
        */
-      std::vector<Region> generateRegions( std::vector<Tile>& map, int mapWidth, int mapHeight );
+      std::vector<Region> generateRegions( std::vector<Tile>& map, int mapWidth, int mapHeight, std::mt19937& rng );
 
    private:
-      std::mt19937 rng;
       std::uniform_real_distribution<float> floatDist;
       std::uniform_int_distribution<> bitDistribution;
-      int width;
-      int height;
+      int width = 0;
+      int height = 0;
 
       // TODO add to config file
       static constexpr float landProbability = 0.52f;
@@ -70,9 +71,9 @@ class MapGenerator
        * Generates split points for the map using binary space partition. Inside these chunks, continents can be generated
        * @return Vector of chunks which are just SFML int rectangles
        */
-      std::vector<Chunk> generateMapChunks();
+      std::vector<Chunk> generateMapChunks( std::mt19937& rng );
 
-      [[nodiscard]] bool shouldVerticalSplit( const Chunk& chunk );
+      [[nodiscard]] bool shouldVerticalSplit( const Chunk& chunk, std::mt19937& rng );
 
       [[nodiscard]] int countNeighborsOfType( const std::vector<Tile>& map, const Chunk& chunk, int x, int y,
                                               TileType type ) const;
@@ -107,9 +108,10 @@ class MapGenerator
        * Samples the land blob and creates seed points for regions using Poisson Disk Sampling.
        * @param blob Blob to sample. The blob gets shuffled
        * @param amount Number of points to sample
+       * @param rng RNG generator to use
        * @return A vector of sampled points for BFS processing
        */
-      std::vector<int> samplePointsAndRegions( std::vector<int>& blob, int amount );
+      std::vector<int> samplePointsAndRegions( std::vector<int>& blob, int amount, std::mt19937& rng );
 };
 
 #endif //GAME1_MAPGENERATOR_H

@@ -4,20 +4,26 @@
 
 #include "MapGenerator.h"
 #include "../Core/Math.h"
+#include "../Core/Util.h"
+#include "../../Src/GameItems.h"
+#include "../Logging/Logger.h"
+#include "MapTile.h"
+#include "../../Src/Entities/ResourceFactory.h"
+#include <queue>
 
 // Setting distributions like this is slower and wasteful.
 // If performance is an issue> https://martin.ankerl.com/2018/12/08/fast-random-bool/
-MapGenerator::MapGenerator( size_t seed ) : rng( seed ), floatDist( 0, 1 ), bitDistribution( 0, 1 ), width( 0 ), height( 0 )
+MapGenerator::MapGenerator() : floatDist( 0, 1 ), bitDistribution( 0, 1 )
 {
 }
 
-std::vector<Tile> MapGenerator::generateMap( int mapWidth, int mapHeight )
+std::vector<Tile> MapGenerator::generateMap( int mapWidth, int mapHeight, std::mt19937& rng )
 {
    std::vector<Tile> map( mapWidth * mapHeight );
    width = mapWidth;
    height = mapHeight;
 
-   auto chunks = generateMapChunks();
+   auto chunks = generateMapChunks( rng );
 
    // Loops start from chunk + waterEdge to leave water tiles on the edges
    for( const auto& chunk: chunks )
@@ -39,7 +45,7 @@ std::vector<Tile> MapGenerator::generateMap( int mapWidth, int mapHeight )
    return map;
 }
 
-std::vector<Region> MapGenerator::generateRegions( std::vector<Tile>& map, int mapWidth, int mapHeight )
+std::vector<Region> MapGenerator::generateRegions( std::vector<Tile>& map, int mapWidth, int mapHeight, std::mt19937& rng )
 {
    auto landBlobs = getAndPruneLandBlobs( map );
    std::vector<Region> regions;
@@ -53,7 +59,7 @@ std::vector<Region> MapGenerator::generateRegions( std::vector<Tile>& map, int m
    for( auto& blob: landBlobs )
    {
       // The amount of sampled points to ensure large blobs don't have that many regions, but the islands that have at least minRegionSize get their own region and don't get pruned
-      auto samples = samplePointsAndRegions( blob, std::ceil( blob.size() / ( minRegionSize * 4 ) ) );
+      auto samples = samplePointsAndRegions( blob, std::ceil( blob.size() / ( minRegionSize * 4 ) ), rng );
 
       // For the sampled points make regions and add them to the sampled tiles
       for( auto sample: samples )
@@ -137,7 +143,7 @@ void MapGenerator::cellularAutomateImpl( std::vector<Tile>& map, const std::vect
    std::swap( map, buffer );
 }
 
-std::vector<MapGenerator::Chunk> MapGenerator::generateMapChunks()
+std::vector<MapGenerator::Chunk> MapGenerator::generateMapChunks( std::mt19937& rng )
 {
    std::vector<Chunk> chunks;
    // Initial whole map
@@ -189,7 +195,7 @@ std::vector<MapGenerator::Chunk> MapGenerator::generateMapChunks()
    return chunks;
 }
 
-bool MapGenerator::shouldVerticalSplit( const Chunk& chunk )
+bool MapGenerator::shouldVerticalSplit( const Chunk& chunk, std::mt19937& rng )
 {
    if( chunk.width == chunk.height )
       return bitDistribution( rng );
@@ -321,7 +327,7 @@ unsigned int MapGenerator::getSmallestRegionNeighbor( const std::vector<Tile>& m
    return smallestNeighbor;
 }
 
-std::vector<int> MapGenerator::samplePointsAndRegions( std::vector<int>& blob, int amount )
+std::vector<int> MapGenerator::samplePointsAndRegions( std::vector<int>& blob, int amount, std::mt19937& rng )
 {
    std::vector<int> samples;
    samples.reserve( amount );

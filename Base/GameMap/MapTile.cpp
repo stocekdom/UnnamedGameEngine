@@ -8,7 +8,6 @@
 MapTile::MapTile( Entity id, GameContext* context, const std::string& texturePath, Tile tile, const ActorParams& params )
    : SpriteActor( id, context, texturePath, params ), tile( tile )
 {
-   // TODO add getComponent to scene?
    auto& spriteComponent = context->scene->getComponentRegistry().getComponent<SpriteComponent>( id );
    auto& transformComponent = context->scene->getComponentRegistry().getComponent<TransformComponent>( id );
 

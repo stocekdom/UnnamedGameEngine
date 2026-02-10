@@ -6,11 +6,6 @@
 #define GAME1_GAMEMAP_H
 
 #include "MapGenerator.h"
-#include "TileTypes.h"
-#include <memory>
-#include <vector>
-
-struct GameContext;
 
 class GameMap
 {
@@ -34,14 +29,16 @@ class GameMap
       void discoverTiles( const TileIndex& tile, unsigned int radius ) const;
 
    private:
+      std::mt19937 rng;
       int mapWidth;
       int mapHeight;
       sf::Vector2f mapStart;
-      size_t seed;
       // Currently hardcoded. In the future add DI
       MapGenerator generator;
       std::vector<std::shared_ptr<MapTile>> gameMap;
       std::vector<Region> regions;
+
+      void spawnResources( GameContext* context );
 };
 
 #endif //GAME1_GAMEMAP_H
