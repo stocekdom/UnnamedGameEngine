@@ -29,10 +29,14 @@ class MapTile : public SpriteActor
 
       [[nodiscard]] TileType getType() const;
 
+      void onDiscovered() const;
+
    protected:
       Tile tile;
       std::weak_ptr<ResourceActor> resource;
       std::weak_ptr<Building> building;
+
+      void setColorByRegion() const;
 };
 
 #endif //GAME1_MAPTILE_H

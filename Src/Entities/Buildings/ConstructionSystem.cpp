@@ -34,7 +34,8 @@ bool ConstructionSystem::canConstruct( const std::shared_ptr<Building>& building
    } );
 }
 
-bool ConstructionSystem::tryConstruct( std::shared_ptr<Building>& building, std::shared_ptr<MapTile>& tile ) const
+bool ConstructionSystem::tryConstruct( std::shared_ptr<Building>& building, std::shared_ptr<MapTile>& tile,
+                                       const TileIndex& index ) const
 {
    if( !building->canBePlaced( tile ) || !canConstruct( building, tile ) )
       return false;
@@ -44,16 +45,16 @@ bool ConstructionSystem::tryConstruct( std::shared_ptr<Building>& building, std:
    for( const auto& req: costs )
    {
       auto ret = context_->inventorySystem->removeItem( context_->playerEntity,
-                                             Resources::ResourceManager::getResourceId( req.resourceId ),
-                                             req.amount );
+                                                        Resources::ResourceManager::getResourceId( req.resourceId ),
+                                                        req.amount );
       // This shouldn't happen since we checked the resources with canConstruct
       if( ret != req.amount )
          LOG_ERROR( "Logical code error: Not enough resources to build building after checking amount" );
-
    }
 
    tile->setBuilding( building );
    building->onPlaced( tile );
+   context_->gameMapSystem->discoverTiles( index, DISCOVER_RADIUS_ON_BUILD );
 
    context_->scene->removeComponent<OverlaySpriteComponent>( building->getEntityId() );
    context_->scene->addComponent<SpriteComponent>( building->getEntityId(),

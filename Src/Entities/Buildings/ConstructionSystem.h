@@ -5,7 +5,7 @@
 #ifndef GAME1_CONSTRUCTIONSYSTEM_H
 #define GAME1_CONSTRUCTIONSYSTEM_H
 
-#include "Buildings.h"
+#include "../../../Base/GameMap/TileTypes.h"
 #include "../../../Base/System.h"
 #include <memory>
 
@@ -21,12 +21,15 @@ class ConstructionSystem : public System
 
       void update( float dt ) override;
 
-      bool canConstruct( const std::shared_ptr<Building>& building, const std::shared_ptr<MapTile>& tile ) const;
+      [[nodiscard]] bool canConstruct( const std::shared_ptr<Building>& building, const std::shared_ptr<MapTile>& tile ) const;
 
-      bool tryConstruct( std::shared_ptr<Building>& building, std::shared_ptr<MapTile>& tile ) const;
+      [[nodiscard]] bool tryConstruct( std::shared_ptr<Building>& building, std::shared_ptr<MapTile>& tile,
+                                       const TileIndex& index ) const;
 
    private:
       GameContext* context_ = nullptr;
+
+      static constexpr unsigned int DISCOVER_RADIUS_ON_BUILD = 4;
 };
 
 #endif //GAME1_CONSTRUCTIONSYSTEM_H

@@ -5,6 +5,8 @@
 #ifndef GAME1_MATH_H
 #define GAME1_MATH_H
 
+#include "../GameMap/TileTypes.h"
+#include <SFML/System/Vector2.hpp>
 #include <cmath>
 
 namespace Math
@@ -59,6 +61,11 @@ namespace Math
    inline int coordsToIndex( int x, int y, int width )
    {
       return y + x * width;
+   }
+
+   inline TileIndex indexToCoords( int index, int width )
+   {
+      return { index / width, index % width };
    }
 
    sf::Vector2f parentRelativeToWorldPosition( const sf::Vector2f& parentPosition,

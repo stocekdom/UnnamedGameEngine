@@ -142,7 +142,7 @@ void PlayerController::onBuildingPlaced( const sf::Vector2i& position )
    if( !tile )
       return;
 
-   if( !gameContext->constructionSystem->tryConstruct( buildingPawn, tile ) )
+   if( !gameContext->constructionSystem->tryConstruct( buildingPawn, tile, gameContext->gameMapSystem->getTileIndex( position ) ) )
       return;
 
    // The house transform should be at the location of the last mouse move, so we don't need to update it here, unless there are position inconsistencies when moving and placing

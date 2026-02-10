@@ -6,10 +6,9 @@
 #define GAME1_GAMEMAPSYSTEM_H
 
 #include "GameMap.h"
+#include "../System.h"
 #include <SFML/System/Vector2.hpp>
 #include <memory>
-
-#include "../System.h"
 
 struct GameContext;
 class MapTile;
@@ -48,6 +47,18 @@ class GameMapSystem : public System
        * Gets the tile at the given position. If the position is out of the map bounds, returns an empty weak pointer.
        */
       [[nodiscard]] std::weak_ptr<MapTile> getMapTile( const sf::Vector2i& mousePosition ) const;
+
+      /**
+       * Picks a random region as a starting region, discovers the tiles in it, and return one anchor tile position
+       * @return
+       */
+      [[nodiscard]] TileIndex generateStartingRegion() const;
+
+      [[nodiscard]] sf::Vector2i getTileIndex( const sf::Vector2i& mousePosition ) const;
+
+      [[nodiscard]] sf::Vector2f getScreenCoords( const TileIndex& tile ) const;
+
+      void discoverTiles( const TileIndex& tile, unsigned int radius ) const;
 
    private:
       std::unique_ptr<GameMap> map{};

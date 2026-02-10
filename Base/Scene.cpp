@@ -153,6 +153,11 @@ void GameScene::moveCamera( const sf::Vector2f& delta ) const
    mainView->move( delta );
 }
 
+void GameScene::moveCameraTo( const sf::Vector2f& position ) const
+{
+   mainView->setCenter( position );
+}
+
 void GameScene::zoomCamera( float zoom ) const
 {
    mainView->zoom( zoom );

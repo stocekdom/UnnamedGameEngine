@@ -75,10 +75,9 @@ std::vector<Region> MapGenerator::generateRegions( std::vector<Tile>& map, int m
       {
          int neighbor = idx + offset;
          // The check can probably be done with only the neighbor. This is just to be safe
-         const int x = neighbor / width; // row
-         const int y = neighbor % width; // col
+         auto coords = Math::indexToCoords( neighbor, mapWidth );
 
-         if( x < 0 || x >= height || y < 0 || y >= width )
+         if( coords.x < 0 || coords.x >= height || coords.y < 0 || coords.y >= width )
             continue;
 
          if( map[ neighbor ].regionId == 0 && map[ neighbor ].type == TileType::Land )
@@ -90,6 +89,8 @@ std::vector<Region> MapGenerator::generateRegions( std::vector<Tile>& map, int m
       }
    }
 
+   // This leaves some regions invalid, but they remain in the vector. Should be fine since we usually have a small number of regions
+   // If this becomes a problem, implement a way to prune invalid regions and reorder the rest
    mergeSmallRegions( map, regions );
    return regions;
 }
@@ -246,10 +247,9 @@ std::vector<std::vector<int>> MapGenerator::getAndPruneLandBlobs( std::vector<Ti
          {
             int neighbor = idx + offset;
             // The check can probably be done with only the neighbor. This is just to be safe
-            const int x = neighbor / width; // row
-            const int y = neighbor % width; // col
+            auto coords = Math::indexToCoords( neighbor, width );
 
-            if( x < 0 || x >= height || y < 0 || y >= width )
+            if( coords.x < 0 || coords.x >= height || coords.y < 0 || coords.y >= width )
                continue;
 
             if( visited[ neighbor ] )
@@ -330,15 +330,13 @@ std::vector<int> MapGenerator::samplePointsAndRegions( std::vector<int>& blob, i
    for( int i = 0; i < blob.size() && samples.size() <= amount; ++i )
    {
       bool tooClose = false;
-      int x = blob[ i ] / width;
-      int y = blob[ i ] % width;
+      auto coords = Math::indexToCoords( blob[ i ], width );
 
       for( const auto& sample: samples )
       {
-         int sampleX = sample / width;
-         int sampleY = sample % width;
+         auto sampleCoords = Math::indexToCoords( sample, width );
 
-         if( std::hypot( x - sampleX, y - sampleY ) <= minSeedDistance )
+         if( std::hypot( coords.x - sampleCoords.x, coords.y - sampleCoords.y ) <= minSeedDistance )
          {
             tooClose = true;
             break;

@@ -6,7 +6,7 @@
 #define GAME1_GAMEMAP_H
 
 #include "MapGenerator.h"
-#include <SFML/System/Vector2.hpp>
+#include "TileTypes.h"
 #include <memory>
 #include <vector>
 
@@ -25,6 +25,14 @@ class GameMap
 
       std::weak_ptr<MapTile> getMapTile( const sf::Vector2f& mousePosition );
 
+      [[nodiscard]] TileIndex getTileIndex( const sf::Vector2f& screenPosition ) const;
+
+      TileIndex generateStartingRegion();
+
+      [[nodiscard]] sf::Vector2f getScreenCoords( const TileIndex& tile ) const;
+
+      void discoverTiles( const TileIndex& tile, unsigned int radius ) const;
+
    private:
       int mapWidth;
       int mapHeight;
@@ -32,11 +40,8 @@ class GameMap
       size_t seed;
       // Currently hardcoded. In the future add DI
       MapGenerator generator;
-      std::vector<std::weak_ptr<MapTile>> gameMap;
-
-      [[nodiscard]] sf::Vector2i getTileIndex( const sf::Vector2f& position ) const;
-
-      [[nodiscard]] sf::Vector2f getScreenCoords( const sf::Vector2i& tile ) const;
+      std::vector<std::shared_ptr<MapTile>> gameMap;
+      std::vector<Region> regions;
 };
 
 #endif //GAME1_GAMEMAP_H

@@ -81,6 +81,8 @@ class GameScene
 
       void moveCamera( const sf::Vector2f& delta ) const;
 
+      void moveCameraTo( const sf::Vector2f& position ) const;
+
       void zoomCamera( float zoom ) const;
 
       sf::View& getSceneView() const;

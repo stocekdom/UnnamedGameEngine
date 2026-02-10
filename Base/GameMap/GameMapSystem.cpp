@@ -40,3 +40,23 @@ std::weak_ptr<MapTile> GameMapSystem::getMapTile( const sf::Vector2i& mousePosit
 {
    return map->getMapTile( context_->scene->getWorldCoordinates( mousePosition ) );
 }
+
+TileIndex GameMapSystem::generateStartingRegion() const
+{
+   return map->generateStartingRegion();
+}
+
+sf::Vector2i GameMapSystem::getTileIndex( const sf::Vector2i& mousePosition ) const
+{
+   return map->getTileIndex( context_->scene->getWorldCoordinates( mousePosition ) );
+}
+
+sf::Vector2f GameMapSystem::getScreenCoords( const TileIndex& tile ) const
+{
+   return map->getScreenCoords( tile );
+}
+
+void GameMapSystem::discoverTiles( const TileIndex& tile, unsigned int radius ) const
+{
+   map->discoverTiles( tile, radius );
+}

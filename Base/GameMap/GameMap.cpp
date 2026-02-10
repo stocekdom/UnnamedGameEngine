@@ -9,6 +9,7 @@
 #include "../Core/Math.h"
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
+#include <set>
 
 GameMap::GameMap( int mapHeight, int mapWidth, const sf::Vector2f& mapStart, size_t seed )
    : mapWidth( mapWidth ), mapHeight( mapHeight ), mapStart( mapStart ), seed( seed ), generator( seed )
@@ -18,7 +19,7 @@ GameMap::GameMap( int mapHeight, int mapWidth, const sf::Vector2f& mapStart, siz
 void GameMap::generate( GameContext* context )
 {
    auto enumMap = generator.generateMap( mapWidth, mapHeight );
-   generator.generateRegions( enumMap, mapWidth, mapHeight );
+   regions = generator.generateRegions( enumMap, mapWidth, mapHeight );
 
    for( int x = 0; x < mapWidth; ++x )
    {
@@ -102,6 +103,22 @@ std::weak_ptr<MapTile> GameMap::getMapTile( const sf::Vector2f& mousePosition )
    return gameMap[ Math::coordsToIndex( tile.x, tile.y, mapWidth ) ];
 }
 
+TileIndex GameMap::generateStartingRegion()
+{
+   std::mt19937 gen( seed );
+   std::uniform_int_distribution<> dist( 0, static_cast<int>( regions.size() - 1 ) );
+   auto& pickedRegion = regions[ dist( gen ) ];
+   pickedRegion.isOwned = true;
+
+   // Regions tiles are internal and their order doesn't matter so we can shuffle them internally
+   std::shuffle( pickedRegion.tiles.begin(), pickedRegion.tiles.end(), gen );
+
+   for( auto tile: pickedRegion.tiles )
+      gameMap[ tile ]->onDiscovered();
+
+   return Math::indexToCoords( pickedRegion.tiles[ 0 ], mapWidth );
+}
+
 sf::Vector2i GameMap::getTileIndex( const sf::Vector2f& position ) const
 {
    // Offset the click location to the center of the map in screen space. The center of the map is considered the top corner of the diamond
@@ -114,7 +131,7 @@ sf::Vector2i GameMap::getTileIndex( const sf::Vector2f& position ) const
    return { worldX, worldY };
 }
 
-sf::Vector2f GameMap::getScreenCoords( const sf::Vector2i& tile ) const
+sf::Vector2f GameMap::getScreenCoords( const TileIndex& tile ) const
 {
    auto screenCoords = Math::worldToScreenSpace(
       sf::Vector2f{
@@ -128,4 +145,43 @@ sf::Vector2f GameMap::getScreenCoords( const sf::Vector2i& tile ) const
    screenCoords.x += mapStart.x;
    screenCoords.y += mapStart.y;
    return screenCoords;
+}
+
+void GameMap::discoverTiles( const TileIndex& tile, unsigned int radius ) const
+{
+   if( radius == 0 )
+      return;
+
+   if( tile.x < 0 || tile.y < 0 || tile.x >= mapWidth || tile.y >= mapHeight )
+      return;
+
+   using Node = std::pair<TileIndex, int>;
+
+   std::set<unsigned int> visited;
+   int offsets[ 4 ] = { -1, +1, -mapWidth, +mapWidth };
+   std::queue<Node> tilesToProcess;
+
+   tilesToProcess.emplace( tile, 0 );
+   while( !tilesToProcess.empty() )
+   {
+      auto [ currentTile, distance ] = tilesToProcess.front();
+      tilesToProcess.pop();
+
+      const int index = Math::coordsToIndex( currentTile.x, currentTile.y, mapWidth );
+      gameMap[ index ]->onDiscovered();
+
+      if( distance >= radius )
+         continue;
+
+      for( auto offset: offsets )
+      {
+         int neighbor = index + offset;
+
+         if( neighbor < 0 || neighbor >= gameMap.size() || visited.contains( neighbor ) )
+            continue;
+
+         visited.insert( neighbor );
+         tilesToProcess.emplace( Math::indexToCoords( neighbor, mapWidth ), distance + 1 );
+      }
+   }
 }

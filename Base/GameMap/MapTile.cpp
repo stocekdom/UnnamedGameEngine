@@ -20,44 +20,12 @@ MapTile::MapTile( Entity id, GameContext* context, const std::string& texturePat
    transformComponent.setScale( { scaleX, scaleX } );
 }
 
-// TODO temporary. delete after and make a button for showing regions + Borders
+// TODO temporary. delete after and make a button for showing regions + Add borders
 void MapTile::onStart( GameContext* context )
 {
    SpriteActor::onStart( context );
-   sf::Color color = sf::Color::White;
-   uint8_t alpha = 245;
-   switch( tile.regionId % 12 )
-   {
-      case 0: color = sf::Color( 255, 0, 0, alpha );
-         break;
-      case 1: color = sf::Color( 255, 255, 255, alpha );
-         break;
-      case 2: color = sf::Color( 0, 0, 255, alpha );;
-         break;
-      case 3: color = sf::Color( 255, 255, 0, alpha );;
-         break;
-      case 4: color = sf::Color( 255, 0, 255, alpha );;
-         break;
-      case 5: color = sf::Color( 0, 255, 0, alpha );
-         break;
-      case 6: color = sf::Color( 0, 255, 255, alpha );
-         break;
-      case 7: color = sf::Color( 120, 255, 120, alpha );
-         break;
-      case 8: color = sf::Color( 255, 100, 100, alpha );
-         break;
-      case 9: color = sf::Color( 255, 255, 100, alpha );
-         break;
-      case 10: color = sf::Color( 100, 255, 255, alpha );
-         break;
-      case 11: color = sf::Color( 255, 100, 255, alpha );
-         break;
-   }
-
-   if( tile.regionId == 0 )
-      color = sf::Color::White;
-
-   context->spriteSystem->setSpriteColor( entity, color );
+   // Default state = undiscovered -> black tile
+   context->spriteSystem->setSpriteColor( entity, sf::Color::Black );
 }
 
 bool MapTile::isOccupied() const
@@ -92,4 +60,49 @@ void MapTile::setResource( const std::shared_ptr<ResourceActor>& newResource )
 TileType MapTile::getType() const
 {
    return tile.type;
+}
+
+void MapTile::onDiscovered() const
+{
+   setColorByRegion();
+}
+
+void MapTile::setColorByRegion() const
+{
+   sf::Color color;
+   uint8_t alpha = 245;
+   switch( tile.regionId % 12 )
+   {
+      case 0: color = sf::Color( 255, 0, 0, alpha );
+         break;
+      case 1: color = sf::Color( 255, 255, 255, alpha );
+         break;
+      case 2: color = sf::Color( 0, 0, 255, alpha );;
+         break;
+      case 3: color = sf::Color( 255, 255, 0, alpha );;
+         break;
+      case 4: color = sf::Color( 255, 0, 255, alpha );;
+         break;
+      case 5: color = sf::Color( 0, 255, 0, alpha );
+         break;
+      case 6: color = sf::Color( 0, 255, 255, alpha );
+         break;
+      case 7: color = sf::Color( 120, 255, 120, alpha );
+         break;
+      case 8: color = sf::Color( 255, 100, 100, alpha );
+         break;
+      case 9: color = sf::Color( 255, 255, 100, alpha );
+         break;
+      case 10: color = sf::Color( 100, 255, 255, alpha );
+         break;
+      case 11: color = sf::Color( 255, 100, 255, alpha );
+         break;
+      default: color = sf::Color::White;
+         break;
+   }
+
+   if( tile.regionId == 0 )
+      color = sf::Color::White;
+
+   context_->spriteSystem->setSpriteColor( entity, color );
 }

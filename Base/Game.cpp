@@ -92,8 +92,11 @@ void Game::start()
    LOG_INFO( "Game starting" );
    LOG_INFO( "============================================================" );
 
-   // TODO temporary
+   // TODO temporary + Add to level once they are implemented
    context->inventorySystem->addItem( player->getEntityId(), "res_wood", 5 );
+
+   auto regionTilePos = context->gameMapSystem->generateStartingRegion();
+   context->scene->moveCameraTo( context->gameMapSystem->getScreenCoords( regionTilePos ) );
 
    // Main loop
    while( window.isOpen() )

@@ -14,17 +14,17 @@ class ResourceActor : public SpriteActor
       ResourceActor( REQ_ARGS, Resources::Resource resource, Resources::ResourceSource source, float harvestTime,
                      unsigned int harvestAmount = 1, unsigned int amount = 9999, const ActorParams& params = ActorParams() );
 
-      unsigned int getAmount() const;
+      [[nodiscard]] unsigned int getAmount() const;
 
-      float getHarvestTime() const;
+      [[nodiscard]] float getHarvestTime() const;
 
-      Resources::Resource getResource() const;
+      [[nodiscard]] Resources::Resource getResource() const;
 
       /**
        * Harvest the resource. Works like inventory.removeItem()
        * @return Return
        */
-      unsigned int harvest() const;
+      [[nodiscard]] unsigned int harvest() const;
 
    private:
       unsigned int amount;
