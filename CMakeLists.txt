@@ -99,6 +99,11 @@ add_executable(game1 main.cpp
         Engine/Tags/TagSystem.h
         Engine/Tags/Tags.h
         Engine/Tags/TagSystem.cpp
+        Engine/JSON/JSONTypes.h
+        Engine/JSON/JSONParser.h
+        Engine/JSON/JSONParser.cpp
+        Engine/JSON/JSONTokenizer.h
+        Engine/JSON/JSONTokenizer.cpp
 )
 
 
