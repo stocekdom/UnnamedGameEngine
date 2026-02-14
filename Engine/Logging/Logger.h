@@ -39,8 +39,6 @@ namespace logging
          static void log( LogLevel level, const std::string& message );
 
       private:
-         //
-
          std::ofstream logFile;
 
          static Logger& getInstance();

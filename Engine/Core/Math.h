@@ -5,16 +5,15 @@
 #ifndef GAME1_MATH_H
 #define GAME1_MATH_H
 
-#include "../GameMap/TileTypes.h"
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
 
 namespace Math
 {
-   const static constexpr float DEG_TO_RADIAN = 0.0174532925f;
-   const static constexpr float GRAVITY = 9.81f;
-   const static constexpr float RADIAN_TO_DEG = 57.2957795;
-   const static constexpr float PIXELS_PER_METER = 40.0f;
+   static constexpr float DEG_TO_RADIAN = 0.0174532925f;
+   static constexpr float GRAVITY = 9.81f;
+   static constexpr float RADIAN_TO_DEG = 57.2957795;
+   static constexpr float PIXELS_PER_METER = 40.0f;
 
    namespace IsometricConstants
    {
@@ -63,7 +62,7 @@ namespace Math
       return y + x * width;
    }
 
-   inline TileIndex indexToCoords( int index, int width )
+   inline sf::Vector2i indexToCoords( int index, int width )
    {
       return { index / width, index % width };
    }

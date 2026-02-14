@@ -2,15 +2,9 @@
 // Created by dominik on 03.10.25.
 //
 #include "Game.h"
-#include "../Src/Controllers/PlayerController.h"
-#include "../Src/UI/ResourceBar.h"
 #include "UI/UIRoot.h"
-#include "../Src/Entities/Buildings/BuildingPlacementButton.h"
-#include "../Src/Entities/Buildings/BuildingFactory.h"
 #include "Logging/Logger.h"
 #include <SFML/Graphics.hpp>
-
-#include "../Src/MainGamePlayer.h"
 #include "Input/UIController.h"
 
 Game::Game()
@@ -32,41 +26,6 @@ void Game::start()
    initSystems();
 
    // TODO add level classes and load them
-   {
-      auto uiUpperBlock = std::make_shared<ResourceBar>( sf::Vector2f{ WINDOW_WIDTH, 80 }, sf::Color( 100, 10, 10, 155 ),
-                                                         sf::Vector2f{ 0.f, 0.f } );
-      auto uiLowerBlock = std::make_shared<UIBlock>( sf::Vector2f{ WINDOW_WIDTH, 100 }, sf::Color( 100, 10, 10 ),
-                                                     sf::Vector2f{ 0.f, static_cast<float>( window.getSize().y ) - 100.f } );
-      auto menuButton = std::make_shared<UIButton<GamePaused>>( "Assets/Icons/menu.png",
-                                                                sf::Vector2f{ WINDOW_WIDTH - 60.f, 40.f } );
-
-      // TODO add a separate component for building buttons
-      auto buildingButton = std::make_shared<BuildingPlacementButton<Buildings::BuildingType::PEASANT_HOUSE>>(
-         "Assets/Icons/houseIcon.png",
-         sf::Vector2f{ 60.f, 50.f } );
-      auto minerButton = std::make_shared<BuildingPlacementButton<Buildings::BuildingType::STONE_MINER>>(
-         "Assets/Icons/stoneMinerIco.png",
-         sf::Vector2f{ 134.f, 50.f } );
-
-      auto placeholderMenu = std::make_shared<UIButton<GameResumed>>( "Assets/Icons/menu.png",
-                                                                      sf::Vector2f{ WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 }, 0,
-                                                                      sf::Vector2f{ 5.f, 5.f } );
-      auto uiRoot = std::make_shared<UIRoot>( placeholderMenu );
-      uiUpperBlock->addChild( menuButton );
-      uiLowerBlock->addChild( buildingButton );
-      uiLowerBlock->addChild( minerButton );
-
-      uiRoot->addChild( uiLowerBlock );
-      uiRoot->addChild( uiUpperBlock );
-      context->uiSystem->addUiRootComponent( uiRoot );
-   }
-
-   auto player = context->scene->createFunctionalEntity<MainGamePlayer>();
-   context->playerEntity = player->getEntityId();
-   LOG_INFO( "Player entity created" );
-   context->gameMapSystem->generateMap( 64, 64, sf::Vector2f{ WINDOW_WIDTH / 2 - 128, 0 } );
-   LOG_INFO( "Game map generated" );
-   context->gameMapSystem->onStart();
    LOG_INFO( "Game map system started" )
    context->uiSystem->onStart( window, context.get() );
    LOG_INFO( "UI system started" );
@@ -85,18 +44,10 @@ void Game::start()
    context->tagSystem->onStart();
    LOG_INFO( "Tag system started" );
    // TODO do in a loop of user systems
-   context->constructionSystem->onStart();
-   LOG_INFO( "Construction system started" );
    context->scene->onStart( window );
    LOG_INFO( "Scene started" );
    LOG_INFO( "Game starting" );
    LOG_INFO( "============================================================" );
-
-   // TODO temporary + Add to level once they are implemented
-   context->inventorySystem->addItem( player->getEntityId(), "res_wood", 5 );
-
-   auto regionTilePos = context->gameMapSystem->generateStartingRegion();
-   context->scene->moveCameraTo( context->gameMapSystem->getScreenCoords( regionTilePos ) );
 
    // Main loop
    while( window.isOpen() )
@@ -152,18 +103,12 @@ void Game::initSystems() const
    LOG_INFO( "Inventory system initialized" );
    context->inputSystem->init( context.get() );
    LOG_INFO( "Input system initialized" );
-   context->gameMapSystem->init( context.get() );
-   LOG_INFO( "Game map system initialized" );
    context->inputSystem->setUIController( std::make_unique<UIController>( context.get() ) );
-   LOG_INFO( "UIController registered" );
-   context->inputSystem->registerController( std::make_unique<PlayerController>( context.get() ) );
    LOG_INFO( "PlayerController registered" );
    context->timeManager->init( context.get() );
    LOG_INFO( "Time manager initialized" );
    context->tagSystem->init( context.get() );
    LOG_INFO( "Tag system initialized" );
-   context->constructionSystem->init( context.get() );
-   LOG_INFO( "Construction system initialized" );
    LOG_INFO( "All systems initialized" );
    LOG_INFO( "============================================================" );
 }

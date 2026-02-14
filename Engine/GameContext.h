@@ -8,13 +8,11 @@
 #include <memory>
 #include "Scene.h"
 #include "ResourceManager.h"
-#include "../Src/GameItemRegistry.h"
-#include "../Src/Entities/Buildings/ConstructionSystem.h"
 #include "Input/InputSystem.h"
 #include "Data/InventorySystem.h"
+#include "Data/ItemRegistry.h"
 #include "Event/EventSystem.h"
 #include "UI/UISystem.h"
-#include "GameMap/GameMapSystem.h"
 #include "Sprite/SpriteSystem.h"
 #include "Tags/TagSystem.h"
 #include "Time/TimeSystem.h"
@@ -36,13 +34,11 @@ struct GameContext
         resourceManager( std::make_shared<ResourceManager>() ),
         inputSystem( std::make_shared<InputSystem>() ),
         eventSystem( std::make_shared<EventSystem>() ),
-        gameMapSystem( std::make_shared<GameMapSystem>() ),
+        itemRegistry( std::make_shared<ItemRegistry>() ),
         uiSystem( std::make_shared<UISystem>() ),
-        itemRegistry( std::make_shared<GameItemRegistry>() ),
         timeManager( std::make_shared<TimeSystem>() ),
         inventorySystem( std::make_shared<InventorySystem>() ),
-        tagSystem( std::make_shared<TagSystem>() ),
-        constructionSystem( std::make_shared<ConstructionSystem>() )
+        tagSystem( std::make_shared<TagSystem>() )
    {
    }
 
@@ -56,14 +52,11 @@ struct GameContext
    const std::shared_ptr<ResourceManager> resourceManager;
    const std::shared_ptr<InputSystem> inputSystem;
    const std::shared_ptr<EventSystem> eventSystem;
-   const std::shared_ptr<GameMapSystem> gameMapSystem;
-   const std::shared_ptr<UISystem> uiSystem;
    const std::shared_ptr<ItemRegistry> itemRegistry;
+   const std::shared_ptr<UISystem> uiSystem;
    const std::shared_ptr<TimeSystem> timeManager;
    const std::shared_ptr<InventorySystem> inventorySystem;
    const std::shared_ptr<TagSystem> tagSystem;
-   // User defined system. TODO add this in game level instead of hardcoded in context
-   const std::shared_ptr<ConstructionSystem> constructionSystem;
 };
 
 #endif //GAME1_GAMECONTEXT_H

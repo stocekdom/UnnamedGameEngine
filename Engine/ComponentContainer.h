@@ -5,13 +5,12 @@
 #ifndef GAME1_COMPONENTCONTAINER_H
 #define GAME1_COMPONENTCONTAINER_H
 
-#include <algorithm>
-
 #include "Entity.h"
 #include "Logging/Logger.h"
 #include <unordered_map>
 #include <functional>
 #include <numeric>
+#include <algorithm>
 #include <ranges>
 #include <vector>
 
