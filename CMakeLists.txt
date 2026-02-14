@@ -4,7 +4,7 @@ project(game1)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
-add_executable(game1 main.cpp
+add_library(engine
         Engine/Scene.h
         Engine/Entity/Actor.h
         Engine/Entity/Actor.cpp
@@ -111,4 +111,18 @@ add_executable(game1 main.cpp
 find_package(SFML 2.6 COMPONENTS graphics window system REQUIRED)
 
 # Link SFML libraries to the target
-target_link_libraries(game1 sfml-graphics sfml-window sfml-system)
+target_link_libraries(engine sfml-graphics sfml-window sfml-system)
+
+add_executable(game main.cpp)
+target_link_libraries(game engine)
+
+add_executable(engineTests Tests/TestMain.cpp
+        Tests/TestFramework.h
+        Tests/JSON/TokenizerTests.cpp
+)
+
+target_link_libraries(engineTests engine)
+
+enable_testing()
+
+add_test(NAME engine_tests COMMAND engineTests)
