@@ -4,10 +4,23 @@
 
 #ifndef GAME1_UTILITY_H
 #define GAME1_UTILITY_H
+#include <variant>
 #include <vector>
 
 namespace Util
 {
+   template<typename T, typename Variant>
+   struct does_variant_contain;
+
+   template<typename T, typename... Ts>
+   struct does_variant_contain<T, std::variant<Ts...>>
+   {
+      static constexpr bool value = std::disjunction_v<std::is_same<T, Ts>...>;
+   };
+
+   template<typename T, typename Variant>
+   concept does_variant_contain_v = does_variant_contain<T, Variant>::value;
+
    /**
     * Performs a swap and pop technique on a vector to remove a matching element in O(1)
     * @param v The vector on which the operation is performed
