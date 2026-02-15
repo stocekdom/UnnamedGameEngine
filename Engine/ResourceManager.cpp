@@ -13,9 +13,7 @@ const sf::Texture& ResourceManager::loadTexture( const std::string& path )
       auto newTexture = std::make_unique<sf::Texture>();
 
       if( !newTexture->loadFromFile( path ) )
-      {
          LOG_ERROR( "Could not load texture at " + path );
-      }
 
       textures[ path ] = std::move( newTexture );
    }
@@ -32,9 +30,7 @@ const sf::Font& ResourceManager::loadFont( const std::string& path )
       auto newFont = std::make_unique<sf::Font>();
 
       if( !newFont->loadFromFile( path ) )
-      {
          LOG_ERROR( "Could not load font at " + path );
-      }
 
       fonts[ path ] = std::move( newFont );
    }
