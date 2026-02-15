@@ -26,11 +26,11 @@ inline struct name##_reg {     \
 } name##_instance;      \
 inline void name()
 
-#define ASSERT_THROWS( code )                         \
+#define assert_throws( code, TException )             \
 {                                                     \
 bool exceptionThrown = false;                         \
 \
-try{ code; } catch( ... ){ exceptionThrown = true; }  \
+try{ code; } catch( const TException& e ){ exceptionThrown = true; }  \
 assert( exceptionThrown );                            \
 }
 

@@ -119,6 +119,7 @@ target_link_libraries(game engine)
 add_executable(engineTests Tests/TestMain.cpp
         Tests/TestFramework.h
         Tests/JSON/TokenizerTests.cpp
+        Tests/JSON/ParserTests.cpp
 )
 
 target_link_libraries(engineTests engine)

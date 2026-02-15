@@ -48,7 +48,7 @@ Token JSONTokenizer::getNextToken()
             if( isdigit( inputView.front() ) || inputView.front() == '-' )
                return processNumber();
 
-            throw std::runtime_error(
+            throw JSONException(
                "Unexpected character '" + std::string( 1, inputView.front() ) + "' on line " + std::to_string( currentLine ) +
                " position " + std::to_string( readCharsOnLine + 1 ) );
          }
@@ -58,7 +58,7 @@ Token JSONTokenizer::getNextToken()
 
 Token JSONTokenizer::processSimpleToken( TokenType type )
 {
-   auto token = Token( inputView.substr( 0, 1 ), type );
+   auto token = Token( inputView.substr( 0, 1 ), type, currentLine, readCharsOnLine );
    ++readCharsOnLine;
    inputView.remove_prefix( 1 );
    return token;
@@ -73,12 +73,12 @@ Token JSONTokenizer::processString()
    auto endQuoteIndex = inputView.find( '"' );
 
    if( endQuoteIndex == std::string_view::npos )
-      throw std::runtime_error(
-         "Unterminated JSON string on line " + std::to_string( currentLine ) + " position " + std::to_string(
-            readCharsOnLine + 1 ) );
+      throw JSONException(
+         "Unterminated JSON string on line " + std::to_string( currentLine ) + " position " +
+         std::to_string( readCharsOnLine + 1 ) );
 
+   auto token = Token( inputView.substr( 0, endQuoteIndex ), TokenType::String, currentLine, readCharsOnLine );
    readCharsOnLine += endQuoteIndex + 1;
-   auto token = Token( inputView.substr( 0, endQuoteIndex ), TokenType::String );
    inputView.remove_prefix( endQuoteIndex + 1 );
    return token;
 }
@@ -91,12 +91,12 @@ Token JSONTokenizer::processLiteral( const std::string& literal, TokenType type 
    {
       ++readCharsOnLine;
       if( inputView.at( currentViewIndex++ ) != c )
-         throw std::runtime_error(
+         throw JSONException(
             "Expected " + literal + " on line " + std::to_string( currentLine ) + " position " +
             std::to_string( readCharsOnLine ) );
    }
 
-   auto token = Token( inputView.substr( 0, literal.size() ), type );
+   auto token = Token( inputView.substr( 0, literal.size() ), type, currentLine, readCharsOnLine - literal.size() );
    inputView.remove_prefix( literal.size() );
    return token;
 }
@@ -109,10 +109,11 @@ Token JSONTokenizer::processNumber()
    auto [ ptr, errc ] = std::from_chars( inputView.data(), inputView.data() + endIndex, dummyValue, std::chars_format::general );
 
    if( errc != std::errc() || ptr != inputView.data() + endIndex )
-      throw std::runtime_error(
+      throw JSONException(
          "Invalid number on line " + std::to_string( currentLine ) + " position " + std::to_string( readCharsOnLine + 1 ) );
 
-   auto token = Token( inputView.substr( 0, endIndex ), TokenType::Number );
+   auto token = Token( inputView.substr( 0, endIndex ), TokenType::Number, currentLine, readCharsOnLine );
+   readCharsOnLine += endIndex;
    inputView.remove_prefix( endIndex );
    return token;
 }
