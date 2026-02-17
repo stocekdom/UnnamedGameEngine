@@ -36,7 +36,6 @@ add_library(engine
         Engine/Input/InputSystem.cpp
         Engine/Input/Controller.cpp
         Engine/Input/Clickable.h
-        Engine/Core/Mobility.h
         Engine/UI/UIBlock.h
         Engine/UI/UIBlock.cpp
         Engine/Event/EventSystem.h
@@ -52,9 +51,6 @@ add_library(engine
         Engine/Input/ContextFactory.h
         Engine/Input/ContextFactory.cpp
         Engine/Core/Math.cpp
-        Engine/Core/UUID.h
-        Engine/Core/UUID.cpp
-        Engine/Core/SpawnCategory.h
         Engine/UI/UISystem.h
         Engine/UI/UISystem.cpp
         Engine/Data/ItemDefinition.h

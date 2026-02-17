@@ -23,10 +23,10 @@ namespace Util
 
    /**
     * Performs a swap and pop technique on a vector to remove a matching element in O(1)
+    * Only removes the first occurrence of the element
     * @param v The vector on which the operation is performed
     * @param element The element to be deleted
     * @return Returns the result flag of the operation. False - element not found; true - element deleted
-    * @note Uses std::ranges::find which means only the first found element is popped
     */
    template<typename T>
    bool vectorSwapAndPop( std::vector<T>& v, const T& element )

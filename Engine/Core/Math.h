@@ -50,7 +50,7 @@ namespace Math
    }
 
    /**
-    * Returns a index of a game map based on coordinates. The map works as a matrix, and the X is a row index. The tiles are numbered by rows
+    * Returns an index of a game map based on coordinates. The map works as a matrix, and the X is a row index. The tiles are numbered by rows
     * @note Indexing a map is different from indexing screen coordinates, where the row is a Y coordinate
     * @param x Row index
     * @param y Column index
@@ -62,11 +62,25 @@ namespace Math
       return y + x * width;
    }
 
+   /**
+    * Returns the 2D coordinates of a game map based on the 1D map array index. The tiles are numbered by rows
+    * @param index Index of the tile
+    * @param width Width of the map
+    * @return 2D map coordinates from the index
+    */
    inline sf::Vector2i indexToCoords( int index, int width )
    {
       return { index / width, index % width };
    }
 
+   /**
+    * Calculates the position in world space of an entity that is relative (in local space) to it's parent
+    * @param parentPosition
+    * @param parentRotation
+    * @param parentScale
+    * @param relativePosition Position of the entity in local space (relative to the parent)
+    * @return The position of the entity in world space
+    */
    sf::Vector2f parentRelativeToWorldPosition( const sf::Vector2f& parentPosition,
                                                float parentRotation,
                                                const sf::Vector2f& parentScale,
