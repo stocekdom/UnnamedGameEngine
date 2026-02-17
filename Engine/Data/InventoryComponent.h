@@ -10,6 +10,7 @@
 
 struct InventoryComponent
 {
+   // Don't modify this from anywhere. Use only the InventorySystem API
    std::vector<ItemInstance> inventory;
 };
 

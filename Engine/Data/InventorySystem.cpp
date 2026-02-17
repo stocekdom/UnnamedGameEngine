@@ -2,7 +2,6 @@
 // Created by dominik on 06.02.26.
 //
 #include "InventorySystem.h"
-#include "ItemEvents.h"
 #include "../GameContext.h"
 #include "../Tags/Tags.h"
 
@@ -33,7 +32,6 @@ void InventorySystem::onComponentAdded( Entity entity )
 
 bool InventorySystem::addItem( Entity entityId, const std::string& itemId, unsigned int amount )
 {
-   // Only add needs to check the definition if the item is not already in the inventory.
    // O(1) lookup.
    auto def = gameContext->itemRegistry->getDefinition( itemId );
 
@@ -47,13 +45,13 @@ bool InventorySystem::addItem( Entity entityId, const std::string& itemId, unsig
       if( item.getInstanceId() == itemId )
       {
          auto currentAmount = item.addAmount( amount );
-         handleAfterAdd( entityId, itemId, amount, currentAmount );
+         handleAddEvent( InventoryItemAdded{ entityId, itemId, amount, currentAmount } );
          return true;
       }
 
-   component.inventory.emplace_back( amount, def );
+   component.inventory.emplace_back( def, amount );
 
-   handleAfterAdd( entityId, itemId, amount, amount );
+   handleAddEvent( InventoryItemAdded{ entityId, itemId, amount, amount } );
    return true;
 }
 
@@ -66,7 +64,7 @@ unsigned int InventorySystem::removeItem( Entity entityId, const std::string& it
       if( item.getInstanceId() == itemId )
       {
          auto removed = item.removeAmount( amount );
-         handleAfterRemove( entityId, itemId, amount, removed, item.getAmount() );
+         handleAfterRemove( InventoryItemRemoved{ entityId, itemId, amount, removed, item.getAmount() } );
          return removed;
       }
 
@@ -85,21 +83,19 @@ unsigned int InventorySystem::getAmount( Entity entityId, const std::string& ite
    return 0;
 }
 
-void InventorySystem::handleAfterAdd( Entity entityId, const std::string& itemdId, unsigned int amount,
-                                      unsigned int currentAmount ) const
+void InventorySystem::handleAddEvent( const InventoryItemAdded& data ) const
 {
    // Special behavior for player classes
-   if( gameContext->scene->getComponentRegistry().hasComponent<PlayerTag>( entityId ) )
-      gameContext->eventSystem->publish( PlayerInventoryItemAdded{ entityId, itemdId, amount, currentAmount } );
+   if( gameContext->scene->getComponentRegistry().hasComponent<PlayerTag>( data.entityId ) )
+      gameContext->eventSystem->publish( PlayerInventoryItemAdded{ data } );
    else
-      gameContext->eventSystem->publish( InventoryItemAdded{ entityId, itemdId, amount, currentAmount } );
+      gameContext->eventSystem->publish( data );
 }
 
-void InventorySystem::handleAfterRemove( Entity entityId, const std::string& itemdId, unsigned int amount,
-                                         unsigned int removedAmount, unsigned int currentAmount ) const
+void InventorySystem::handleAfterRemove( const InventoryItemRemoved& data ) const
 {
-   if( gameContext->scene->getComponentRegistry().hasComponent<PlayerTag>( entityId ) )
-      gameContext->eventSystem->publish( PlayerInventoryItemRemoved{ entityId, itemdId, amount, currentAmount, removedAmount } );
+   if( gameContext->scene->getComponentRegistry().hasComponent<PlayerTag>( data.entityId ) )
+      gameContext->eventSystem->publish( PlayerInventoryItemRemoved{ data } );
    else
-      gameContext->eventSystem->publish( InventoryItemRemoved{ entityId, itemdId, amount, currentAmount, removedAmount } );
+      gameContext->eventSystem->publish( data );
 }

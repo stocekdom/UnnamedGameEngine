@@ -3,11 +3,13 @@
 //
 #include "ItemRegistry.h"
 
-ItemRegistry::ItemRegistry( const std::unordered_map<std::string, ItemDefinition>& defs ) : definitions( defs )
+ItemRegistry::ItemRegistry( const std::unordered_map<std::string, ItemDefinition>& itemDefinitions )
+   : definitions( itemDefinitions )
 {
 }
 
-ItemRegistry::ItemRegistry( std::unordered_map<std::string, ItemDefinition>&& defs ) : definitions( std::move( defs ) )
+ItemRegistry::ItemRegistry( std::unordered_map<std::string, ItemDefinition>&& itemDefinitions )
+   : definitions( std::move( itemDefinitions ) )
 {
 }
 

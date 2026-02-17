@@ -13,12 +13,17 @@ class ItemRegistry
    public:
       ItemRegistry() = default;
 
-      explicit ItemRegistry( const std::unordered_map<std::string, ItemDefinition>& defs );
+      explicit ItemRegistry( const std::unordered_map<std::string, ItemDefinition>& itemDefinitions );
 
-      explicit ItemRegistry( std::unordered_map<std::string, ItemDefinition>&& defs );
+      explicit ItemRegistry( std::unordered_map<std::string, ItemDefinition>&& itemDefinitions );
 
       const std::unordered_map<std::string, ItemDefinition>& getDefinitions();
 
+      /**
+       * Gets the item definition based on ID
+       * @param id Item ID as a string
+       * @return A pointer to the item definition if it exists. Otherwise, returns a nullptr
+       */
       const ItemDefinition* getDefinition( const std::string& id );
 
       void addDefinition( const ItemDefinition& definition );

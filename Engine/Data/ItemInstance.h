@@ -10,7 +10,7 @@
 class ItemInstance
 {
    public:
-      ItemInstance( unsigned int amount, const ItemDefinition* definition );
+      ItemInstance( const ItemDefinition* definition, unsigned int amount = 0 );
 
       [[nodiscard]] const std::string& getInstanceId() const;
 
@@ -19,7 +19,7 @@ class ItemInstance
       [[nodiscard]] unsigned int getAmount() const;
 
       /**
-       * Adds the given amount from the item.
+       * Adds the given amount of the item.
        * @param amount Amount to add.
        * @return Returns the amount of the item after add operation
        */

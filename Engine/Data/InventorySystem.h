@@ -8,6 +8,7 @@
 #include "InventoryComponent.h"
 #include "../ComponentSystem.h"
 #include "../ComponentContainer.h"
+#include "ItemEvents.h"
 
 class InventorySystem : public ComponentSystem
 {
@@ -41,10 +42,9 @@ class InventorySystem : public ComponentSystem
       GameContext* gameContext = nullptr;
       ComponentContainer<InventoryComponent>* inventoryContainer = nullptr;
 
-      void handleAfterAdd( Entity entityId, const std::string& itemdId, unsigned int amount, unsigned int currentAmount ) const;
+      void handleAddEvent( const InventoryItemAdded& data ) const;
 
-      void handleAfterRemove( Entity entityId, const std::string& itemdId, unsigned int amount, unsigned int removedAmount,
-                              unsigned int currentAmount ) const;
+      void handleAfterRemove( const InventoryItemRemoved& data ) const;
 };
 
 #endif //GAME1_INVENTORYSYSTEM_H

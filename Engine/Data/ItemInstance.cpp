@@ -5,12 +5,11 @@
 #include "ItemInstance.h"
 
 // TODO switch to const reference instead of pointer to avoid null checks?
-ItemInstance::ItemInstance( unsigned int amount, const ItemDefinition* definition ) : itemAmount( amount ),
+ItemInstance::ItemInstance( const ItemDefinition* definition, unsigned int amount ) : itemAmount( amount ),
    definition( definition )
 {
-   // TODO log error
    if( definition == nullptr )
-      LOG_ERROR( "ItemDefinition inside ItemInstance cannot be null" );
+      LOG_ERROR( "ItemDefinition inside ItemInstance is null" );
 }
 
 const std::string& ItemInstance::getInstanceId() const
